@@ -421,10 +421,22 @@ src/
 - Commit messages should say what phase/dataset the work covers.
 - Don't commit large data files, audio, or binary blobs.
 
-### Error Handling
+### Error Handling & Escalation
 - Network failures, encoding errors, and malformed data are expected. Handle gracefully.
 - Always log what went wrong. Never silently skip a dataset.
 - If a download or inspection fails, record the failure and move on — don't block the whole pipeline.
+- **When to escalate to the human**: If a dataset requires institutional credentials, paid access, or manual steps that an agent cannot perform (e.g., filling a form with a real identity, solving a CAPTCHA, emailing a researcher), document the blocker in that dataset's `docs/datasets/<name>.md` under Download Log and move on. Don't burn tokens trying to work around access controls.
+
+### Data Size Limits
+- **50 GB cap per dataset.** If a dataset's total size exceeds 50 GB, download metadata files and a representative sample of media files (e.g., first N audio files, or one file per category/folder). Document what was sampled and what was skipped in the manifest and the dataset's doc.
+- For datasets near the limit, prioritize: metadata/CSVs first (always full), then MIDI/score (small), then audio (large). Audio is the modality we can regenerate from MIDI if needed.
+- Record the full dataset size in the manifest even if only a sample was downloaded, so the gap analysis knows the true scale.
+
+### Deduplication
+- **Deduplicate aggressively.** Some datasets are subsets of larger ones (e.g., CSMTD contains GZ_IsoTech, GuZheng MIDI-Wav, etc. as sub-databases). When a parent dataset contains a child, download only the parent.
+- **Always document skipped sub-datasets** in both: (1) the parent's `docs/datasets/<parent>.md` noting which children it subsumes, and (2) `docs/worklog.md` with a clear entry like "Skipped standalone download of X because it is contained within Y."
+- If a child dataset has additional annotations or modalities not in the parent, download only the extra parts and note the relationship.
+- During Phase 4 unification, check for duplicate entries across datasets by matching on title, filename, or audio fingerprint where feasible.
 
 ### Chinese Language Handling
 - Expect GB2312, GBK, Big5, and UTF-8 encodings. Try UTF-8 first, fall back to others.
