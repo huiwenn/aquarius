@@ -62,6 +62,9 @@ def download_m4singer(output_dir: str, keep_archive: bool = False) -> None:
     print(f"  URL: https://drive.google.com/file/d/{gdrive_file_id}/view")
     print(f"  Expected: ~3-4 GB archive with 700 songs by 20 singers")
 
+    # Note: The Google Drive link may hit quota limits. If gdown fails,
+    # try downloading manually or use HuggingFace mirror (AKRTR/m4singer,
+    # though that mirror has WAV files only, no metadata).
     gdown.download(gdrive_url, str(archive_path), quiet=False)
 
     if not archive_path.exists():

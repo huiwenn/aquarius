@@ -5,7 +5,7 @@
 - Paper: CompMusic project, UPF Barcelona
 - License: Check CompMusic/Zenodo
 - Access method: CompMusic website
-- Status: ready
+- Status: gated (Zenodo files restricted — audio requires access request via Zenodo login; annotations CC BY-ND 4.0)
 
 ## Paper & Description Insights
 Contains 133 audio percussion patterns covering five pattern classes with syllable-level transcriptions. The related Beijing Opera Percussion Instrument Dataset has 236 examples of isolated strokes spanning four percussion instrument classes used in Beijing Opera.
