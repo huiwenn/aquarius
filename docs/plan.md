@@ -10,13 +10,21 @@ Build a **complete, gap-filled unified database** of Chinese music datasets for 
 
 ## How to Run This Loop
 
+### First Iteration Bootstrap
+
+If `docs/worklog.md` does not exist, this is a fresh start:
+1. Create `docs/datasets/` directory, `docs/worklog.md`, and `.venv/`.
+2. Set up Python venv: `python3 -m venv .venv && source .venv/bin/activate && pip install pandas numpy librosa mido music21 soundfile requests beautifulsoup4 tqdm pyarrow && pip freeze > src/requirements.txt`.
+3. Read `AquariusDatasets.md` to understand the starting dataset list.
+4. Begin Phase 1.
+
 ### On Every Iteration
 
-1. **Orient**: Read `docs/worklog.md`, scan `docs/datasets/`, check `data/raw/` for downloaded data. Determine current phase.
-2. **Do one unit of work** (see below).
-3. **Log**: Update `docs/worklog.md` with what was done, what was decided, what's next.
-4. **Commit** code and docs.
-5. **Check ending condition** for the current phase.
+1. **Orient**: Read `docs/worklog.md`. Scan `docs/datasets/` to see what sections are filled. Check `data/raw/` for downloads. Determine current phase.
+2. **Do one unit of work** from the current phase (see below).
+3. **Check ending condition**. If met, log the phase as complete — next iteration starts Phase N+1.
+4. **Log**: Append to `docs/worklog.md` using format: `## [YYYY-MM-DD] Phase N: what was done`. Include: datasets touched, results, decisions, what's next.
+5. **Commit** all changed code and docs in one commit. Mention phase and datasets in the message.
 
 ### Units of Work
 
@@ -29,14 +37,14 @@ Each iteration does exactly one of these, then yields:
 
 ### Ending Conditions
 
-| Phase | Done when |
-|-------|-----------|
-| 1 | Every dataset has a `docs/datasets/<name>.md` with Source, Paper Insights, and preliminary Taxonomy Analysis |
-| 2 | Every `ready` dataset attempted; every doc has Download Log filled |
-| 3 | Every downloaded dataset has Inspection Results, Taxonomy Analysis (ground truth), and Gap Assessment; `docs/unified_schema.md` exists |
-| 4 | `data/unified/master_table.parquet` + `gap_report.json` exist; every doc has Schema Mapping; `docs/gap_analysis_report.md` written; figures in `data/figures/` |
-| 5 | `docs/gap_filling_plan.md` written |
-| **Stop** | All phases complete. Gap-filling *execution* is a separate human-approved phase. |
+| Phase | Done when | Next |
+|-------|-----------|------|
+| 1 | Every dataset has a `docs/datasets/<name>.md` with Source, Paper Insights, and preliminary Taxonomy Analysis | → Phase 2 |
+| 2 | Every `ready` dataset attempted; every doc has Download Log filled | → Phase 3 |
+| 3 | Every downloaded dataset has Inspection Results, Taxonomy Analysis (ground truth), and Gap Assessment; `docs/unified_schema.md` exists | → Phase 4 |
+| 4 | `data/unified/master_table.parquet` + `gap_report.json` exist; every doc has Schema Mapping; `docs/gap_analysis_report.md` written; figures in `data/figures/` | → Phase 5 |
+| 5 | `docs/gap_filling_plan.md` written | → **Stop** |
+| **Stop** | All phases complete. Gap-filling *execution* is a separate human-approved phase. | — |
 
 ---
 
@@ -110,7 +118,7 @@ Download every `ready` dataset into `data/raw/<dataset_name>/`.
 
 **Dispatch**: Group datasets by complexity (simple: git clone, CLI tools; complex: scraping, Chinese-language sites). Batch 2–3 subagents at a time. Give each: the dataset doc content + target directory.
 
-**Subagent instructions** (paste into prompt):
+**Subagent instructions** (read `docs/datasets/[name].md` and paste its full content into the prompt):
 
 > Download dataset [NAME] into `data/raw/[NAME]/`. The dataset doc below has all known context.
 >
@@ -119,8 +127,9 @@ Download every `ready` dataset into `data/raw/<dataset_name>/`.
 > 3. Save download scripts to `src/downloaders/[name]_download.py`.
 > 4. Update `docs/datasets/[name].md` Download Log: what you tried, results, final file counts/sizes/types.
 > 5. If blocked (credentials, CAPTCHA, dead link): document the blocker and stop. Don't retry more than twice.
+> 6. **Do not commit.** The main agent commits after verification.
 >
-> [paste dataset doc content here]
+> [paste full content of docs/datasets/[name].md here]
 
 **Verification**: Check file counts on disk vs. doc, spot-check a few files, update status. Commit downloaders and docs.
 
@@ -134,7 +143,7 @@ Profile every downloaded dataset. The superset of all discovered features become
 
 **Dispatch**: One subagent per dataset, batches of 2–3. Give each: dataset path + dataset doc content.
 
-**Subagent instructions** (paste into prompt):
+**Subagent instructions** (read `docs/datasets/[name].md` and paste its full content into the prompt):
 
 > Inspect dataset [NAME] at `data/raw/[NAME]/`. The dataset doc below has context from the paper.
 >
@@ -145,8 +154,9 @@ Profile every downloaded dataset. The superset of all discovered features become
 > 5. Note encoding issues (GB2312/GBK vs UTF-8), custom formats, annotation conventions.
 > 6. Write inspection script at `src/inspectors/[name]_inspect.py`.
 > 7. Update `docs/datasets/[name].md`: fill Inspection Results, expand Taxonomy Analysis with ground truth, fill Gap Assessment.
+> 8. **Do not commit.** The main agent commits after verification.
 >
-> [paste dataset doc content here]
+> [paste full content of docs/datasets/[name].md here]
 
 **Verification**: Read all dataset docs. Build the unified schema (union of all discovered fields + taxonomy reference fields). Save as `docs/unified_schema.md`. Commit.
 
@@ -222,8 +232,7 @@ data/                                   # Gitignored
 ```
 
 ### Python
-- Virtual environment at `.venv/`. Core deps: pandas, numpy, librosa, mido, music21, soundfile, requests, beautifulsoup4, tqdm, pyarrow.
-- Keep `requirements.txt` updated. All code in `src/`.
+- Venv at `.venv/` (created during bootstrap). Install new deps as needed and update `src/requirements.txt`. All code in `src/`.
 
 ### Git
 - Commit code and docs after every unit of work. Data is gitignored.
