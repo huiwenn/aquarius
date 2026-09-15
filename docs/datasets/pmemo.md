@@ -5,7 +5,7 @@
 - Paper: "The PMEmo Dataset for Music Emotion Recognition" (ACM ICMR 2018) — https://dl.acm.org/doi/10.1145/3206025.3206037
 - License: Research use (check paper for specifics)
 - Access method: GitHub repository
-- Status: ready
+- Status: downloaded + inspected
 - Parent: Listed under CSMTD (see `csmtd.md`)
 
 ## Paper & Description Insights

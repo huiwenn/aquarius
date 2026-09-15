@@ -5,7 +5,7 @@
 - Paper: Part of CSMTD / CCMusic ecosystem
 - License: Copyright Fudan University / Zhejiang University; "free and public" access
 - Access method: Via CSMTD platform (GitHub/Zenodo/HuggingFace)
-- Status: ready
+- Status: gated (requires application to ccmusic.database@hotmail.com; not on HuggingFace)
 - Parent: CSMTD (see `csmtd.md`). Download via parent.
 
 ## Paper & Description Insights

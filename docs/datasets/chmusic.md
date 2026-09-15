@@ -5,7 +5,7 @@
 - Paper: "ChMusic: A Traditional Chinese Music Dataset for Evaluation of Instrument Recognition" (2021) — https://arxiv.org/abs/2108.08470
 - License: MIT (repository)
 - Access method: Baidu Wangpan (pan.baidu.com/s/13e-6GnVJmC3tcwJtxed3-g, password: xk23) or Google Drive
-- Status: ready
+- Status: downloaded + inspected
 
 ## Paper & Description Insights
 ChMusic contains 55 traditional Chinese music excerpts for instrument recognition. Each of 11 instruments has 5 recordings. All recordings are single-instrument (monophonic labeling). Files are WAV format, dual-channel, 44,100 Hz, ranging 25–280 seconds. Total size ~530 MB.

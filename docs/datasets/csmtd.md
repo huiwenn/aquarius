@@ -5,7 +5,7 @@
 - Paper: Part of the CCMusic ecosystem (see `ccmusic.md`)
 - License: Copyright held by Fudan University and Zhejiang University; "free and public" access stated
 - Access method: GitHub, Zenodo, HuggingFace. Demo files on website.
-- Status: ready
+- Status: umbrella (sub-datasets handled individually)
 - Parent: CCMusic platform. Contains sub-datasets: GZ_IsoTech, GuZheng Midi-Wav, Chinese National Pentatonic Mode, PMEmo, Guzheng_Tech99, XFID. Each has its own doc.
 
 ## Paper & Description Insights

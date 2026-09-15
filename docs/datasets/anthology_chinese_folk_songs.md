@@ -5,7 +5,7 @@
 - Paper: Associated with research on optical recognition of printed Jianpu musical scores (2025)
 - License: Not specified (original scanned images are copyrighted; MIDI/MusicXML derived data may have different terms)
 - Access method: GitHub clone
-- Status: ready
+- Status: downloaded + inspected
 
 ## Paper & Description Insights
 Derived from 11 volumes of the *Anthology of Chinese Folk Songs* (《中国民间歌曲集成》). Contains 8,659 songs: 2,498 with lyrics and 6,161 melody-only pieces. Provided in MIDI and MusicXML formats — symbolic notation, not audio. Also includes debug visualization images.

@@ -5,7 +5,7 @@
 - Paper: "CCMusic: An Open and Diverse Database for Chinese and General Music Information Retrieval Research" (TISMIR, 2024) — https://transactions.ismir.net/articles/10.5334/tismir.194
 - License: CC Attribution 4.0
 - Access method: HuggingFace (https://huggingface.co/ccmusic-database), GitHub, Zenodo (https://doi.org/10.5281/zenodo.5676893). Full files may require application to ccmusic.database@hotmail.com; demo versions available on public platforms.
-- Status: ready
+- Status: umbrella (sub-datasets handled individually)
 
 ## Paper & Description Insights
 CCMusic is an umbrella platform ("Music Data Sharing Platform for Computational Musicology Research") integrating multiple Chinese music datasets with unified data structures and open accessibility. The TISMIR paper describes 6 core datasets: CTIS (4,956 instrument recordings), GZ_IsoTech (2,824 Guzheng technique clips), Guzheng_Tech99 (99 compositions with frame-level annotations), Erhu Playing Technique (1,253 clips), Chinese National Pentatonic Modes (287 recordings), and Bel Canto & Chinese Folk Singing (203 vocal recordings).

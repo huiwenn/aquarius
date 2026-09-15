@@ -5,7 +5,7 @@
 - Paper: "M4Singer: A Multi-Style, Multi-Singer and Musical Score Provided Mandarin Singing Corpus" (NeurIPS 2022)
 - License: Custom license (see dataset_license.md in repo); free-to-use with terms
 - Access method: Google Drive download via https://github.com/M4Singer/M4Singer; HuggingFace demo available
-- Status: ready
+- Status: downloaded + inspected
 
 ## Paper & Description Insights
 M4Singer is a multi-style, multi-singer Mandarin singing corpus for SVS research. Contains 700 Chinese pop songs recorded by 20 professional singers covering all four SATB voice types (soprano, alto, tenor, bass). Includes manual musical score annotations and audio-score alignment information.

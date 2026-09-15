@@ -5,7 +5,7 @@
 - Paper: Same as parent (see `anthology_chinese_folk_songs.md`)
 - License: Not specified
 - Access method: GitHub clone
-- Status: ready
+- Status: downloaded + inspected
 - Parent: Anthology of Chinese Folk Songs (see `anthology_chinese_folk_songs.md`). Anonymized/curated subset.
 
 ## Paper & Description Insights

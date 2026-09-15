@@ -5,7 +5,7 @@
 - Paper: Part of CSMTD / CCMusic ecosystem
 - License: Copyright held by associated universities; "free and public" access
 - Access method: Via CSMTD platform
-- Status: ready
+- Status: gated (requires application to ccmusic.database@hotmail.com; not on HuggingFace)
 - Parent: CSMTD (see `csmtd.md`). Download via parent.
 
 ## Paper & Description Insights
