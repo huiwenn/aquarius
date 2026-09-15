@@ -5,7 +5,7 @@
 - Paper: None
 - License: Learning/reference purposes only; contact wyh041816@gmail.com for use
 - Access method: GitHub clone
-- Status: ready
+- Status: gated
 
 ## Paper & Description Insights
 A collection of nearly 3,000 Chinese songs in MIDI format, obtained from an open-source music website. Intended for learning and reference purposes.
