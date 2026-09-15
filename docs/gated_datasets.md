@@ -19,7 +19,11 @@ Datasets that could not be automatically downloaded. Download these manually and
 - **How to access**: Log in to Zenodo, request access to restricted files
 - **Save to**: `data/raw/bopp/`
 - **Why it matters**: Percussion pattern annotations for Beijing Opera
+- requested
 
+CCMUSIC
+cannot be published 
+requested
 ### 4. XFID (Chinese Folk Instrument Dataset)
 - **URL**: https://ccmusic-database.github.io/en/database/csmtd.html
 - **How to access**: Email ccmusic.database@hotmail.com to request access
@@ -43,6 +47,7 @@ Datasets that could not be automatically downloaded. Download these manually and
 - **How to access**: Download from website (check availability)
 - **Save to**: `data/raw/kising/`
 - **Why it matters**: Mandarin singing voice synthesis corpus
+- Don't need it 
 
 ## Requires Further Investigation
 
@@ -50,6 +55,7 @@ Datasets that could not be automatically downloaded. Download these manually and
 - **URL**: https://github.com/wyhlovecpp/Chinese-Songs-Midi-Dataset
 - **How to access**: GitHub repo — may have been removed or made private
 - **Save to**: `data/raw/chinese_songs_midi/`
+- contacted
 
 ### 9. MADVSD
 - **URL**: https://github.com/CarlWangChina/MADVSD
