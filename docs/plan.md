@@ -10,6 +10,84 @@ See `docs/chinese_music_taxonomy_reference.md` for the musicological lens guidin
 
 ---
 
+## Worklog Discipline
+
+Every step of this project must be documented as it happens — not reconstructed after the fact. The worklog serves three purposes: (1) the paper's methodology section draws directly from it, (2) a new agent session can read the logs and pick up where the last left off, (3) the human collaborator can review decisions and reasoning asynchronously.
+
+### Per-Dataset Documentation
+
+Every dataset gets its own markdown file at `docs/datasets/<dataset_name>.md`. This is the single source of truth for everything learned about that dataset. It is created during Phase 1 (registry) and expanded during Phases 2–4 as work progresses. Structure:
+
+```markdown
+# <Dataset Name>
+
+## Source
+- URL: ...
+- Paper: ... (with citation)
+- License: ...
+- Access method: ...
+
+## Paper & Description Insights
+What the paper/README says this dataset is for. Key findings from reading
+the publication. What musicological questions it was designed to address.
+Design choices the authors made and why. Known limitations they acknowledge.
+Relevant quotes from the paper.
+
+## Content & Taxonomy Analysis
+What kind of music is actually in this dataset, analyzed through our
+taxonomy lens (see docs/chinese_music_taxonomy_reference.md):
+- Time period / dynasty coverage
+- Regional / ethnic representation
+- Genre / form breakdown
+- Instrumentation
+- Musical system (pentatonic modes, tuning, etc.)
+- Language (for vocal music)
+Note what is explicitly labeled vs. what we inferred.
+
+## Download Log
+Chronological log of download attempts:
+- [date] Attempted method X — result
+- [date] Wrote scraper at src/downloaders/... — result
+- Final status: success / partial / failed
+
+## Inspection Results
+What we found when we actually looked at the data:
+- File counts and types
+- Metadata fields discovered (list every column)
+- Sample values for key fields
+- Data quality issues (encoding problems, missing values, inconsistencies)
+- Surprises — anything that contradicts the paper's description
+
+## Schema Mapping
+How this dataset's fields map to the unified schema.
+Which fields are present, which are missing, which need transformation.
+
+## Gap Assessment
+What's missing from this dataset and how hard it would be to fill:
+- Missing modalities and generation feasibility
+- Missing metadata and imputation feasibility
+- Priority ranking for gap-filling
+```
+
+Not every section needs to be filled at once — they accumulate across phases. But every agent that touches a dataset **must update its doc**. No silent work.
+
+### Main Worklog
+
+The main agent maintains `docs/worklog.md` — a chronological log of high-level decisions, batch dispatches, verification results, and phase transitions. Format:
+
+```markdown
+## [YYYY-MM-DD] Phase X: Brief description
+What was done, what was decided, what's next.
+- Dispatched subagents for: dataset_a, dataset_b, dataset_c
+- Results: dataset_a succeeded, dataset_b failed (reason), dataset_c partial
+- Decided to defer dataset_b to next session because...
+- Committed: [commit hash or description]
+```
+
+Keep it concise but complete. A new session should be able to read `docs/worklog.md` and understand the full project history.
+
+---
+
 ## Phase 1: Dataset Registry & Metadata Catalog
 
 **Owner**: Main agent
@@ -37,7 +115,13 @@ See `docs/chinese_music_taxonomy_reference.md` for the musicological lens guidin
    - Check papers that cite the datasets we already know (snowball search)
    - Check HuggingFace, Kaggle, Zenodo, and GitHub for Chinese music datasets
 4. Save the registry as `data/dataset_registry.json` — a list of objects, one per dataset. Also save a human-readable summary as `docs/dataset_registry_summary.md`.
-5. Commit `docs/dataset_registry_summary.md` (the JSON is in data/ which is gitignored).
+5. **For each dataset, create `docs/datasets/<dataset_name>.md`** and fill in the **Source** and **Paper & Description Insights** sections. Read the associated paper or website thoroughly — don't just skim. Extract:
+   - What musicological question the dataset was built to answer
+   - Design decisions the authors made (why these pieces, why this format, why these annotations)
+   - Known limitations or biases the authors acknowledge
+   - How the dataset relates to others (shared sources, overlapping content, citations)
+   - Begin the **Content & Taxonomy Analysis** section with what's known from the paper (actual data inspection comes in Phase 3)
+6. Commit all `docs/datasets/*.md` files, `docs/dataset_registry_summary.md`, and update `docs/worklog.md`.
 
 ### Guidelines
 
@@ -96,6 +180,7 @@ You are downloading a Chinese music dataset. Your job:
    ```
 5. **If you can't download it**, still write the manifest with `"files_downloaded": 0` and explain why in `errors`. Don't silently fail.
 6. All download scripts you write go in `src/downloaders/`. Name them by dataset. Keep them — they're part of the reproducibility story for the paper.
+7. **Update `docs/datasets/<dataset_name>.md`** — fill in the **Download Log** section with a chronological record of what you tried, what worked, what failed, and what the final state is.
 
 ### Main Agent Verification
 
@@ -153,7 +238,11 @@ You are profiling a Chinese music dataset. Your job is to understand everything 
    - Any other labels?
 5. **Note anything unusual or dataset-specific**: custom file formats, annotation conventions, encoding issues (Chinese character encodings — watch for GB2312/GBK vs UTF-8), README contents.
 6. **Write a Python inspection script** at `src/inspectors/<dataset_name>_inspect.py` that produces the profile. Keep it — it's part of reproducibility.
-7. **Save the profile** to `data/profiles/<dataset_name>_profile.json`:
+7. **Update `docs/datasets/<dataset_name>.md`**:
+   - Fill in the **Inspection Results** section with what you actually found — file counts, metadata fields, sample values, data quality issues, surprises.
+   - Expand the **Content & Taxonomy Analysis** section with ground-truth observations. Now that you've seen the data, how does it map to our taxonomy? What time periods, regions, genres, instruments are actually represented? What's labeled vs. unlabeled? Does the data match what the paper claimed?
+   - Begin the **Gap Assessment** section — what modalities and metadata are missing?
+8. **Save the profile** to `data/profiles/<dataset_name>_profile.json`:
    ```json
    {
      "dataset_name": "...",
@@ -230,7 +319,9 @@ After inspection subagents complete:
    - Temporal distribution of entries across datasets
    - Genre distribution
    - Modality distribution (pie/bar)
-6. Commit all code and docs.
+6. **Update every `docs/datasets/<dataset_name>.md`** — fill in the **Schema Mapping** section documenting how each dataset's fields map to the unified schema, and finalize the **Gap Assessment** with specific gap-filling priority.
+7. Update `docs/worklog.md` with Phase 4 decisions and results.
+8. Commit all code and docs.
 
 ### Guidelines
 
@@ -298,6 +389,31 @@ data/
 │   ├── gap_report.json
 │   └── coverage_matrix.csv
 └── figures/                       # Visualizations
+
+docs/
+├── plan.md                        # This file
+├── worklog.md                     # Chronological project log
+├── chinese_music_taxonomy_reference.md
+├── dataset_registry_summary.md    # Phase 1 human-readable registry
+├── unified_schema.md              # Phase 3 output
+├── gap_analysis_report.md         # Phase 4 output
+├── gap_filling_plan.md            # Phase 5 output
+└── datasets/                      # Per-dataset documentation
+    ├── ccmusic.md
+    ├── pop909.md
+    ├── opencpop.md
+    └── ... (one per dataset)
+
+src/
+├── downloaders/                   # Per-dataset download scripts
+│   ├── ccmusic_download.py
+│   └── ...
+├── inspectors/                    # Per-dataset inspection scripts
+│   ├── ccmusic_inspect.py
+│   └── ...
+├── unify.py                       # Phase 4
+├── gap_analysis.py                # Phase 4
+└── requirements.txt
 ```
 
 ### Git Discipline
@@ -328,6 +444,71 @@ This project runs on a Claude plan with finite daily/monthly token usage. Every 
 - **Phase 1 is cheap; Phase 2 is expensive.** The registry (Phase 1) is mostly WebFetch calls by the main agent — do it fully before starting any downloads. This avoids spawning subagents for datasets that turn out to be duplicates or inaccessible.
 - **Monitor progress against the dataset count.** If there are ~15 datasets, plan for ~5 batches of 2–3 across Phases 2 and 3. If the registry grows to 30+, consider triaging: prioritize open-access, well-documented datasets first; defer gated/unclear ones.
 - **Long-running downloads: use background execution.** For large datasets (multi-GB audio collections), kick off the download in background and move on to other work. Don't block the main agent waiting.
+
+### Session Start: How to Resume
+
+At the start of every session (or goal loop iteration), the main agent must orient itself before doing new work:
+
+1. **Read `docs/worklog.md`** — understand what has been done and what was planned next.
+2. **Read `docs/dataset_registry_summary.md`** — know the full dataset landscape.
+3. **Check `data/dataset_registry.json`** — for current status of each dataset (if it exists).
+4. **Scan `docs/datasets/`** — see which per-dataset docs exist and how complete they are.
+5. **Check `data/raw/`** — which datasets have been downloaded (look for `_manifest.json` files).
+6. **Check `data/profiles/`** — which datasets have been inspected.
+7. **Determine current phase** — based on what exists, figure out where to pick up.
+8. **Log the session start** in `docs/worklog.md` with what you found and what you plan to do.
+
+### Ending Conditions
+
+The goal loop should check these conditions at the end of each iteration:
+
+**Phase 1 complete when:**
+- `data/dataset_registry.json` exists with all discovered datasets
+- Every dataset in the registry has a corresponding `docs/datasets/<name>.md` with at least the Source and Paper & Description Insights sections filled
+- `docs/dataset_registry_summary.md` is up to date
+- Worklog documents the registry is complete and ready for download phase
+
+**Phase 2 complete when:**
+- Every dataset in the registry with status `ready` has been attempted
+- Every attempted dataset has a `data/raw/<name>/_manifest.json`
+- Every `docs/datasets/<name>.md` has its Download Log section filled
+- Worklog documents download results and any failures
+
+**Phase 3 complete when:**
+- Every successfully downloaded dataset has a `data/profiles/<name>_profile.json`
+- Every `docs/datasets/<name>.md` has Inspection Results, Content & Taxonomy Analysis, and Gap Assessment sections filled
+- `data/unified_schema.json` exists (the superset schema)
+- Worklog documents inspection results
+
+**Phase 4 complete when:**
+- `data/unified/master_table.parquet` exists
+- `data/unified/gap_report.json` exists
+- `data/figures/` contains the coverage and distribution visualizations
+- Every `docs/datasets/<name>.md` has its Schema Mapping section filled
+- `docs/gap_analysis_report.md` is written
+- Worklog documents unification results
+
+**Phase 5 complete when:**
+- `docs/gap_filling_plan.md` is written with concrete strategies for every identified gap
+- Worklog documents the plan
+
+**Full pipeline complete when:**
+- All five phases are marked complete in the worklog
+- The main agent writes a final summary in `docs/worklog.md` stating: all phases done, here's what we have, here's what's left for gap-filling execution
+
+At this point the goal loop should **stop** — gap-filling execution (Phase 5's plan put into action) is a separate project phase that should be reviewed by the human before launching.
+
+### What To Do in a Single Goal Loop Iteration
+
+Each iteration should accomplish one meaningful unit of work and then yield. Don't try to run the entire pipeline in one iteration. Good units:
+
+- Complete Phase 1 registry (if small enough) or a batch of 3–5 dataset registry entries
+- Dispatch and verify one batch of 2–3 download subagents
+- Dispatch and verify one batch of 2–3 inspection subagents
+- Complete Phase 4 unification (this is main-agent work, reasonable as one iteration)
+- Write Phase 5 plan
+
+End each iteration by: updating `docs/worklog.md`, committing, and stating what the next iteration should do.
 
 ### Subagent Best Practices
 - Give each subagent a clear, self-contained prompt with all context it needs.
