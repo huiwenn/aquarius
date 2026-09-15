@@ -648,6 +648,57 @@ def load_ace_opencpop() -> list[dict]:
     return rows
 
 
+# ── GTSinger ────────────────────────────────────────────────────────────────
+
+def load_gtsinger() -> list[dict]:
+    base = RAW / "gtsinger" / "Chinese"
+    if not base.exists():
+        return []
+    rows = []
+    for singer_dir in sorted(base.iterdir()):
+        if not singer_dir.is_dir():
+            continue
+        singer = singer_dir.name
+        voice_type = None
+        for vt in ["Alto", "Soprano", "Tenor", "Bass", "Baritone"]:
+            if vt in singer:
+                voice_type = vt
+                break
+        for tech_dir in sorted(singer_dir.iterdir()):
+            if not tech_dir.is_dir():
+                continue
+            technique = tech_dir.name
+            for song_dir in sorted(tech_dir.iterdir()):
+                if not song_dir.is_dir():
+                    continue
+                song_title = song_dir.name
+                wav_count = len(list(song_dir.rglob("*.wav")))
+                if wav_count == 0:
+                    continue
+                row = empty_row("gtsinger")
+                oid = f"{singer}/{technique}/{song_title}"
+                row["original_id"] = oid
+                row["unified_id"] = make_id("gtsinger", oid)
+                row["granularity"] = "song"
+                row["title"] = song_title
+                row["singer_id"] = singer
+                row["voice_type"] = voice_type
+                row["singing_technique"] = technique
+                row["has_audio"] = True
+                row["has_musicxml"] = True
+                row["has_score"] = True
+                row["has_lyrics"] = True
+                row["audio_format"] = "WAV"
+                row["genre"] = "C-pop"
+                row["language"] = "Mandarin"
+                row["country"] = "China"
+                row["source_url"] = "https://huggingface.co/datasets/GTSinger/GTSinger"
+                row["license"] = "CC BY-NC 4.0"
+                row["access_status"] = "open"
+                rows.append(row)
+    return rows
+
+
 # ── Main ────────────────────────────────────────────────────────────────────
 
 LOADERS = [
@@ -665,6 +716,7 @@ LOADERS = [
     ("ccom_huqin", load_ccom_huqin),
     ("erhu_playing_technique", load_erhupt),
     ("ace_opencpop", load_ace_opencpop),
+    ("gtsinger", load_gtsinger),
 ]
 
 

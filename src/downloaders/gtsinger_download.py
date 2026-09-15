@@ -22,7 +22,7 @@ Dataset structure on HF:
             (each technique)/
                 (song_name)/
                     Breathy_Group/ | Control_Group/ | Paired_Speech_Group/ | ...
-                        XXXX.wav        # 24 kHz mono PCM
+                        XXXX.wav        # 48 kHz mono 24-bit PCM
                         XXXX.json       # phoneme + note alignment
                         XXXX.TextGrid   # Praat TextGrid
                         XXXX.musicxml   # music score
