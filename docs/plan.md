@@ -16,7 +16,7 @@ Every step of this project must be documented as it happens — not reconstructe
 
 ### Per-Dataset Documentation
 
-Every dataset gets its own markdown file at `docs/datasets/<dataset_name>.md`. This is the single source of truth for everything learned about that dataset. It is created during Phase 1 (registry) and expanded during Phases 2–4 as work progresses. Structure:
+Every dataset gets its own markdown file at `docs/datasets/<dataset_name>.md`. This is the **single source of truth** for everything learned about that dataset — there is no separate registry summary or profile document. It is created during Phase 1 and expanded during Phases 2–4 as work progresses. Structure:
 
 ```markdown
 # <Dataset Name>
@@ -26,6 +26,7 @@ Every dataset gets its own markdown file at `docs/datasets/<dataset_name>.md`. T
 - Paper: ... (with citation)
 - License: ...
 - Access method: ...
+- Status: ready / gated / dead / unclear
 
 ## Paper & Description Insights
 What the paper/README says this dataset is for. Key findings from reading
@@ -43,24 +44,29 @@ taxonomy lens (see docs/chinese_music_taxonomy_reference.md):
 - Musical system (pentatonic modes, tuning, etc.)
 - Language (for vocal music)
 Note what is explicitly labeled vs. what we inferred.
+(Phase 1: fill from paper. Phase 3: update with ground truth from inspection.)
 
 ## Download Log
 Chronological log of download attempts:
 - [date] Attempted method X — result
 - [date] Wrote scraper at src/downloaders/... — result
 - Final status: success / partial / failed
+- Files downloaded: N, total size: X MB
+- File types: {".wav": 100, ".mid": 20, ".csv": 3}
+(If blocked by access controls, document what's needed and move on.)
 
 ## Inspection Results
 What we found when we actually looked at the data:
-- File counts and types
-- Metadata fields discovered (list every column)
-- Sample values for key fields
+- File counts and types (verified, not just reported)
+- Metadata fields discovered (list every column with types and examples)
+- Number of entries, what each entry represents (song, segment, note, etc.)
 - Data quality issues (encoding problems, missing values, inconsistencies)
 - Surprises — anything that contradicts the paper's description
 
 ## Schema Mapping
 How this dataset's fields map to the unified schema.
 Which fields are present, which are missing, which need transformation.
+Field name mapping table (original → unified).
 
 ## Gap Assessment
 What's missing from this dataset and how hard it would be to fill:
@@ -92,43 +98,31 @@ Keep it concise but complete. A new session should be able to read `docs/worklog
 
 **Owner**: Main agent
 
-**Goal**: Build a structured registry of every known Chinese music dataset before downloading anything. This is the map before the territory.
+**Goal**: Build a catalog of every known Chinese music dataset before downloading anything. The per-dataset docs (`docs/datasets/<name>.md`) are the catalog — there is no separate registry file.
 
 ### Instructions
 
 1. Start from `AquariusDatasets.md` which lists known datasets and URLs.
-2. For each entry, use WebFetch and WebSearch to visit the dataset's homepage, paper, or GitHub repo. Extract:
-   - **Name**: Official dataset name
-   - **Source URL(s)**: Where to access/download it
-   - **Paper**: Associated publication (if any)
-   - **Access method**: How to get the data (direct download link, git clone, Kaggle API, HuggingFace, gated access requiring a form, manual email request, scraping needed, etc.)
-   - **Known modalities**: What data representations are included (audio formats, MIDI, MusicXML, jianpu, lyrics, metadata CSVs, etc.)
-   - **Reported size**: Number of items, total file size if stated
-   - **License**: Stated license or access terms
-   - **Content description**: What kind of music is in it (genre, instruments, era, region — whatever the source says)
-   - **Status**: `ready` (can download now), `gated` (need to request access), `dead` (link broken), `unclear`
-3. Search for additional Chinese music datasets not in `AquariusDatasets.md`. Search queries to try:
+2. For each entry, use WebFetch and WebSearch to visit the dataset's homepage, paper, or GitHub repo.
+3. **Create `docs/datasets/<dataset_name>.md`** and fill in:
+   - **Source** section: name, URLs, paper citation, access method, license, status
+   - **Paper & Description Insights**: read the associated paper or website thoroughly — don't just skim. Extract what musicological question the dataset was built to answer, design decisions, known limitations, and how it relates to other datasets.
+   - **Content & Taxonomy Analysis** (preliminary): what the paper claims about the content, mapped to our taxonomy. Actual verification comes in Phase 3.
+4. Search for additional Chinese music datasets not in `AquariusDatasets.md`:
    - "Chinese music dataset MIR"
    - "Chinese traditional music corpus"
    - "中国音乐数据集" (Chinese-language searches)
    - "Chinese music audio MIDI dataset"
    - Check papers that cite the datasets we already know (snowball search)
    - Check HuggingFace, Kaggle, Zenodo, and GitHub for Chinese music datasets
-4. Save the registry as `data/dataset_registry.json` — a list of objects, one per dataset. Also save a human-readable summary as `docs/dataset_registry_summary.md`.
-5. **For each dataset, create `docs/datasets/<dataset_name>.md`** and fill in the **Source** and **Paper & Description Insights** sections. Read the associated paper or website thoroughly — don't just skim. Extract:
-   - What musicological question the dataset was built to answer
-   - Design decisions the authors made (why these pieces, why this format, why these annotations)
-   - Known limitations or biases the authors acknowledge
-   - How the dataset relates to others (shared sources, overlapping content, citations)
-   - Begin the **Content & Taxonomy Analysis** section with what's known from the paper (actual data inspection comes in Phase 3)
-6. Commit all `docs/datasets/*.md` files, `docs/dataset_registry_summary.md`, and update `docs/worklog.md`.
+5. **Handle parent/child datasets**: When a parent dataset (e.g., CSMTD) contains sub-datasets that also appear independently (e.g., GZ_IsoTech), create docs for both but note the relationship in each. Mark the child's doc with a note: "Contained within [parent] — will download via parent, not standalone." This keeps the landscape complete while avoiding duplicate downloads.
+6. Commit all `docs/datasets/*.md` files and update `docs/worklog.md`.
 
 ### Guidelines
 
 - Be thorough. A dataset paper's value scales with coverage. Missing a major dataset is worse than including a minor one.
-- If a dataset URL is dead, search for mirrors or archived versions (Wayback Machine, alternative GitHub forks).
-- Some datasets are subsets of larger ones (e.g., CSMTD contains multiple sub-databases). Record both the parent and children as separate entries if they can be used independently.
-- When a paper describes a dataset but doesn't provide a download link, still record it with status `gated` or `unclear` — we want to document the landscape even if we can't get everything.
+- If a dataset URL is dead, search for mirrors or archived versions (Wayback Machine, alternative GitHub forks). Update status accordingly.
+- When a paper describes a dataset but doesn't provide a download link, still create its doc with status `gated` or `unclear` — we want to document the landscape even if we can't get everything.
 
 ---
 
@@ -141,21 +135,19 @@ Keep it concise but complete. A new session should be able to read `docs/worklog
 ### How to Dispatch Subagents
 
 The main agent should:
-1. Read the registry from Phase 1.
-2. Group datasets by access method complexity:
+1. Read through `docs/datasets/` to find all datasets with status `ready`.
+2. Group by access method complexity:
    - **Simple**: Direct HTTP download, git clone, pip/kaggle/huggingface CLI — these can be batched.
    - **Complex**: Requires scraping, navigating a website, filling out forms, handling CAPTCHAs, dealing with Chinese-language UIs, or writing custom download scripts.
-3. Spawn subagents in parallel where possible. Give each subagent:
-   - The dataset name and all known URLs
-   - The access method from the registry
+3. Spawn subagents in batches of 2–3 (see Pacing). Give each subagent:
+   - The dataset name and the content of its `docs/datasets/<name>.md` (so it has all context)
    - The target directory: `data/raw/<dataset_name>/`
-   - Instructions to save a download manifest at `data/raw/<dataset_name>/_manifest.json` documenting what was downloaded, file counts, total size, any errors.
 
 ### Subagent Instructions (include in each subagent prompt)
 
 You are downloading a Chinese music dataset. Your job:
 
-1. **Figure out how to get the data.** The access method in the registry is a starting hint, not gospel. You may need to:
+1. **Figure out how to get the data.** The access method in the dataset doc is a starting hint, not gospel. You may need to:
    - Clone a git repo
    - Use `kaggle datasets download` or `huggingface-cli download`
    - Write a Python script using requests/BeautifulSoup/selenium to scrape download links
@@ -164,30 +156,16 @@ You are downloading a Chinese music dataset. Your job:
    - Handle zip/tar extraction
 2. **Download into `data/raw/<dataset_name>/`.** Preserve the original directory structure.
 3. **Don't modify the data.** Download as-is. No renaming, no reformatting.
-4. **Write `data/raw/<dataset_name>/_manifest.json`** with:
-   ```json
-   {
-     "dataset_name": "...",
-     "download_date": "YYYY-MM-DD",
-     "source_urls": ["..."],
-     "method": "description of how you downloaded it",
-     "files_downloaded": 123,
-     "total_size_bytes": 456789,
-     "file_types": {".wav": 100, ".mid": 20, ".csv": 3},
-     "errors": ["any issues encountered"],
-     "notes": "anything relevant"
-   }
-   ```
-5. **If you can't download it**, still write the manifest with `"files_downloaded": 0` and explain why in `errors`. Don't silently fail.
-6. All download scripts you write go in `src/downloaders/`. Name them by dataset. Keep them — they're part of the reproducibility story for the paper.
-7. **Update `docs/datasets/<dataset_name>.md`** — fill in the **Download Log** section with a chronological record of what you tried, what worked, what failed, and what the final state is.
+4. **If you can't download it**, document why in the dataset doc and move on. Don't silently fail.
+5. All download scripts you write go in `src/downloaders/`. Name them by dataset. Keep them — they're part of the reproducibility story for the paper.
+6. **Update `docs/datasets/<dataset_name>.md`** — fill in the **Download Log** section with a chronological record of what you tried, what worked, what failed, file counts, total size, and file type breakdown.
 
 ### Main Agent Verification
 
 After subagents complete:
-1. Check every `_manifest.json`. Verify file counts match what's actually on disk (`find data/raw/<name> -type f | wc -l`).
+1. Verify file counts on disk match what the dataset doc reports (`find data/raw/<name> -type f | wc -l`).
 2. Spot-check a few files from each dataset (can you open an audio file? does the CSV parse?).
-3. Update the registry with actual download status and corrected metadata.
+3. Update dataset doc status if needed (e.g., `ready` → `partial` if some files failed).
 4. Flag datasets that failed and decide whether to retry with a different approach or mark as inaccessible.
 5. Commit any new code in `src/downloaders/` and updated docs.
 
@@ -201,10 +179,9 @@ After subagents complete:
 
 ### How to Dispatch Subagents
 
-Spawn one subagent per downloaded dataset. Give each:
+Spawn one subagent per downloaded dataset (in batches of 2–3). Give each:
 - The dataset path: `data/raw/<dataset_name>/`
-- The registry entry for that dataset (for context)
-- Target output: `data/profiles/<dataset_name>_profile.json`
+- The content of its `docs/datasets/<name>.md` (for context from the paper)
 
 ### Subagent Instructions (include in each subagent prompt)
 
@@ -225,66 +202,23 @@ You are profiling a Chinese music dataset. Your job is to understand everything 
    - What entity each row represents (a song? a performance? a segment? a note?)
    - Missing value counts per column
 4. **Identify the taxonomic features present** — does this dataset tag its items with:
-   - Genre/form?
-   - Instruments?
-   - Composer/performer?
-   - Time period/dynasty?
-   - Region/province?
-   - Ethnic group?
-   - Mood/emotion?
-   - Key/mode/scale?
-   - Tempo/rhythm?
-   - Language (for vocal music)?
-   - Any other labels?
+   - Genre/form? Instruments? Composer/performer? Time period/dynasty?
+   - Region/province? Ethnic group? Mood/emotion? Key/mode/scale?
+   - Tempo/rhythm? Language (for vocal music)? Any other labels?
 5. **Note anything unusual or dataset-specific**: custom file formats, annotation conventions, encoding issues (Chinese character encodings — watch for GB2312/GBK vs UTF-8), README contents.
-6. **Write a Python inspection script** at `src/inspectors/<dataset_name>_inspect.py` that produces the profile. Keep it — it's part of reproducibility.
+6. **Write a Python inspection script** at `src/inspectors/<dataset_name>_inspect.py` that can reproduce the profile. Keep it — it's part of reproducibility.
 7. **Update `docs/datasets/<dataset_name>.md`**:
-   - Fill in the **Inspection Results** section with what you actually found — file counts, metadata fields, sample values, data quality issues, surprises.
-   - Expand the **Content & Taxonomy Analysis** section with ground-truth observations. Now that you've seen the data, how does it map to our taxonomy? What time periods, regions, genres, instruments are actually represented? What's labeled vs. unlabeled? Does the data match what the paper claimed?
-   - Begin the **Gap Assessment** section — what modalities and metadata are missing?
-8. **Save the profile** to `data/profiles/<dataset_name>_profile.json`:
-   ```json
-   {
-     "dataset_name": "...",
-     "inspection_date": "YYYY-MM-DD",
-     "total_files": 123,
-     "total_size_bytes": 456789,
-     "file_type_counts": {".wav": 100, ".mid": 20},
-     "entry_count": 100,
-     "entry_unit": "song",
-     "modalities_present": ["audio_wav", "midi", "metadata_csv"],
-     "modalities_missing": ["score", "lyrics"],
-     "metadata_fields": {
-       "source_file": "songs.csv",
-       "columns": {
-         "title": {"type": "string", "example": "茉莉花", "missing": 0},
-         "genre": {"type": "string", "example": "folk", "unique_values": ["folk", "opera", "pop"], "missing": 2}
-       }
-     },
-     "taxonomic_coverage": {
-       "genre": true,
-       "instrument": true,
-       "composer": false,
-       "time_period": false,
-       "region": true,
-       "ethnic_group": false,
-       "mood": false,
-       "key_mode": true,
-       "tempo": false
-     },
-     "encoding_notes": "UTF-8, no issues",
-     "other_notes": "..."
-   }
-   ```
+   - Fill in **Inspection Results** with what you found — file counts, metadata fields with types and examples, data quality issues, surprises vs. paper claims.
+   - Expand **Content & Taxonomy Analysis** with ground-truth observations: what time periods, regions, genres, instruments are actually represented? What's labeled vs. unlabeled? Does the data match what the paper claimed?
+   - Fill in **Gap Assessment** — what modalities and metadata are missing?
 
 ### Main Agent Verification
 
 After inspection subagents complete:
-1. Read all profiles from `data/profiles/`.
-2. **Build the unified schema**: take the union of all `metadata_fields` across all datasets. Every field that appears in any dataset becomes a column. Add standard fields that the taxonomy reference suggests even if no dataset has them yet — these are the gaps to fill.
-3. Save the unified schema as `data/unified_schema.json` and a readable version as `docs/unified_schema.md`.
-4. Produce a **coverage matrix**: datasets (rows) × schema fields (columns), with cells showing present/partial/missing. Save as `data/coverage_matrix.csv` and a visualization.
-5. Commit inspection scripts and schema docs.
+1. Read all `docs/datasets/*.md` files — specifically the Inspection Results and Gap Assessment sections.
+2. **Build the unified schema**: collect every metadata field discovered across all datasets. Every field that appears in any dataset becomes a column. Add standard fields from the taxonomy reference even if no dataset has them yet — these are the gaps to fill.
+3. Save the unified schema as `docs/unified_schema.md`. (If Phase 4 code needs a machine-readable version, generate `data/unified_schema.json` from the schema doc at that point — don't maintain two sources.)
+4. Commit inspection scripts and schema docs.
 
 ---
 
@@ -297,7 +231,7 @@ After inspection subagents complete:
 ### Instructions
 
 1. Write `src/unify.py` — a script that:
-   - Reads every dataset's raw data and its profile
+   - Reads every dataset's raw data (using the inspection scripts or their logic for parsing)
    - Maps each dataset's fields to the unified schema (field name normalization, value standardization)
    - Handles encoding normalization (all text to UTF-8)
    - Handles language normalization (Chinese field names → English, or keep both)
@@ -314,8 +248,8 @@ After inspection subagents complete:
    - **Priority list**: which gaps are most impactful to fill (e.g., a dataset of 1000 songs missing only composer info is higher priority than one of 10 songs missing everything)
 4. Save human-readable gap analysis as `docs/gap_analysis_report.md`.
 5. Generate visualization figures in `data/figures/` for the paper:
-   - Dataset × modality heatmap
-   - Dataset × metadata coverage heatmap
+   - Dataset x modality heatmap
+   - Dataset x metadata coverage heatmap
    - Temporal distribution of entries across datasets
    - Genre distribution
    - Modality distribution (pie/bar)
@@ -327,7 +261,7 @@ After inspection subagents complete:
 
 - The master table will likely have thousands of rows and dozens of columns. Use parquet for the working format (efficient, typed), CSV only for human inspection of samples.
 - Don't force every dataset into identical granularity. Some datasets have one row per song, others per phrase or per note. Record the granularity level and handle aggregation carefully.
-- When field names differ but mean the same thing (e.g., "artist" vs "performer" vs "演奏者"), map them to one canonical name. Keep a mapping table for reproducibility.
+- When field names differ but mean the same thing (e.g., "artist" vs "performer" vs "演奏者"), map them to one canonical name. Keep the mapping in each dataset's Schema Mapping section.
 - Chinese characters in metadata should be preserved as-is (UTF-8). Add romanized/English translations as separate columns where useful.
 
 ---
@@ -373,32 +307,16 @@ The main agent should analyze the gap report from Phase 4 and write `docs/gap_fi
 - Install additional packages as needed. Keep `requirements.txt` updated.
 - All code goes in `src/`. Subdirectories: `src/downloaders/`, `src/inspectors/`, with other scripts at `src/` root level.
 
-### Data Organization
+### Project Structure
 ```
-data/
-├── dataset_registry.json          # Phase 1 output
-├── raw/                           # Phase 2 output
-│   ├── <dataset_name>/
-│   │   ├── _manifest.json
-│   │   └── ... (original files)
-├── profiles/                      # Phase 3 output
-│   ├── <dataset_name>_profile.json
-├── unified/                       # Phase 4 output
-│   ├── master_table.parquet
-│   ├── master_table_sample.csv
-│   ├── gap_report.json
-│   └── coverage_matrix.csv
-└── figures/                       # Visualizations
-
 docs/
 ├── plan.md                        # This file
 ├── worklog.md                     # Chronological project log
 ├── chinese_music_taxonomy_reference.md
-├── dataset_registry_summary.md    # Phase 1 human-readable registry
-├── unified_schema.md              # Phase 3 output
+├── unified_schema.md              # Phase 3 output — the superset schema
 ├── gap_analysis_report.md         # Phase 4 output
 ├── gap_filling_plan.md            # Phase 5 output
-└── datasets/                      # Per-dataset documentation
+└── datasets/                      # Per-dataset documentation (single source of truth)
     ├── ccmusic.md
     ├── pop909.md
     ├── opencpop.md
@@ -414,7 +332,19 @@ src/
 ├── unify.py                       # Phase 4
 ├── gap_analysis.py                # Phase 4
 └── requirements.txt
+
+data/                              # Gitignored — all data artifacts
+├── raw/                           # Phase 2: downloaded datasets
+│   └── <dataset_name>/
+├── unified/                       # Phase 4: merged outputs
+│   ├── master_table.parquet
+│   ├── master_table_sample.csv
+│   ├── gap_report.json
+│   └── coverage_matrix.csv
+└── figures/                       # Visualizations for the paper
 ```
+
+Note: there is no `data/dataset_registry.json` or `data/profiles/` directory. The per-dataset docs in `docs/datasets/` are the registry and the profiles. Machine-readable data (like `gap_report.json`) is generated by scripts only when code needs to consume it — it is an output, not a maintained document.
 
 ### Git Discipline
 - Commit code and docs frequently. Data is gitignored.
@@ -424,13 +354,13 @@ src/
 ### Error Handling & Escalation
 - Network failures, encoding errors, and malformed data are expected. Handle gracefully.
 - Always log what went wrong. Never silently skip a dataset.
-- If a download or inspection fails, record the failure and move on — don't block the whole pipeline.
-- **When to escalate to the human**: If a dataset requires institutional credentials, paid access, or manual steps that an agent cannot perform (e.g., filling a form with a real identity, solving a CAPTCHA, emailing a researcher), document the blocker in that dataset's `docs/datasets/<name>.md` under Download Log and move on. Don't burn tokens trying to work around access controls.
+- If a download or inspection fails, record the failure in that dataset's doc and move on — don't block the whole pipeline.
+- **When to escalate to the human**: If a dataset requires institutional credentials, paid access, or manual steps that an agent cannot perform (e.g., filling a form with a real identity, solving a CAPTCHA, emailing a researcher), document the blocker in `docs/datasets/<name>.md` under Download Log and move on. Don't burn tokens trying to work around access controls.
 
 ### Data Size Limits
-- **50 GB cap per dataset.** If a dataset's total size exceeds 50 GB, download metadata files and a representative sample of media files (e.g., first N audio files, or one file per category/folder). Document what was sampled and what was skipped in the manifest and the dataset's doc.
+- **50 GB cap per dataset.** If a dataset's total size exceeds 50 GB, download metadata files and a representative sample of media files (e.g., first N audio files, or one file per category/folder). Document what was sampled and what was skipped in the dataset's doc.
 - For datasets near the limit, prioritize: metadata/CSVs first (always full), then MIDI/score (small), then audio (large). Audio is the modality we can regenerate from MIDI if needed.
-- Record the full dataset size in the manifest even if only a sample was downloaded, so the gap analysis knows the true scale.
+- Record the full dataset size in the doc even if only a sample was downloaded, so the gap analysis knows the true scale.
 
 ### Deduplication
 - **Deduplicate aggressively.** Some datasets are subsets of larger ones (e.g., CSMTD contains GZ_IsoTech, GuZheng MIDI-Wav, etc. as sub-databases). When a parent dataset contains a child, download only the parent.
@@ -451,7 +381,7 @@ This project runs on a Claude plan with finite daily/monthly token usage. Every 
 - **Max 2–3 subagents running in parallel at any time.** Do not fan out one subagent per dataset all at once. Work in small batches: dispatch 2–3, wait for them to finish, verify their output, then dispatch the next batch.
 - **Batch by complexity.** Start each phase with the simplest datasets (direct git clone, small size, clean metadata) to validate the approach cheaply. Save complex/scraping-heavy datasets for later batches when the workflow is proven.
 - **Prefer the main agent for small tasks.** If a dataset can be cloned and inspected in a few tool calls, do it inline rather than spawning a subagent. Subagents have overhead (prompt context, cold start). Reserve them for tasks that genuinely need isolation or parallelism — large downloads, complex scraping, or datasets that need custom code.
-- **Checkpoint frequently.** After each batch of subagents completes, the main agent should commit code/docs and update the registry. If the session ends mid-pipeline, the next session can pick up from the last checkpoint rather than re-doing work.
+- **Checkpoint frequently.** After each batch of subagents completes, the main agent should commit code/docs and update the worklog. If the session ends mid-pipeline, the next session can pick up from the last checkpoint rather than re-doing work.
 - **Fail fast, don't retry endlessly.** If a download or scrape fails twice, log it and move on. Burning tokens on retries for a flaky server is wasteful — flag it for a future session or manual intervention.
 - **Phase 1 is cheap; Phase 2 is expensive.** The registry (Phase 1) is mostly WebFetch calls by the main agent — do it fully before starting any downloads. This avoids spawning subagents for datasets that turn out to be duplicates or inaccessible.
 - **Monitor progress against the dataset count.** If there are ~15 datasets, plan for ~5 batches of 2–3 across Phases 2 and 3. If the registry grows to 30+, consider triaging: prioritize open-access, well-documented datasets first; defer gated/unclear ones.
@@ -462,34 +392,27 @@ This project runs on a Claude plan with finite daily/monthly token usage. Every 
 At the start of every session (or goal loop iteration), the main agent must orient itself before doing new work:
 
 1. **Read `docs/worklog.md`** — understand what has been done and what was planned next.
-2. **Read `docs/dataset_registry_summary.md`** — know the full dataset landscape.
-3. **Check `data/dataset_registry.json`** — for current status of each dataset (if it exists).
-4. **Scan `docs/datasets/`** — see which per-dataset docs exist and how complete they are.
-5. **Check `data/raw/`** — which datasets have been downloaded (look for `_manifest.json` files).
-6. **Check `data/profiles/`** — which datasets have been inspected.
-7. **Determine current phase** — based on what exists, figure out where to pick up.
-8. **Log the session start** in `docs/worklog.md` with what you found and what you plan to do.
+2. **Scan `docs/datasets/`** — see which per-dataset docs exist and how complete each section is.
+3. **Check `data/raw/`** — which datasets have been downloaded (look for non-empty directories).
+4. **Determine current phase** — based on what exists, figure out where to pick up.
+5. **Log the session start** in `docs/worklog.md` with what you found and what you plan to do.
 
 ### Ending Conditions
 
 The goal loop should check these conditions at the end of each iteration:
 
 **Phase 1 complete when:**
-- `data/dataset_registry.json` exists with all discovered datasets
-- Every dataset in the registry has a corresponding `docs/datasets/<name>.md` with at least the Source and Paper & Description Insights sections filled
-- `docs/dataset_registry_summary.md` is up to date
+- Every known dataset has a `docs/datasets/<name>.md` with Source, Paper & Description Insights, and preliminary Content & Taxonomy Analysis filled
 - Worklog documents the registry is complete and ready for download phase
 
 **Phase 2 complete when:**
-- Every dataset in the registry with status `ready` has been attempted
-- Every attempted dataset has a `data/raw/<name>/_manifest.json`
+- Every dataset with status `ready` has been attempted
 - Every `docs/datasets/<name>.md` has its Download Log section filled
 - Worklog documents download results and any failures
 
 **Phase 3 complete when:**
-- Every successfully downloaded dataset has a `data/profiles/<name>_profile.json`
-- Every `docs/datasets/<name>.md` has Inspection Results, Content & Taxonomy Analysis, and Gap Assessment sections filled
-- `data/unified_schema.json` exists (the superset schema)
+- Every successfully downloaded dataset has its Inspection Results, ground-truth Content & Taxonomy Analysis, and Gap Assessment sections filled in `docs/datasets/<name>.md`
+- `docs/unified_schema.md` exists (the superset schema)
 - Worklog documents inspection results
 
 **Phase 4 complete when:**
@@ -524,7 +447,7 @@ End each iteration by: updating `docs/worklog.md`, committing, and stating what 
 
 ### Subagent Best Practices
 - Give each subagent a clear, self-contained prompt with all context it needs.
-- Include the dataset's registry entry in the prompt so it doesn't have to re-discover basic info.
+- Include the content of the dataset's `docs/datasets/<name>.md` in the prompt so it has all context without re-discovering.
 - Set realistic timeouts — some downloads are large.
-- Subagents should write their results to well-defined file paths so the main agent can find them.
+- Subagents must write their results into the dataset's doc — this is how the main agent and future sessions find the work.
 - Run subagents in parallel where there are no dependencies between datasets — but **never more than 2–3 at a time** (see Pacing above).
