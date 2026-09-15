@@ -202,6 +202,7 @@ Analyze the gap report and cover:
 ## General Guidelines
 
 ### Pacing
+- **Subagent model**: use Opus 4.6 or Opus 5 (`model: "opus"`) for all subagents. These tasks require strong reasoning for scraping, Chinese-language navigation, and thorough inspection.
 - **Max 2–3 subagents in parallel.** Batch, verify, then dispatch next.
 - **Simple datasets first** to validate the workflow cheaply.
 - **Main agent handles small tasks inline** — don't spawn a subagent for a quick git clone.
