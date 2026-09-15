@@ -5,7 +5,7 @@
 - Paper: CompMusic project, UPF Barcelona
 - License: Check CompMusic
 - Access method: CompMusic website
-- Status: ready
+- Status: downloaded
 
 ## Paper & Description Insights
 Multiple datasets for analyzing expressive functions of metrical patterns through Beijing Opera lyrics. Includes NLP annotations for studying the relationship between text structure and musical expression in jingju.

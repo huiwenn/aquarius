@@ -5,7 +5,7 @@
 - Paper: CompMusic project, UPF Barcelona
 - License: Creative Commons (check Zenodo for specifics)
 - Access method: Zenodo download
-- Status: ready
+- Status: downloaded
 
 ## Paper & Description Insights
 Hierarchical boundary annotations for Beijing Opera (Jingju) a cappella singing at line, syllable, and phoneme levels. Part of the CompMusic Jingju research ecosystem at UPF Barcelona.

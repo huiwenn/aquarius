@@ -5,7 +5,7 @@
 - Paper: Associated with Chinese folk song research by Ching-Loh Siu
 - License: Not specified
 - Access method: Project page + GitHub (FengDataset for MGDplus examples)
-- Status: ready
+- Status: merged-with-parent (data covered by MGD download; see `mgd.md`)
 - Related: MGD (see `mgd.md`) — this page aggregates the same researcher's symbolic collections
 
 ## Paper & Description Insights

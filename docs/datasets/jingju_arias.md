@@ -5,7 +5,7 @@
 - Paper: CompMusic project, UPF Barcelona
 - License: Check CompMusic/Zenodo for specifics
 - Access method: CompMusic website / Zenodo
-- Status: ready
+- Status: downloaded (annotations only; audio requires contacting rafael.caro@upf.edu)
 
 ## Paper & Description Insights
 Contains 34 jingju arias manually segmented with annotations for role types and performance elements. Uses TextGrid annotation format. Part of the broader CompMusic Jingju research at UPF.
