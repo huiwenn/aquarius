@@ -8,20 +8,22 @@ Plan for filling modality and metadata gaps in Aquarius. Execution is a separate
 
 | Metric | Value |
 |--------|-------|
-| Total items | 45,611 |
-| Datasets integrated | 11 |
-| Audio coverage | 4.0% (1,842 items) |
-| MIDI coverage | 22.5% (10,262 items) |
-| MusicXML coverage | 19.1% (8,725 items) |
-| Lyrics coverage | 7.0% (3,196 items) |
-| Title coverage | 94.0% |
-| Artist coverage | 3.8% |
-| Key coverage | 5.2% |
-| Province coverage | 93.8% |
-| Chinese mode coverage | 0% |
-| Temporal/year coverage | 0% |
+| Total items | 46,327 |
+| Datasets integrated | 16 |
+| Audio coverage | 5.5% (2,558 items) |
+| MIDI coverage | 22.2% (10,292 items) |
+| MusicXML coverage | 19.5% (9,011 items) |
+| Lyrics coverage | 7.5% (3,455 items) |
+| Title coverage | 93.6% |
+| Artist coverage | 4.1% |
+| Key coverage | 5.7% (2,374 Kaggle + 287 CNPM) |
+| Province coverage | 93.4% |
+| Chinese mode coverage | 0.6% (287 CNPM items with ground-truth labels) |
+| Temporal/year coverage | 0.1% (57 CCOM-HuQin excerpts with year) |
 
-Key insight: MGD contributes 31,761 metadata-only items (69.6%), inflating apparent metadata coverage and deflating modality percentages. Excluding MGD, audio coverage rises to ~13%, MIDI to ~74%.
+Key insight: MGD contributes 31,761 metadata-only items (68.6%), inflating apparent metadata coverage and deflating modality percentages. Excluding MGD, audio coverage rises to ~17.5%, MIDI to ~71%.
+
+Since the initial gap analysis, 5 new datasets have been added: CCOM-HuQin (159 items with composer/region/year), CNPM (287 items with ground-truth pentatonic mode), ErhuPT (11 technique classes), ACE-OpenCpop (30 singer collections), and GTSinger (229 songs with singing technique annotations).
 
 ---
 
@@ -93,7 +95,7 @@ Key insight: MGD contributes 31,761 metadata-only items (69.6%), inflating appar
 
 ### 3.1 Key and Mode Detection (Impact: Critical)
 
-**Current coverage**: 5.2% (key), 0% (Chinese pentatonic mode)
+**Current coverage**: 5.7% (key), 0.6% (Chinese pentatonic mode — 287 CNPM items with ground truth)
 
 **Method — Key detection**:
 1. MIDI/MusicXML items (19,000+): pitch-class histogram → Krumhansl-Schmuckler key-finding algorithm
@@ -117,11 +119,12 @@ Key insight: MGD contributes 31,761 metadata-only items (69.6%), inflating appar
 - `low`: ambiguous distribution, chromatic/modulating passages, short excerpt
 
 **Validation**:
+- **CNPM as ground truth**: train mode classifier on 287 CNPM items (5 modes × 12 tonics × 6 scale systems), then apply to other datasets. CNPM covers pentatonic, hexatonic (+变宫, +清角), and three heptatonic variants (清乐, 雅乐, 燕乐)
 - Anthology (MusicXML, folk songs): most should be clearly pentatonic — expect >80% high-confidence
 - POP909 (pop): many will be Western-influenced, mixed modes — expect more `low` confidence
 - Cross-reference with Kaggle folk music `pitch_key` labels (2,374 items with ground truth)
 
-**Priority**: **HIGHEST** — this is the defining contribution of a Chinese music database.
+**Priority**: **HIGHEST** — this is the defining contribution of a Chinese music database. CNPM now provides the training/validation data that was previously missing.
 
 ### 3.2 Genre Classification (Impact: High)
 
@@ -144,7 +147,7 @@ The 100% coverage is misleading — most items have a coarse genre from their da
 
 ### 3.3 Artist/Performer Attribution (Impact: Medium)
 
-**Current coverage**: 3.8% (1,741 items)
+**Current coverage**: 4.1% (~1,900 items)
 
 **Method**:
 1. **POP909**: cross-reference 909 Chinese pop songs with MusicBrainz/NetEase Music databases by title
@@ -152,6 +155,7 @@ The 100% coverage is misleading — most items have a coarse genre from their da
 3. **Anthology**: folk songs generally anonymous; mark as `artist: "traditional/anonymous"`
 4. **M4Singer**: has singer_id but not singer name — map IDs to names from paper supplement
 5. **Jingju Arias**: 34 arias have artist in TextGrid annotations — extract
+6. **CCOM-HuQin**: already has performer for all 57 excerpts (already in master table)
 
 **Confidence**: High for database lookups with exact title match, low for inferred.
 
@@ -159,14 +163,15 @@ The 100% coverage is misleading — most items have a coarse genre from their da
 
 ### 3.4 Temporal/Year Metadata (Impact: Medium)
 
-**Current coverage**: 0%
+**Current coverage**: 0.1% (57 CCOM-HuQin excerpts with year, ranging 1917–2017)
 
 **Method**:
-1. **POP909**: look up release year from MusicBrainz/Chinese music databases by song title + artist
+1. **POP909**: look up release year from MusicBrainz/NetEase Music databases by song title + artist
 2. **Guqin**: map 琴曲来源 (score source) to historical periods (e.g., 神奇秘谱 → Ming dynasty, ~1425)
 3. **Folk songs (Anthology/MGD)**: assign collection period from dataset publication date (2019-2023)
 4. **Jingju**: assign "traditional" + approximate era based on aria repertoire studies
 5. **PMEmo**: release year available from MusicBrainz by musicId
+6. **CCOM-HuQin**: already has year for 57 excerpts (already in master table); some marked "Ancient"
 
 **Confidence**:
 - `high`: database lookup with confirmed match
@@ -177,13 +182,15 @@ The 100% coverage is misleading — most items have a coarse genre from their da
 
 ### 3.5 Instrument Identification (Impact: Medium)
 
-**Current coverage**: 5.5% (2,508 items)
+**Current coverage**: 5.8% (~2,700 items)
 
 **Method**:
 1. **Dataset-level inference**: all ChMusic items get their instrument code; all CTIS items already have 219 instrument labels
-2. **Audio classification**: use CTIS training data (219 Chinese instruments) to train/apply classifier on unlabeled audio
-3. **MIDI program mapping**: POP909 MIDI program numbers → General MIDI instrument names
-4. **Title/filename parsing**: many Chinese music files contain instrument name in title (e.g., "二胡独奏_xxx")
+2. **CCOM-HuQin**: 159 items already have instrument labels (10 huqin types)
+3. **ErhuPT**: 11 items labeled as erhu
+4. **Audio classification**: use CTIS training data (219 Chinese instruments) to train/apply classifier on unlabeled audio
+5. **MIDI program mapping**: POP909 MIDI program numbers → General MIDI instrument names
+6. **Title/filename parsing**: many Chinese music files contain instrument name in title (e.g., "二胡独奏_xxx")
 
 **Confidence**: High for labeled datasets, medium for MIDI programs, low for audio classification.
 
@@ -271,37 +278,41 @@ Ordered by impact × confidence × feasibility:
 
 | Rank | Task | Impact | Confidence | Items affected | Effort |
 |------|------|--------|------------|----------------|--------|
-| 1 | Pentatonic mode detection | Critical | Medium | ~19,000 (MIDI/XML) | Medium |
+| 1 | Pentatonic mode detection | Critical | Medium-High | ~19,000 (MIDI/XML) | Medium |
 | 2 | Key detection (MIDI/XML) | High | High | ~19,000 | Low |
-| 3 | Key detection (audio) | High | Medium | ~1,800 | Medium |
+| 3 | Key detection (audio) | High | Medium | ~2,500 | Medium |
 | 4 | Artist lookup (POP909) | Medium | High | 909 | Low |
 | 5 | Year lookup (POP909) | Medium | High | 909 | Low |
 | 6 | Instrument from MIDI programs | Medium | High | 909 | Low |
 | 7 | Sub-genre from MGD types | Medium | High | 31,761 | Low |
 | 8 | Guqin dynasty mapping | Medium | Medium | 71 | Low |
-| 9 | Audio→MIDI transcription | Low | Medium | 1,842 | High |
-| 10 | MIDI→audio synthesis | Low | Medium | 10,262 | High |
+| 9 | Audio→MIDI transcription | Low | Medium | ~2,500 | High |
+| 10 | MIDI→audio synthesis | Low | Medium | 10,292 | High |
+
+Note: Pentatonic mode detection confidence upgraded from "Medium" to "Medium-High" because CNPM now provides 287 ground-truth training examples covering all 5 modes × 12 tonics × 6 scale system variants.
 
 ### Execution phases
 
 **Phase A (Quick wins, ~2 days)**:
+- Train pentatonic mode classifier on 287 CNPM ground-truth examples
 - Key detection on all MIDI/MusicXML items
-- Pentatonic mode detection on all MIDI/MusicXML items
+- Apply mode classifier to all MIDI/MusicXML items (~19,000)
 - MGD sub-genre extraction (already in data, just map to unified field)
 - POP909 artist/year lookup via MusicBrainz
 - MIDI instrument program extraction
 
 **Phase B (Medium effort, ~3 days)**:
-- Key/mode detection on audio items
+- Key/mode detection on audio items (including CCOM-HuQin, GTSinger, ChMusic)
 - Guqin dynasty/era mapping
 - Jingju artist extraction from TextGrids
 - Title-based instrument and province inference
+- Human validation: compare mode predictions against CNPM holdout set
 - Human validation sampling for Phase A outputs
 
 **Phase C (Heavy computation, ~5 days)**:
-- Audio→MIDI transcription (1,842 items)
+- Audio→MIDI transcription (~2,500 audio items)
 - Audio instrument classification using CTIS training data
-- MIDI→audio synthesis (10,262 items, if desired)
+- MIDI→audio synthesis (10,292 items, if desired)
 - Score generation (MusicXML from MIDI)
 - Full validation pass
 

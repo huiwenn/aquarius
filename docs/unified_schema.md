@@ -151,44 +151,44 @@ The superset of all metadata fields discovered across all collected datasets. Ea
 
 ## Dataset Coverage Summary
 
-| Dataset | Items | Granularity | Modalities | Key unique labels |
-|---------|-------|-------------|------------|-------------------|
+| Dataset | Items in master table | Granularity | Modalities | Key unique labels |
+|---------|----------------------|-------------|------------|-------------------|
 | POP909 | 909 | song | MIDI, annotations | chord (930), key (24), beat, arrangement role |
 | ChMusic | 55 | song | audio | instrument (11) |
 | Guqin | 71 | song | MusicXML | tuning (13), score source (6), historical source (38) |
-| Anthology | 8,658 | song | MIDI, MusicXML | province (10), lyrics (2,497 songs) |
-| Anonymized Anthology | 335 | song | MIDI, MusicXML, JPG | Jiangsu II subset, scanned jianpu images |
+| Anthology | 8,654 | song | MIDI, MusicXML | province (10), lyrics (2,497 songs) |
 | PMEmo | 794 | song | audio, features | emotion (V/A), EDA, lyrics (LRC), comments |
-| M4Singer | 20,896 | segment | audio, MIDI, TextGrid | singer (20), voice type (4), phonemes (58) |
-| CTIS | 4,956 | clip | audio, spectrogram | instrument class (219), Chinese name, pinyin |
-| GZ_IsoTech | 2,824 | clip | audio, spectrogram | technique (8 classes) |
-| Guzheng_Tech99 | 15,838 | note | audio, features | technique (7), onset/offset, pitch |
+| M4Singer | 699 | song (aggregated) | audio, MIDI, TextGrid | singer (20), voice type (4), phonemes (58) |
+| CTIS | 219 | clip | audio, spectrogram | instrument class (219), Chinese name, pinyin |
+| GZ_IsoTech | 8 | clip | audio, spectrogram | technique (8 classes) |
 | MGD | 31,761 | song | metadata (Excel) | province (31), genre (9), key |
-| Jingju Singing Audio | ~120+ | song/aria | audio, TextGrid | role type, boundaries (line/syllable/phoneme) |
-| Jingju Phoneme | varies | segment | audio, annotations | phoneme labels, role type |
-| Jingju Pitch Contour | varies | segment | pitch data | pitch contour |
-| Jingju Arias | 34 | aria | TextGrid | role type (5), shengqiang (2), tone-melody |
-| Jingju Lyrics | varies | document | text | metrical patterns, linguistic features |
 | Kaggle Folk Music | 2,374 | song | features (CSV) | region (4), instrument (3), style (3), theme (4) |
-| FolkMusic/Zenodo | TBD | clip | audio | instrument (15) |
-| GTSinger | TBD | segment | audio, score | language (5), technique (5) |
-| CCOM-HuQin | TBD | segment | audio | instrument (huqin family) |
-| ErhuPT | TBD | clip | audio | playing technique |
-| CNPM | TBD | song | audio | pentatonic mode |
-| ACE-OpenCpop | TBD | segment | audio | phoneme, note |
+| Jingju Singing Audio | 67 | song/aria | audio, TextGrid | role type (2), boundaries (line/syllable/phoneme) |
+| CCOM-HuQin | 159 | song + clip | audio, MusicXML, CSV | instrument (10 huqin), technique (13), region, composer, year |
+| CNPM | 287 | clip | audio, mel | pentatonic mode (5 modes × 12 tonics × 6 scale systems) |
+| ErhuPT | 11 | clip | audio, mel | playing technique (11 classes) |
+| ACE-OpenCpop | 30 | collection | audio, MIDI, lyrics | singer (30), phoneme alignment, note alignment |
+| GTSinger | 229 | song | audio, MusicXML, TextGrid, JSON | singer (2), technique (8 groups), phoneme/word alignment |
+| Jingju Phoneme | — | segment | audio, annotations | phoneme labels, role type (not in master table yet) |
+| Jingju Pitch Contour | — | segment | pitch data | pitch contour (not in master table yet) |
+| Jingju Arias | — | aria | TextGrid | role type (5), shengqiang (2) (not in master table yet) |
+| Jingju Lyrics | — | document | text | metrical patterns (not in master table yet) |
+| Anonymized Anthology | — | song | MIDI, MusicXML, JPG | subset of Anthology (not separate in master table) |
+| Guzheng_Tech99 | — | note | audio, features | technique (7) (not in master table yet) |
+| FolkMusic/Zenodo | — | clip | audio | instrument (15) (not in master table yet) |
 
 ## Notes
 
-1. **Mixed granularity**: POP909/Anthology/MGD are song-level; M4Singer is segment-level; Guzheng_Tech99 is note-level; CTIS/GZ_IsoTech are clip-level. The unified table handles this via the `granularity` field — different datasets contribute at different levels.
+1. **Master table**: 46,327 items across 16 datasets in `data/unified/master_table.parquet`. Three granularity levels: song (45,670), clip (627), collection (30). Additional datasets (Jingju sub-datasets, Guzheng_Tech99, FolkMusic/Zenodo) are downloaded but not yet in the master table — loaders can be added to `src/unify.py`.
 
-2. **Chinese mode gap**: Almost no dataset provides ground-truth Chinese pentatonic mode labels (gong/shang/jue/zhi/yu). MGD has `Keys` and `Key_Transpose_Position` which may encode mode info. CNPM is specifically about pentatonic modes but needs inspection. This is a critical gap for Phase 5.
+2. **Chinese mode**: CNPM provides 287 ground-truth pentatonic mode labels covering all 5 modes (宫/商/角/徵/羽) × 12 tonics × 6 scale system variants (五声/六声+变宫/六声+清角/七声清乐/七声雅乐/七声燕乐). This is the only dataset with explicit mode labels and can serve as training data for mode classifiers.
 
-3. **Temporal gap**: No dataset provides explicit year/era metadata except implicitly through artist (POP909) or historical source references (Guqin).
+3. **Temporal gap**: CCOM-HuQin provides year metadata for 57 excerpts (1917–2017). No other dataset provides explicit year/era except implicitly through artist (POP909) or historical source references (Guqin).
 
-4. **Composer gap**: Only Guqin and POP909 have anything close to composer info (Guqin has performer/arranger; POP909 has artist). Most datasets lack songwriter attribution.
+4. **Composer coverage**: CCOM-HuQin provides composer names for 57 excerpts. Guqin has arranger/transcriber info. Most datasets lack songwriter attribution.
 
-5. **Emotion labels**: Only PMEmo has emotion annotations, and its content is predominantly Western music. Chinese-music-specific emotion labels are absent.
+5. **Technique annotations**: Well-covered across multiple instruments — Guzheng (GZ_IsoTech 8 classes, Guzheng_Tech99 7 classes), Erhu (ErhuPT 11 classes), HuQin family (CCOM-HuQin 13 classes), singing (GTSinger 8 groups, M4Singer). Other instruments lack technique labels.
 
-6. **Singing/playing technique annotations**: Well-covered for Guzheng (GZ_IsoTech + Guzheng_Tech99), Erhu (ErhuPT), and singing (M4Singer, GTSinger). Other instruments lack technique labels.
+6. **Geographic coverage**: MGD covers 31 provinces. Anthology covers 10 provinces. CCOM-HuQin adds region for 57 excerpts (Guangdong, Shanxi, Shandong, Henan, etc.). XFID (Xinjiang folk instruments) remains gated.
 
-7. **Geographic coverage**: MGD covers 31 provinces (most comprehensive). Anthology covers 10 provinces. Most other datasets don't specify region. Xinjiang coverage through XFID is gated.
+7. **Emotion labels**: Only PMEmo has emotion annotations, and its content is predominantly Western music. No Chinese-music emotion dataset exists.
