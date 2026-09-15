@@ -31,7 +31,7 @@ Python environment: use the `py312` conda environment (`conda activate py312`). 
 
 Each iteration does exactly one of these, then yields:
 - A batch of 3–5 dataset registry entries (Phase 1)
-- Dispatch + verify one batch of 2–3 download subagents (Phase 2)
+- Dispatch + verify one batch of 2–3 download subagents (Phase 2) — for simple datasets, **merge Phase 2+3 in a single subagent** (download then inspect in one call, using the combined prompt below)
 - Dispatch + verify one batch of 2–3 inspection subagents (Phase 3)
 - Phase 4 unification — may span 2–3 iterations if many datasets (write scripts → run + debug → figures + doc updates)
 - Phase 5 gap-filling plan (main-agent work, one iteration)
@@ -137,6 +137,8 @@ Download every `ready` dataset into `data/raw/<dataset_name>/`.
 
 **Verification**: Check file counts on disk vs. doc, spot-check a few files, update status. Commit downloaders and docs.
 
+**Merged Phase 2+3 for simple datasets**: If a dataset is a straightforward git clone or single download (small, well-structured, no scraping needed), give the subagent both the download AND inspection instructions in one prompt. Combine the Phase 2 and Phase 3 subagent prompts into one. This saves a full subagent round-trip. Mark the dataset as both downloaded and inspected when verified.
+
 ---
 
 ## Phase 3: Inspect & Schema Discovery
@@ -207,6 +209,7 @@ Analyze the gap report and cover:
 - **Background execution** for large downloads — don't block.
 
 ### Data Rules
+- **Dataset naming**: `data/raw/` directories and `docs/datasets/` filenames use `lowercase_with_underscores` — e.g., `data/raw/pop909/`, `docs/datasets/pop909.md`, `data/raw/chinese_music_archive/`. No spaces, no mixed case.
 - **50 GB cap per dataset.** Prioritize: metadata (full) → MIDI/score → audio (sample). Document what was skipped.
 - **Deduplicate aggressively.** Parent contains child → download parent only. Document every skip in the parent doc and worklog.
 - **Chinese encodings**: try UTF-8 first, fall back to GBK/GB2312/Big5. Preserve original text.
