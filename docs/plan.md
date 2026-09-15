@@ -13,10 +13,11 @@ Build a **complete, gap-filled unified database** of Chinese music datasets for 
 ### First Iteration Bootstrap
 
 If `docs/worklog.md` does not exist, this is a fresh start:
-1. Create `docs/datasets/` directory, `docs/worklog.md`, and `.venv/`.
-2. Set up Python venv: `python3 -m venv .venv && source .venv/bin/activate && pip install pandas numpy librosa mido music21 soundfile requests beautifulsoup4 tqdm pyarrow && pip freeze > src/requirements.txt`.
-3. Read `AquariusDatasets.md` to understand the starting dataset list.
-4. Begin Phase 1.
+1. Create `docs/datasets/` directory and `docs/worklog.md`.
+2. Read `AquariusDatasets.md` to understand the starting dataset list.
+3. Begin Phase 1.
+
+Python environment: use the `py312` conda environment (`conda activate py312`). Install packages as needed with `pip install`. No venv or requirements.txt to maintain.
 
 ### On Every Iteration
 
@@ -218,8 +219,7 @@ src/
 ├── downloaders/                        # Per-dataset download scripts
 ├── inspectors/                         # Per-dataset inspection scripts
 ├── unify.py                            # Phase 4
-├── gap_analysis.py                     # Phase 4
-└── requirements.txt
+└── gap_analysis.py                     # Phase 4
 
 data/                                   # Gitignored
 ├── raw/<dataset_name>/                 # Phase 2
@@ -232,7 +232,7 @@ data/                                   # Gitignored
 ```
 
 ### Python
-- Venv at `.venv/` (created during bootstrap). Install new deps as needed and update `src/requirements.txt`. All code in `src/`.
+- Use `py312` conda environment. Install packages as needed with `pip install`. All code in `src/`.
 
 ### Git
 - Commit code and docs after every unit of work. Data is gitignored.
