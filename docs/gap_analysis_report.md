@@ -2,18 +2,18 @@
 
 ## Summary
 
-- **Total items**: 46,040
-- **Total datasets**: 15
-- **Datasets**: ace_opencpop, anthology_chinese_folk_songs, ccom_huqin, chmusic, ctis, erhu_playing_technique, gtsinger, guqin_dataset, gz_isotech, jingju_singing_audio, m4singer, mgd, pmemo, pop909, traditional_chinese_folk_music_kaggle
+- **Total items**: 46,327
+- **Total datasets**: 16
+- **Datasets**: ace_opencpop, anthology_chinese_folk_songs, ccom_huqin, chmusic, cnpm, ctis, erhu_playing_technique, gtsinger, guqin_dataset, gz_isotech, jingju_singing_audio, m4singer, mgd, pmemo, pop909, traditional_chinese_folk_music_kaggle
 
 ## Modality Coverage
 
 | Modality | Present | Missing | Coverage |
 |----------|---------|---------|----------|
-| audio | 2,271 | 43,769 | 4.9% |
-| midi | 10,292 | 35,748 | 22.4% |
-| musicxml | 9,011 | 37,029 | 19.6% |
-| lyrics | 3,455 | 42,585 | 7.5% |
+| audio | 2,558 | 43,769 | 5.5% |
+| midi | 10,292 | 36,035 | 22.2% |
+| musicxml | 9,011 | 37,316 | 19.5% |
+| lyrics | 3,455 | 42,872 | 7.5% |
 
 ## Modality × Dataset Matrix
 
@@ -23,6 +23,7 @@
 | anthology_chinese_folk_songs          |           0 |       8654 |           8654 |         2497 |           0 |            0 |                   0 |          8654 |
 | ccom_huqin                            |         159 |          0 |             57 |            0 |          57 |            0 |                   0 |           159 |
 | chmusic                               |          55 |          0 |              0 |            0 |           0 |            0 |                   0 |            55 |
+| cnpm                                  |         287 |          0 |              0 |            0 |           0 |            0 |                   0 |           287 |
 | ctis                                  |         219 |          0 |              0 |            0 |           0 |            0 |                   0 |           219 |
 | erhu_playing_technique                |          11 |          0 |              0 |            0 |           0 |            0 |                   0 |            11 |
 | gtsinger                              |         229 |          0 |            229 |          229 |         229 |            0 |                   0 |           229 |
@@ -39,20 +40,20 @@
 
 | Field | Present | Missing | Coverage | Datasets |
 |-------|---------|---------|----------|----------|
-| title | 43,169 | 2,871 | 93.8% | anthology_chinese_folk_songs, ccom_huqin, gtsinger, guqin_dataset, m4singer (+3) |
-| artist | 1,798 | 44,242 | 3.9% | ccom_huqin, guqin_dataset, pmemo, pop909 |
-| genre | 46,040 | 0 | 100.0% | ace_opencpop, anthology_chinese_folk_songs, ccom_huqin, chmusic, ctis (+10) |
-| instrument | 2,678 | 43,362 | 5.8% | ccom_huqin, chmusic, erhu_playing_technique, guqin_dataset, gz_isotech (+1) |
-| key | 2,374 | 43,666 | 5.2% | traditional_chinese_folk_music_kaggle |
-| province | 42,845 | 3,195 | 93.1% | anthology_chinese_folk_songs, ccom_huqin, mgd, traditional_chinese_folk_music_kaggle |
-| language | 43,143 | 2,897 | 93.7% | ace_opencpop, anthology_chinese_folk_songs, gtsinger, jingju_singing_audio, m4singer (+3) |
-| tempo_bpm | 2,374 | 43,666 | 5.2% | traditional_chinese_folk_music_kaggle |
+| title | 43,169 | 3,158 | 93.2% | anthology_chinese_folk_songs, ccom_huqin, gtsinger, guqin_dataset, m4singer (+3) |
+| artist | 1,798 | 44,529 | 3.9% | ccom_huqin, guqin_dataset, pmemo, pop909 |
+| genre | 46,327 | 0 | 100.0% | ace_opencpop, anthology_chinese_folk_songs, ccom_huqin, chmusic, cnpm (+11) |
+| instrument | 2,678 | 43,649 | 5.8% | ccom_huqin, chmusic, erhu_playing_technique, guqin_dataset, gz_isotech (+1) |
+| key | 2,661 | 43,666 | 5.7% | cnpm, traditional_chinese_folk_music_kaggle |
+| province | 42,845 | 3,482 | 92.5% | anthology_chinese_folk_songs, ccom_huqin, mgd, traditional_chinese_folk_music_kaggle |
+| language | 43,430 | 2,897 | 93.7% | ace_opencpop, anthology_chinese_folk_songs, cnpm, gtsinger, jingju_singing_audio (+4) |
+| tempo_bpm | 2,374 | 43,953 | 5.1% | traditional_chinese_folk_music_kaggle |
 
 ## Priority Gap-Filling Actions
 
 ### 1. key/mode
 - **Impact**: high
-- **Current coverage**: 5.2%
+- **Current coverage**: 5.7%
 - **Method**: computational inference from MIDI/audio pitch content
 - **Confidence**: medium
 

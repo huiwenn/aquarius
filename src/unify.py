@@ -589,6 +589,51 @@ def load_ccom_huqin() -> list[dict]:
     return rows
 
 
+# ── CNPM (Chinese National Pentatonic Mode) ────────────────────────────────
+
+def load_cnpm() -> list[dict]:
+    base = RAW / "chinese_national_pentatonic_mode" / "train"
+    info_path = base / "dataset_info.json"
+    if not info_path.exists():
+        return []
+    import pyarrow as pa
+    from datasets import load_from_disk
+    ds = load_from_disk(str(RAW / "chinese_national_pentatonic_mode"))["train"]
+    table = ds.data
+    modes = table.column("mode").to_pylist()
+    systems = table.column("system").to_pylist()
+    tonics = table.column("tonic").to_pylist()
+    patterns = table.column("pattern").to_pylist()
+    types = table.column("type").to_pylist()
+
+    TONIC_NAMES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
+    PATTERN_NAMES = ["宫 (gong)", "商 (shang)", "角 (jue)", "徵 (zhi)", "羽 (yu)"]
+
+    rows = []
+    for i in range(len(modes)):
+        row = empty_row("cnpm")
+        row["original_id"] = str(i)
+        row["unified_id"] = make_id("cnpm", str(i))
+        row["granularity"] = "clip"
+        row["mode"] = modes[i]
+        tonic_idx = tonics[i]
+        if isinstance(tonic_idx, int) and 0 <= tonic_idx < 12:
+            row["key"] = TONIC_NAMES[tonic_idx]
+        pattern_idx = patterns[i]
+        if isinstance(pattern_idx, int) and 0 <= pattern_idx < 5:
+            row["folk_song_type"] = PATTERN_NAMES[pattern_idx]
+        row["has_audio"] = True
+        row["audio_format"] = "WAV"
+        row["genre"] = "traditional"
+        row["language"] = "Chinese"
+        row["country"] = "China"
+        row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/CNPM"
+        row["license"] = "research"
+        row["access_status"] = "open"
+        rows.append(row)
+    return rows
+
+
 # ── ErhuPT ─────────────────────────────────────────────────────────────────
 
 def load_erhupt() -> list[dict]:
@@ -714,6 +759,7 @@ LOADERS = [
     ("kaggle_folk", load_kaggle_folk),
     ("jingju_singing_audio", load_jingju_singing_audio),
     ("ccom_huqin", load_ccom_huqin),
+    ("cnpm", load_cnpm),
     ("erhu_playing_technique", load_erhupt),
     ("ace_opencpop", load_ace_opencpop),
     ("gtsinger", load_gtsinger),
