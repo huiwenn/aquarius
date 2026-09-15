@@ -49,4 +49,14 @@ The Erhu (二胡) is the most widely played Chinese bowed string instrument. Thi
 
 ## Schema Mapping
 
+| ErhuPT field | Unified schema field | Notes |
+|---|---|---|
+| `label` (technique name) | `original_id` | Technique class label |
+| `label` | `playing_technique` | 11 erhu technique classes |
+| (dataset-level) | `instrument` = "Erhu" | |
+| (dataset-level) | `instrument_pinyin` = "二胡" | |
+| (dataset-level) | `bayin_family` = "silk" | |
+| (dataset-level) | `has_audio` = true | WAV, 44100 Hz |
+| (dataset-level) | `granularity` = "clip" | One entry per technique class |
+
 ## Gap Assessment

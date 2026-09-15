@@ -60,6 +60,14 @@ Inspected 2026-09-15 via `src/inspectors/jingju_singing_audio_inspect.py`.
 
 ## Schema Mapping
 
+| Jingju field | Unified schema field | Notes |
+|---|---|---|
+| First CSV column | `original_id` | Row identifier from catalogue CSVs |
+| CSV filename ("catalogue_dan/laosheng") | `role_type` | "dan" or "laosheng" |
+| (dataset-level) | `has_audio` = true | WAV recordings |
+| (dataset-level) | `genre` = "jingju" | Beijing Opera |
+| (dataset-level) | `language` = "Mandarin" | |
+
 ## Gap Assessment
 - Audio + annotations are complete and well-matched (65 WAV files, 65 TextGrids)
 - Only 2 role types covered (dan, laosheng) -- no jing, laodan, xiaosheng

@@ -91,6 +91,17 @@ Inspector script: `src/inspectors/anthology_chinese_folk_songs_inspect.py`
 
 ## Schema Mapping
 
+| Anthology field | Unified schema field | Notes |
+|---|---|---|
+| MIDI filename (`{num}_{title}.mid`) | `original_id` | `{volume}/{song_num}` |
+| Title from filename | `title` | Part after first underscore |
+| Volume directory name | `province` | Mapped via ANTHOLOGY_VOLUMES (10 provinces) |
+| Subset ("lyrics-included" / "melody-only") | `has_lyrics` | true if lyrics-included subset |
+| (all items) | `has_midi` = true | MIDI files |
+| (all items) | `has_musicxml` = true | MusicXML alongside MIDI |
+| (dataset-level) | `genre` = "folk song" | |
+| (dataset-level) | `language` = "Chinese" | |
+
 ## Gap Assessment
 - **No audio**: Symbolic-only dataset (MIDI + MusicXML). No audio recordings. Cannot be used for audio-related tasks (source separation, timbre analysis, ASR).
 - **No sub-genre labels**: Songs are organized by province only. No genre/form classification (shan'ge vs haozi vs xiaodiao), no mood/tempo markings beyond the uniform 80 BPM default.

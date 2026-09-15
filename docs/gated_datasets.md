@@ -80,6 +80,26 @@ Datasets that could not be automatically downloaded. Download these manually and
 
 ---
 
+┌─────────────────────────┬────────────────────────────────────────────────────────┐
+│         Dataset         │                        Contact                         │
+├─────────────────────────┼────────────────────────────────────────────────────────┤
+│ XFID & GuzhengMidiWav   │ ccmusic.database@hotmail.com                           │
+├─────────────────────────┼────────────────────────────────────────────────────────┤
+│ Chinese Chorales (full) │ pyj17550350072@163.com                                 │
+├─────────────────────────┼────────────────────────────────────────────────────────┤
+│ Opencpop                │ Fill Google Form at wenet.org.cn/opencpop/download/    │
+├─────────────────────────┼────────────────────────────────────────────────────────┤
+│ BOPP                    │ Request via Zenodo login at zenodo.org/records/1285593 │
+├─────────────────────────┼────────────────────────────────────────────────────────┤
+│ Jingju (Dunya)          │ Register at dunya.compmusic.upf.edu/developers/        │
+├─────────────────────────┼────────────────────────────────────────────────────────┤
+│ KiSing                  │ Check website availability first                       │
+└─────────────────────────┴────────────────────────────────────────────────────────┘
+
+Project summary: We are compiling and unifying metadata, audio, symbolic, and annotation data from publicly available Chinese music datasets — spanning traditional instruments, folk music, Beijing Opera, singing voice, and contemporary pop — into a single, standardized resource for the MIR community. Our goal is to create a comprehensive, gap-analyzed dataset that makes Chinese music more accessible for computational musicology and MIR research.
+
+We have currently integrated 16 datasets covering 46,000+ items, and [Dataset Name] would be a valuable addition because [customize per dataset]:
+
 ## After Downloading
 
 1. Place data in the corresponding `data/raw/<dataset_name>/` directory

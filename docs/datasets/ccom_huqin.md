@@ -140,6 +140,22 @@ Each excerpt directory contains 6 files:
 
 ## Schema Mapping
 
+| CCOM-HuQin field | Unified schema field | Notes |
+|---|---|---|
+| `Filename (Pinyin)` | `original_id` | For excerpts (57 items) |
+| `Name (CH)` | `title` | Chinese title |
+| `Performer` | `artist` | Performer name |
+| `Composers (CH/EN)` | `composer` | Composer attribution |
+| `Region` | `province` | Geographic region |
+| `Instrument` | `instrument` | 10 huqin instrument types |
+| `Date` | `year` / `period` | Integer year or "Ancient" |
+| SinglePT directory path | `original_id` | For technique clips (102 items) |
+| SinglePT instrument dir | `instrument` | Mapped via HUQIN_INSTRUMENT_MAP |
+| SinglePT technique dir | `playing_technique` | 13 technique classes |
+| (all items) | `bayin_family` = "silk" | All huqin are silk family |
+| (all items) | `has_audio` = true | WAV, 48000 Hz, mono |
+| (excerpts) | `has_musicxml` = true | Score annotations for excerpts |
+
 ## Gap Assessment
 - **Video not downloaded**: 6 video zips (~139.5 GB) skipped due to 50 GB cap. Video provides synchronized multi-camera views (front, left-hand, right-hand) at 1080p 29.97fps. Can be downloaded later if needed for multimodal analysis.
 - **Zhonghu has no excerpts**: 422 SinglePT clips exist but zero annotated musical excerpts in the dataset.

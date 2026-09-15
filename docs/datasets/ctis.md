@@ -55,6 +55,14 @@ Inspected 2026-09-15 from Arrow files in `data/raw/ctis/`.
 
 ## Schema Mapping
 
+| CTIS field | Unified schema field | Notes |
+|---|---|---|
+| `label` (class name) | `original_id` | Instrument class label |
+| `label` | `instrument_code` | Same instrument class code |
+| (dataset-level) | `has_audio` = true | WAV, 44100 Hz |
+| (dataset-level) | `genre` = "traditional instrumental" | |
+| (dataset-level) | `granularity` = "clip" | One entry per instrument class (219 classes) |
+
 ## Gap Assessment
 - **Severe class imbalance**: 219 classes but some have only 1–4 recordings. Many rare instrument types (especially ethnic minority instruments). Will need careful handling in any classification benchmark — stratified sampling or class weighting needed.
 - **Mixed sample rates**: Both 44,100 Hz and 48,000 Hz detected. Will need resampling to a uniform rate during preprocessing.

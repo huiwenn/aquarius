@@ -100,6 +100,20 @@ All 31 files share 9 columns (29 files) or 10 columns (Yunnan and Xinjiang add "
 
 ## Schema Mapping
 
+| MGD field | Unified schema field | Notes |
+|---|---|---|
+| `No.` | `original_id` | `{province_abbr}_{num}` |
+| `Title` | `title` | Song title (Chinese) |
+| `Sub-Title` | `subtitle` | Alternate title |
+| `Location` | `location` | Specific place within province |
+| Excel filename | `province` | Mapped via PROVINCE_MAP (31 provinces) |
+| `Genre` | `folk_song_type` | 9 folk song categories |
+| `Keys` | `key` | Musical key |
+| `Key_Transpose_Position` | `key_transpose` | Transposition position |
+| `Regular_TS` | `time_signature` | Time signature |
+| (dataset-level) | `genre` = "folk song" | |
+| (dataset-level) | `has_metadata_only` = true | No audio or symbolic files |
+
 ## Gap Assessment
 - 31,761 songs is one of the largest Chinese folk music datasets by catalog size
 - Exceptional geographic coverage: 31 provinces/regions (Hong Kong, Macao, Tibet not yet available)

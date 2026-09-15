@@ -109,6 +109,15 @@ The 11 instruments map to traditional Chinese bayin categories:
 
 ## Schema Mapping
 
+| ChMusic field | Unified schema field | Notes |
+|---|---|---|
+| WAV filename (e.g. "1.3") | `original_id` | `{instrument_num}.{track_num}` |
+| Instrument number (1-11) | `instrument` | Mapped via lookup: 1=Erhu, 2=Pipa, 3=Sanxian, etc. |
+| Instrument number | `instrument_pinyin` | Chinese name (二胡, 琵琶, 三弦, etc.) |
+| Instrument number | `bayin_family` | silk/bamboo/metal/gourd from lookup |
+| (dataset-level) | `has_audio` = true | WAV, 44100 Hz, stereo |
+| (dataset-level) | `genre` = "traditional instrumental" | |
+
 ## Gap Assessment
 ### Strengths
 - Clean, uniform audio format (44,100 Hz, stereo, 16-bit PCM) -- no preprocessing needed

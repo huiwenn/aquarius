@@ -113,6 +113,19 @@ PMEmo2019/
 
 ## Schema Mapping
 
+| PMEmo field | Unified schema field | Notes |
+|---|---|---|
+| `musicId` | `original_id` | Integer music ID |
+| `title` | `title` | Song title |
+| `artist` | `artist` | Performer name |
+| `album` | `album` | Album name |
+| `duration` | `duration_seconds` | Duration in seconds |
+| `Valence(mean)` | `emotion_valence` | From static_annotations.csv |
+| `Arousal(mean)` | `emotion_arousal` | From static_annotations.csv |
+| (dataset-level) | `has_audio` = true | MP3 chorus clips |
+| (dataset-level) | `genre` = "pop" | Western pop music |
+| (dataset-level) | `language` = "English" | Predominantly English |
+
 ## Gap Assessment
 ### Coverage
 - 794 songs total, but only 767 have emotion annotations (27 songs missing static/dynamic labels)

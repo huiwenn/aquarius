@@ -53,4 +53,15 @@ Available via ESPnet-Muskits with pre-trained models and training recipes.
 
 ## Schema Mapping
 
+| ACE-OpenCpop field | Unified schema field | Notes |
+|---|---|---|
+| Singer index (0-29) | `original_id` | "singer_{id}" |
+| Singer index | `singer_id` | String of singer index |
+| (dataset-level) | `has_audio` = true | WAV segments |
+| (dataset-level) | `has_midi` = true | Note-level alignment |
+| (dataset-level) | `has_lyrics` = true | Phoneme-aligned lyrics |
+| (dataset-level) | `genre` = "C-pop" | Mandarin pop singing |
+| (dataset-level) | `language` = "Mandarin" | |
+| (dataset-level) | `granularity` = "collection" | One entry per singer (30 singers) |
+
 ## Gap Assessment

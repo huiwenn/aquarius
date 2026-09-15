@@ -66,6 +66,15 @@ Inspected 2026-09-15 from Arrow files in `data/raw/gz_isotech/`.
 
 ## Schema Mapping
 
+| GZ_IsoTech field | Unified schema field | Notes |
+|---|---|---|
+| `label` (technique name) | `original_id` | Technique class label |
+| `label` | `playing_technique` | 8 guzheng technique classes |
+| (dataset-level) | `instrument` = "Guzheng" | |
+| (dataset-level) | `bayin_family` = "silk" | |
+| (dataset-level) | `has_audio` = true | WAV, 44100 Hz |
+| (dataset-level) | `granularity` = "clip" | One entry per technique class |
+
 ## Gap Assessment
 - **Train/test distribution mismatch**: Train split is dominated by upward_portamento (21.0%) while test split is dominated by plucks (27.2%). This is by design — the test set contains real performer recordings (496 clips) while train contains virtual sound bank clips (2,328). This split tests generalization from synthetic to real performance.
 - **No validation split in default config**: Default has only train/test. The eval config adds a validation split but without audio. For audio-based tasks, a custom validation split from train is needed.
