@@ -589,6 +589,65 @@ def load_ccom_huqin() -> list[dict]:
     return rows
 
 
+# ── ErhuPT ─────────────────────────────────────────────────────────────────
+
+def load_erhupt() -> list[dict]:
+    info_path = RAW / "erhu_playing_technique" / "train" / "dataset_info.json"
+    if not info_path.exists():
+        return []
+    with open(info_path) as f:
+        info = json.load(f)
+    label_names = info.get("features", {}).get("label", {}).get("names", [])
+    rows = []
+    for label in label_names:
+        row = empty_row("erhu_playing_technique")
+        row["original_id"] = label
+        row["unified_id"] = make_id("erhupt", label)
+        row["granularity"] = "clip"
+        row["instrument"] = "Erhu"
+        row["instrument_pinyin"] = "二胡"
+        row["bayin_family"] = "silk"
+        row["playing_technique"] = label
+        row["has_audio"] = True
+        row["audio_format"] = "WAV"
+        row["sample_rate"] = 44100
+        row["genre"] = "traditional instrumental"
+        row["country"] = "China"
+        row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/erhu_playing_tech"
+        row["license"] = "research"
+        row["access_status"] = "open"
+        rows.append(row)
+    return rows
+
+
+# ── ACE-OpenCpop ───────────────────────────────────────────────────────────
+
+def load_ace_opencpop() -> list[dict]:
+    base = RAW / "ace_opencpop"
+    info_path = base / "train" / "dataset_info.json"
+    if not info_path.exists():
+        return []
+    rows = []
+    for singer_id in range(30):
+        row = empty_row("ace_opencpop")
+        oid = f"singer_{singer_id}"
+        row["original_id"] = oid
+        row["unified_id"] = make_id("ace_opencpop", oid)
+        row["granularity"] = "collection"
+        row["singer_id"] = str(singer_id)
+        row["has_audio"] = True
+        row["has_midi"] = True
+        row["has_lyrics"] = True
+        row["genre"] = "C-pop"
+        row["language"] = "Mandarin"
+        row["country"] = "China"
+        row["source_url"] = "https://huggingface.co/datasets/espnet/ace-opencpop-segments"
+        row["license"] = "CC BY-NC 4.0"
+        row["access_status"] = "open"
+        rows.append(row)
+    return rows
+
+
 # ── Main ────────────────────────────────────────────────────────────────────
 
 LOADERS = [
@@ -604,6 +663,8 @@ LOADERS = [
     ("kaggle_folk", load_kaggle_folk),
     ("jingju_singing_audio", load_jingju_singing_audio),
     ("ccom_huqin", load_ccom_huqin),
+    ("erhu_playing_technique", load_erhupt),
+    ("ace_opencpop", load_ace_opencpop),
 ]
 
 
