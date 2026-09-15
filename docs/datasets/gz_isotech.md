@@ -3,7 +3,7 @@
 ## Source
 - URL: https://huggingface.co/datasets/ccmusic-database/GZ_IsoTech
 - Paper: Part of CCMusic (see `ccmusic.md`)
-- License: CC Attribution 4.0 (via CCMusic)
+- License: CC-BY-4.0 (+ CCMusic institutional clause: data restricted to applicant's institution, cannot be publicly redistributed)
 - Access method: HuggingFace (`ccmusic-database/GZ_IsoTech`), ModelScope mirror
 - Status: downloaded + inspected
 - Parent: CSMTD / CCMusic. Download via parent or directly from HuggingFace.

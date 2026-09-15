@@ -3,7 +3,7 @@
 ## Source
 - URL: https://ccmusic-database.github.io/en/download.html
 - Paper: "CCMusic: An Open and Diverse Database for Chinese and General Music Information Retrieval Research" (TISMIR, 2024) — https://transactions.ismir.net/articles/10.5334/tismir.194
-- License: CC Attribution 4.0
+- License: CC-BY-4.0 (but application terms add institutional restriction: "This database can only be used by the applicant and members of the applicant's department or research institution." Data cannot be publicly redistributed.)
 - Access method: HuggingFace (https://huggingface.co/ccmusic-database), GitHub, Zenodo (https://doi.org/10.5281/zenodo.5676893). Full files may require application to ccmusic.database@hotmail.com; demo versions available on public platforms.
 - Status: umbrella (sub-datasets handled individually)
 

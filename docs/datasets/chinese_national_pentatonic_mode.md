@@ -3,7 +3,7 @@
 ## Source
 - URL: https://ccmusic-database.github.io/en/database/csmtd.html
 - Paper: Part of CSMTD / CCMusic ecosystem
-- License: CC Attribution 4.0 (via CCMusic)
+- License: CC-BY-4.0 (+ CCMusic institutional clause: data restricted to applicant's institution, cannot be publicly redistributed)
 - Access method: Via CSMTD platform or HuggingFace
 - Status: downloaded + inspected
 - Parent: CSMTD (see `csmtd.md`). Download via parent.

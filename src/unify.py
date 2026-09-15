@@ -125,8 +125,8 @@ def load_chmusic() -> list[dict]:
         row["channels"] = 2
         row["genre"] = "traditional instrumental"
         row["country"] = "China"
-        row["source_url"] = "https://github.com/YuanAllen/ChMusic"
-        row["license"] = "unspecified"
+        row["source_url"] = "https://github.com/HaoranWeiUTD/ChMusic"
+        row["license"] = "MIT"
         row["access_status"] = "open"
         rows.append(row)
     return rows
@@ -259,7 +259,7 @@ def load_pmemo() -> list[dict]:
         row["language"] = "English"
         row["country"] = "International"
         row["source_url"] = "https://github.com/HuiZhangDB/PMEmo"
-        row["license"] = "research"
+        row["license"] = "research-only"
         row["access_status"] = "open"
         rows.append(row)
     return rows
@@ -317,7 +317,7 @@ def load_m4singer() -> list[dict]:
         row["language"] = "Mandarin"
         row["country"] = "China"
         row["source_url"] = "https://github.com/M4Singer/M4Singer"
-        row["license"] = "research"
+        row["license"] = "custom (no redistribution)"
         row["access_status"] = "open"
         rows.append(row)
     return rows
@@ -399,8 +399,8 @@ def load_ctis() -> list[dict]:
         row["genre"] = "traditional instrumental"
         row["country"] = "China"
         row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/CTIS"
-        row["license"] = "research"
-        row["access_status"] = "open"
+        row["license"] = "CC-BY-NC-ND-4.0 (institutional restriction)"
+        row["access_status"] = "restricted"
         rows.append(row)
     return rows
 
@@ -429,8 +429,8 @@ def load_gz_isotech() -> list[dict]:
         row["genre"] = "traditional instrumental"
         row["country"] = "China"
         row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/GZ_IsoTech"
-        row["license"] = "research"
-        row["access_status"] = "open"
+        row["license"] = "CC-BY-4.0 (institutional restriction)"
+        row["access_status"] = "restricted"
         rows.append(row)
     return rows
 
@@ -551,7 +551,7 @@ def load_ccom_huqin() -> list[dict]:
             row["genre"] = "traditional instrumental"
             row["country"] = "China"
             row["source_url"] = "https://zenodo.org/records/11387046"
-            row["license"] = "CC BY-NC 4.0"
+            row["license"] = "CC-BY-4.0"
             row["access_status"] = "open"
             rows.append(row)
 
@@ -583,7 +583,7 @@ def load_ccom_huqin() -> list[dict]:
                 row["genre"] = "traditional instrumental"
                 row["country"] = "China"
                 row["source_url"] = "https://zenodo.org/records/11387046"
-                row["license"] = "CC BY-NC 4.0"
+                row["license"] = "CC-BY-4.0"
                 row["access_status"] = "open"
                 rows.append(row)
     return rows
@@ -628,8 +628,8 @@ def load_cnpm() -> list[dict]:
         row["language"] = "Chinese"
         row["country"] = "China"
         row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/CNPM"
-        row["license"] = "research"
-        row["access_status"] = "open"
+        row["license"] = "CC-BY-4.0 (institutional restriction)"
+        row["access_status"] = "restricted"
         rows.append(row)
     return rows
 
@@ -659,8 +659,8 @@ def load_erhupt() -> list[dict]:
         row["genre"] = "traditional instrumental"
         row["country"] = "China"
         row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/erhu_playing_tech"
-        row["license"] = "research"
-        row["access_status"] = "open"
+        row["license"] = "CC-BY-4.0 (institutional restriction)"
+        row["access_status"] = "restricted"
         rows.append(row)
     return rows
 
@@ -738,7 +738,7 @@ def load_gtsinger() -> list[dict]:
                 row["language"] = "Mandarin"
                 row["country"] = "China"
                 row["source_url"] = "https://huggingface.co/datasets/GTSinger/GTSinger"
-                row["license"] = "CC BY-NC 4.0"
+                row["license"] = "custom (HuggingFace gated)"
                 row["access_status"] = "open"
                 rows.append(row)
     return rows

@@ -192,3 +192,5 @@ The superset of all metadata fields discovered across all collected datasets. Ea
 6. **Geographic coverage**: MGD covers 31 provinces. Anthology covers 10 provinces. CCOM-HuQin adds region for 57 excerpts (Guangdong, Shanxi, Shandong, Henan, etc.). XFID (Xinjiang folk instruments) remains gated.
 
 7. **Emotion labels**: Only PMEmo has emotion annotations, and its content is predominantly Western music. No Chinese-music emotion dataset exists.
+
+8. **Licensing and redistribution**: Not all datasets can be redistributed as part of a public Aquarius release. CCMusic ecosystem datasets (CTIS, GZ_IsoTech, CNPM, ErhuPT, GuzhengTech99) carry an institutional restriction: "This database can only be used by the applicant and members of the applicant's department or research institution." M4Singer and GTSinger also prohibit redistribution. Aquarius distributes unified metadata and tooling; users must obtain restricted-license data independently. See `docs/license_audit.md` for full details.

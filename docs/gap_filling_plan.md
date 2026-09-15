@@ -347,3 +347,21 @@ confidence = correlation_score * (1 + final_note_bonus * 0.1)
 - `data/unified/provenance_matrix.csv`
 - `data/unified/imputation_log.json` (per-field statistics: attempted, succeeded, confidence distribution)
 - `docs/imputation_report.md` (human-readable summary with validation results)
+
+---
+
+## 8. Licensing Constraints
+
+**Critical**: Not all datasets can be redistributed in a public Aquarius release.
+
+| Category | Datasets | Redistribution |
+|----------|----------|----------------|
+| **Freely redistributable** | POP909 (MIT), Kaggle Folk (CC0), CCOM-HuQin (CC-BY-4.0), Jingju Singing (CC) | Yes — data can be bundled |
+| **CCMusic institutional restriction** | CTIS, GZ_IsoTech, CNPM, ErhuPT, GuzhengTech99 | No — applicant's institution only |
+| **Custom / gated** | M4Singer, GTSinger, ACE-OpenCpop | No — redistribution prohibited |
+| **Research-only** | PMEmo | No |
+| **Unspecified** | ChMusic (MIT repo), Guqin, Anthology, MGD | Needs clarification |
+
+**Implications for gap filling**: All imputed values (key, mode, genre, etc.) derived from non-redistributable data can still be included in the public master table as metadata. The underlying audio/scores cannot be bundled. The TISMIR article should document this as a "bring your own data" model — Aquarius provides the unified schema, download scripts, and metadata; users obtain restricted data independently.
+
+See `docs/license_audit.md` for full per-dataset details.

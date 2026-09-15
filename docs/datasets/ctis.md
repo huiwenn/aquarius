@@ -3,7 +3,7 @@
 ## Source
 - URL: https://huggingface.co/datasets/ccmusic-database/CTIS
 - Paper: Part of CCMusic (see `ccmusic.md`)
-- License: CC-BY-NC-ND-4.0
+- License: CC-BY-NC-ND-4.0 (+ CCMusic institutional clause: data restricted to applicant's institution, cannot be publicly redistributed)
 - Access method: HuggingFace (`ccmusic-database/CTIS`), ModelScope mirror
 - Status: downloaded + inspected
 - Parent: CCMusic platform (see `ccmusic.md`)
