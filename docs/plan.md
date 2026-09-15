@@ -33,7 +33,7 @@ Each iteration does exactly one of these, then yields:
 - A batch of 3–5 dataset registry entries (Phase 1)
 - Dispatch + verify one batch of 2–3 download subagents (Phase 2)
 - Dispatch + verify one batch of 2–3 inspection subagents (Phase 3)
-- Phase 4 unification (main-agent work, one iteration)
+- Phase 4 unification — may span 2–3 iterations if many datasets (write scripts → run + debug → figures + doc updates)
 - Phase 5 gap-filling plan (main-agent work, one iteration)
 
 ### Ending Conditions
@@ -105,7 +105,7 @@ Build the catalog by creating `docs/datasets/<name>.md` for every Chinese music 
 
 1. Start from `AquariusDatasets.md`. For each entry, WebFetch the homepage/paper/GitHub.
 2. Fill in Source, Paper & Description Insights, and preliminary Taxonomy Analysis.
-3. Search for additional datasets: "Chinese music dataset MIR", "中国音乐数据集", snowball from citations, check HuggingFace/Kaggle/Zenodo/GitHub.
+3. Search for additional datasets: "Chinese music dataset MIR", "中国音乐数据集", snowball from citations, check HuggingFace/Kaggle/Zenodo/GitHub. **Stop discovery when**: all entries from `AquariusDatasets.md` are cataloged, 2–3 different broad searches return no new results, and citation snowballing yields no uncatalogued datasets.
 4. For parent/child datasets (e.g., CSMTD containing GZ_IsoTech): create docs for both, note relationship, mark child as "download via parent."
 5. For dead links: search Wayback Machine, GitHub forks. For gated datasets: still create the doc with status `gated`.
 
@@ -123,12 +123,15 @@ Download every `ready` dataset into `data/raw/<dataset_name>/`.
 
 > Download dataset [NAME] into `data/raw/[NAME]/`. The dataset doc below has all known context.
 >
+> **Environment**: Use `conda activate py312`. Install any packages you need with `pip install`.
+>
 > 1. Get the data — git clone, kaggle/huggingface CLI, write a scraper, navigate the website, handle zip extraction. The access method in the doc is a hint, not gospel.
 > 2. Preserve original structure. Don't modify data.
-> 3. Save download scripts to `src/downloaders/[name]_download.py`.
-> 4. Update `docs/datasets/[name].md` Download Log: what you tried, results, final file counts/sizes/types.
-> 5. If blocked (credentials, CAPTCHA, dead link): document the blocker and stop. Don't retry more than twice.
-> 6. **Do not commit.** The main agent commits after verification.
+> 3. **50 GB cap.** If the dataset exceeds this, download metadata fully, then MIDI/score, then sample audio. Document what was skipped.
+> 4. Save download scripts to `src/downloaders/[name]_download.py`.
+> 5. Update `docs/datasets/[name].md` Download Log: what you tried, results, final file counts/sizes/types.
+> 6. If blocked (credentials, CAPTCHA, dead link): document the blocker and stop. Don't retry more than twice.
+> 7. **Do not commit.** The main agent commits after verification.
 >
 > [paste full content of docs/datasets/[name].md here]
 
@@ -148,18 +151,22 @@ Profile every downloaded dataset. The superset of all discovered features become
 
 > Inspect dataset [NAME] at `data/raw/[NAME]/`. The dataset doc below has context from the paper.
 >
+> **Environment**: Use `conda activate py312`. Install any packages you need with `pip install`.
+>
 > 1. Walk the directory tree. Map the structure.
 > 2. Count and characterize every file type: audio (count, duration samples, sample rate), MIDI (track counts, instruments), scores, metadata files, lyrics, images.
-> 3. For every metadata/CSV/JSON: extract all columns, types, example values, row counts, what each row represents, missing value counts.
+> 3. For every metadata/CSV/JSON: extract all columns, types, example values, row counts, what each row represents, missing value counts. Watch for Chinese encodings (GB2312/GBK/Big5) — try UTF-8 first, fall back.
 > 4. Identify taxonomic labels present: genre, instruments, composer, period, region, ethnicity, mood, key/mode, tempo, language.
-> 5. Note encoding issues (GB2312/GBK vs UTF-8), custom formats, annotation conventions.
+> 5. Note custom formats, annotation conventions, anything surprising vs. paper claims.
 > 6. Write inspection script at `src/inspectors/[name]_inspect.py`.
 > 7. Update `docs/datasets/[name].md`: fill Inspection Results, expand Taxonomy Analysis with ground truth, fill Gap Assessment.
 > 8. **Do not commit.** The main agent commits after verification.
 >
 > [paste full content of docs/datasets/[name].md here]
 
-**Verification**: Read all dataset docs. Build the unified schema (union of all discovered fields + taxonomy reference fields). Save as `docs/unified_schema.md`. Commit.
+**After each batch**: Verify subagent output — check that dataset docs have Inspection Results filled, scripts run without error. Commit.
+
+**After the final batch** (all downloaded datasets inspected): Read all dataset docs. Build the unified schema — union of all discovered metadata fields + standard fields from the taxonomy reference. Save as `docs/unified_schema.md`. Commit. Phase 3 is now complete.
 
 ---
 
