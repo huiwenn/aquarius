@@ -153,14 +153,15 @@ Profile every downloaded dataset. The superset of all discovered features become
 >
 > **Environment**: Use `conda activate py312`. Install any packages you need with `pip install`.
 >
-> 1. Walk the directory tree. Map the structure.
-> 2. Count and characterize every file type: audio (count, duration samples, sample rate), MIDI (track counts, instruments), scores, metadata files, lyrics, images.
-> 3. For every metadata/CSV/JSON: extract all columns, types, example values, row counts, what each row represents, missing value counts. Watch for Chinese encodings (GB2312/GBK/Big5) — try UTF-8 first, fall back.
-> 4. Identify taxonomic labels present: genre, instruments, composer, period, region, ethnicity, mood, key/mode, tempo, language.
-> 5. Note custom formats, annotation conventions, anything surprising vs. paper claims.
-> 6. Write inspection script at `src/inspectors/[name]_inspect.py`.
-> 7. Update `docs/datasets/[name].md`: fill Inspection Results, expand Taxonomy Analysis with ground truth, fill Gap Assessment.
-> 8. **Do not commit.** The main agent commits after verification.
+> 1. **Read the paper/website first.** Use WebFetch on the paper URL and homepage from the dataset doc. Papers often describe metadata fields, collection methodology, annotation schemes, and taxonomic categories that aren't obvious from the raw files alone. Cross-reference what the paper says with what you find in the data.
+> 2. Walk the directory tree. Map the structure.
+> 3. Count and characterize every file type: audio (count, duration samples, sample rate), MIDI (track counts, instruments), scores, metadata files, lyrics, images.
+> 4. For every metadata/CSV/JSON: extract all columns, types, example values, row counts, what each row represents, missing value counts. Watch for Chinese encodings (GB2312/GBK/Big5) — try UTF-8 first, fall back.
+> 5. Identify taxonomic labels present. Start from: genre, instruments, composer, period, region, ethnicity, mood, key/mode, tempo, language — but **these are not exhaustive**. If the dataset provides labels we haven't listed (e.g., singing technique, ornamentation style, performance context, notation type, dialect), add them. The unified schema should capture everything any dataset offers.
+> 6. Note custom formats, annotation conventions, anything surprising vs. paper claims.
+> 7. Write inspection script at `src/inspectors/[name]_inspect.py`.
+> 8. Update `docs/datasets/[name].md`: fill Inspection Results, expand Taxonomy Analysis with ground truth (including any new label categories discovered), fill Gap Assessment.
+> 9. **Do not commit.** The main agent commits after verification.
 >
 > [paste full content of docs/datasets/[name].md here]
 
