@@ -5,7 +5,7 @@
 - Paper: Part of CSMTD / CCMusic ecosystem
 - License: CC Attribution 4.0 (via CCMusic)
 - Access method: Via CSMTD platform or HuggingFace
-- Status: ready
+- Status: gated (requires HuggingFace authentication + access approval)
 - Parent: CSMTD (see `csmtd.md`). Download via parent.
 
 ## Paper & Description Insights
@@ -24,6 +24,9 @@ Important for understanding the Chinese pentatonic tonal system — a fundamenta
 - Key feature: Explicit pentatonic mode labeling (rare across datasets)
 
 ## Download Log
+- 2026-09-15: Download attempted via `load_dataset("ccmusic-database/CNPM")`. Failed: dataset is gated, requires HuggingFace authentication and access approval. No HF_TOKEN configured.
+- HF repo: `ccmusic-database/CNPM` (exists but access-restricted)
+- To download: set HF_TOKEN env var, request access at https://huggingface.co/datasets/ccmusic-database/CNPM, then re-run `python src/downloaders/hf_batch_download.py cnpm`
 
 ## Inspection Results
 

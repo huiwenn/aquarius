@@ -24,6 +24,7 @@ This dataset is significant for representing Xinjiang Uyghur minority musical tr
 - Notable: One of few datasets covering non-Han Chinese minority music traditions; multimodal (audio+MIDI+scores)
 
 ## Download Log
+- 2026-09-15: Not available on HuggingFace. CSMTD website (ccmusic-database.github.io) lists it as "available soon". Not among the 13 ccmusic-database HF repos. Contact ccmusic.database@hotmail.com for access.
 
 ## Inspection Results
 
