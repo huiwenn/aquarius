@@ -6,11 +6,7 @@ Datasets that could not be automatically downloaded. Download these manually and
 
 ## Requires Application / Login
 
-### 1. CNPM (Chinese National Pentatonic Mode)
-- **URL**: https://huggingface.co/datasets/ccmusic-database/CNPM
-- **How to access**: Log in to HuggingFace, request access on the dataset page
-- **Save to**: `data/raw/chinese_national_pentatonic_mode/`
-- **Why it matters**: Ground-truth pentatonic mode labels (gong/shang/jue/zhi/yu) — our #1 gap
+### ~~1. CNPM~~ — RESOLVED (downloaded 2026-09-15, 287 items with mode labels)
 
 ### 2. Opencpop
 - **URL**: https://wenet.org.cn/opencpop/download/
@@ -70,15 +66,17 @@ Datasets that could not be automatically downloaded. Download these manually and
 - **How to access**: Check paper for download instructions
 - **Save to**: `data/raw/cods/`
 
-### 12. SongSong
-- **URL**: https://ojs.aaai.org/index.php/AAAI/article/view/34820
-- **How to access**: Check paper for download instructions
+### 12. SongSong (OpenSongSong)
+- **URL**: https://zcli-charlie.github.io/projects/songsong/
+- **How to access**: Not publicly released. Contact authors at Wuhan University (Zuchao Li et al.)
 - **Save to**: `data/raw/songsong/`
+- **Note**: Only 5 demo WAV files available on project page (model outputs, not training data). Full dataset: 29.9 hours of ancient Chinese SongCi music with phoneme/pitch/lyrics-melody annotations
 
-### 13. Chinese Chorales
-- **URL**: https://link.springer.com/chapter/10.1007/978-981-97-0576-4_10
-- **How to access**: Check paper for download instructions
+### 13. Chinese Chorales (9 samples downloaded — full dataset requires author request)
+- **URL**: https://github.com/123654ad/Chinese-Chorales-Dataset
+- **How to access**: 9 sample MXL files on GitHub. Full 125-song dataset: email pyj17550350072@163.com
 - **Save to**: `data/raw/chinese_chorales/`
+- **Note**: 125 Chinese choral songs in MusicXML (SATB), 441 segments. GitHub has only 9 sample segments from 3 songs
 
 ---
 
