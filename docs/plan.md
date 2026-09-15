@@ -315,9 +315,23 @@ data/
 - Preserve original Chinese text. Add translations/romanizations as extra fields.
 - Some READMEs and metadata will be in Chinese only — read and process them.
 
+### Pacing & Token Budget Awareness
+
+This project runs on a Claude plan with finite daily/monthly token usage. Every subagent consumes tokens — spawning, context passing, tool calls, retries. The main agent must pace work to avoid burning through the budget before the pipeline completes.
+
+**Rules:**
+- **Max 2–3 subagents running in parallel at any time.** Do not fan out one subagent per dataset all at once. Work in small batches: dispatch 2–3, wait for them to finish, verify their output, then dispatch the next batch.
+- **Batch by complexity.** Start each phase with the simplest datasets (direct git clone, small size, clean metadata) to validate the approach cheaply. Save complex/scraping-heavy datasets for later batches when the workflow is proven.
+- **Prefer the main agent for small tasks.** If a dataset can be cloned and inspected in a few tool calls, do it inline rather than spawning a subagent. Subagents have overhead (prompt context, cold start). Reserve them for tasks that genuinely need isolation or parallelism — large downloads, complex scraping, or datasets that need custom code.
+- **Checkpoint frequently.** After each batch of subagents completes, the main agent should commit code/docs and update the registry. If the session ends mid-pipeline, the next session can pick up from the last checkpoint rather than re-doing work.
+- **Fail fast, don't retry endlessly.** If a download or scrape fails twice, log it and move on. Burning tokens on retries for a flaky server is wasteful — flag it for a future session or manual intervention.
+- **Phase 1 is cheap; Phase 2 is expensive.** The registry (Phase 1) is mostly WebFetch calls by the main agent — do it fully before starting any downloads. This avoids spawning subagents for datasets that turn out to be duplicates or inaccessible.
+- **Monitor progress against the dataset count.** If there are ~15 datasets, plan for ~5 batches of 2–3 across Phases 2 and 3. If the registry grows to 30+, consider triaging: prioritize open-access, well-documented datasets first; defer gated/unclear ones.
+- **Long-running downloads: use background execution.** For large datasets (multi-GB audio collections), kick off the download in background and move on to other work. Don't block the main agent waiting.
+
 ### Subagent Best Practices
 - Give each subagent a clear, self-contained prompt with all context it needs.
 - Include the dataset's registry entry in the prompt so it doesn't have to re-discover basic info.
 - Set realistic timeouts — some downloads are large.
 - Subagents should write their results to well-defined file paths so the main agent can find them.
-- Run subagents in parallel where there are no dependencies between datasets.
+- Run subagents in parallel where there are no dependencies between datasets — but **never more than 2–3 at a time** (see Pacing above).
