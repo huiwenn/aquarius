@@ -500,6 +500,95 @@ def load_jingju_singing_audio() -> list[dict]:
     return rows
 
 
+# ── CCOM-HuQin ─────────────────────────────────────────────────────────────
+
+HUQIN_INSTRUMENT_MAP = {
+    "AltoBanhu": ("Alto Banhu", "中音板胡", "silk"),
+    "BassBanhu": ("Bass Banhu", "低音板胡", "silk"),
+    "Erhu-1": ("Erhu", "二胡", "silk"),
+    "Erhu-2": ("Erhu", "二胡", "silk"),
+    "Erhu-3": ("Erhu", "二胡", "silk"),
+    "Gaohu": ("Gaohu", "高胡", "silk"),
+    "SopranoBanhu": ("Soprano Banhu", "高音板胡", "silk"),
+    "TenorBanhu": ("Tenor Banhu", "次中音板胡", "silk"),
+    "Zhonghu": ("Zhonghu", "中胡", "silk"),
+    "Zhuihu": ("Zhuihu", "坠胡", "silk"),
+}
+
+def load_ccom_huqin() -> list[dict]:
+    base = RAW / "ccom_huqin" / "CCOM-HuQin-v2.0.1-audios"
+    meta_path = base / "metadata-v2.0.csv"
+    rows = []
+    if meta_path.exists():
+        df = pd.read_csv(meta_path)
+        for _, r in df.iterrows():
+            row = empty_row("ccom_huqin")
+            fname = str(r.get("Filename (Pinyin)", ""))
+            row["original_id"] = fname
+            row["unified_id"] = make_id("ccom_huqin", fname)
+            row["granularity"] = "song"
+            row["title"] = str(r.get("Name (CH)", ""))
+            row["artist"] = str(r.get("Performer", "")) if pd.notna(r.get("Performer")) else None
+            row["composer"] = str(r.get("Composers (CH/EN)", "")) if pd.notna(r.get("Composers (CH/EN)")) else None
+            row["province"] = str(r.get("Region", "")) if pd.notna(r.get("Region")) else None
+            inst = str(r.get("Instrument", ""))
+            row["instrument"] = inst
+            row["bayin_family"] = "silk"
+            year_val = r.get("Date", "")
+            if pd.notna(year_val) and str(year_val) != "Ancient":
+                try:
+                    row["year"] = int(year_val)
+                except ValueError:
+                    row["period"] = str(year_val)
+            elif str(year_val) == "Ancient":
+                row["period"] = "Ancient"
+            row["has_audio"] = True
+            row["has_musicxml"] = True
+            row["has_score"] = True
+            row["audio_format"] = "WAV"
+            row["sample_rate"] = 48000
+            row["channels"] = 1
+            row["genre"] = "traditional instrumental"
+            row["country"] = "China"
+            row["source_url"] = "https://zenodo.org/records/11387046"
+            row["license"] = "CC BY-NC 4.0"
+            row["access_status"] = "open"
+            rows.append(row)
+
+    spt_path = base / "SinglePT"
+    if spt_path.exists():
+        for inst_dir in sorted(spt_path.iterdir()):
+            if not inst_dir.is_dir():
+                continue
+            info = HUQIN_INSTRUMENT_MAP.get(inst_dir.name, (inst_dir.name, "", "silk"))
+            for tech_dir in sorted(inst_dir.iterdir()):
+                if not tech_dir.is_dir():
+                    continue
+                clip_count = len(list(tech_dir.glob("*.wav")))
+                if clip_count == 0:
+                    continue
+                row = empty_row("ccom_huqin")
+                oid = f"SinglePT/{inst_dir.name}/{tech_dir.name}"
+                row["original_id"] = oid
+                row["unified_id"] = make_id("ccom_huqin", oid)
+                row["granularity"] = "clip"
+                row["instrument"] = info[0]
+                row["instrument_pinyin"] = info[1]
+                row["bayin_family"] = info[2]
+                row["playing_technique"] = tech_dir.name
+                row["has_audio"] = True
+                row["audio_format"] = "WAV"
+                row["sample_rate"] = 48000
+                row["channels"] = 1
+                row["genre"] = "traditional instrumental"
+                row["country"] = "China"
+                row["source_url"] = "https://zenodo.org/records/11387046"
+                row["license"] = "CC BY-NC 4.0"
+                row["access_status"] = "open"
+                rows.append(row)
+    return rows
+
+
 # ── Main ────────────────────────────────────────────────────────────────────
 
 LOADERS = [
@@ -514,6 +603,7 @@ LOADERS = [
     ("gz_isotech", load_gz_isotech),
     ("kaggle_folk", load_kaggle_folk),
     ("jingju_singing_audio", load_jingju_singing_audio),
+    ("ccom_huqin", load_ccom_huqin),
 ]
 
 

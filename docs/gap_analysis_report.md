@@ -2,24 +2,25 @@
 
 ## Summary
 
-- **Total items**: 45,611
-- **Total datasets**: 11
-- **Datasets**: anthology_chinese_folk_songs, chmusic, ctis, guqin_dataset, gz_isotech, jingju_singing_audio, m4singer, mgd, pmemo, pop909, traditional_chinese_folk_music_kaggle
+- **Total items**: 45,770
+- **Total datasets**: 12
+- **Datasets**: anthology_chinese_folk_songs, ccom_huqin, chmusic, ctis, guqin_dataset, gz_isotech, jingju_singing_audio, m4singer, mgd, pmemo, pop909, traditional_chinese_folk_music_kaggle
 
 ## Modality Coverage
 
 | Modality | Present | Missing | Coverage |
 |----------|---------|---------|----------|
-| audio | 1,842 | 43,769 | 4.0% |
-| midi | 10,262 | 35,349 | 22.5% |
-| musicxml | 8,725 | 36,886 | 19.1% |
-| lyrics | 3,196 | 42,415 | 7.0% |
+| audio | 2,001 | 43,769 | 4.4% |
+| midi | 10,262 | 35,508 | 22.4% |
+| musicxml | 8,782 | 36,988 | 19.2% |
+| lyrics | 3,196 | 42,574 | 7.0% |
 
 ## Modality × Dataset Matrix
 
 | dataset                               |   has_audio |   has_midi |   has_musicxml |   has_lyrics |   has_score |   has_jianpu |   has_metadata_only |   total_items |
 |:--------------------------------------|------------:|-----------:|---------------:|-------------:|------------:|-------------:|--------------------:|--------------:|
 | anthology_chinese_folk_songs          |           0 |       8654 |           8654 |         2497 |           0 |            0 |                   0 |          8654 |
+| ccom_huqin                            |         159 |          0 |             57 |            0 |          57 |            0 |                   0 |           159 |
 | chmusic                               |          55 |          0 |              0 |            0 |           0 |            0 |                   0 |            55 |
 | ctis                                  |         219 |          0 |              0 |            0 |           0 |            0 |                   0 |           219 |
 | guqin_dataset                         |           0 |          0 |             71 |            0 |           0 |            0 |                   0 |            71 |
@@ -35,14 +36,14 @@
 
 | Field | Present | Missing | Coverage | Datasets |
 |-------|---------|---------|----------|----------|
-| title | 42,883 | 2,728 | 94.0% | anthology_chinese_folk_songs, guqin_dataset, m4singer, mgd, pmemo (+1) |
-| artist | 1,741 | 43,870 | 3.8% | guqin_dataset, pmemo, pop909 |
-| genre | 45,611 | 0 | 100.0% | anthology_chinese_folk_songs, chmusic, ctis, guqin_dataset, gz_isotech (+6) |
-| instrument | 2,508 | 43,103 | 5.5% | chmusic, guqin_dataset, gz_isotech, traditional_chinese_folk_music_kaggle |
-| key | 2,374 | 43,237 | 5.2% | traditional_chinese_folk_music_kaggle |
-| province | 42,789 | 2,822 | 93.8% | anthology_chinese_folk_songs, mgd, traditional_chinese_folk_music_kaggle |
-| language | 42,884 | 2,727 | 94.0% | anthology_chinese_folk_songs, jingju_singing_audio, m4singer, mgd, pmemo (+1) |
-| tempo_bpm | 2,374 | 43,237 | 5.2% | traditional_chinese_folk_music_kaggle |
+| title | 42,940 | 2,830 | 93.8% | anthology_chinese_folk_songs, ccom_huqin, guqin_dataset, m4singer, mgd (+2) |
+| artist | 1,798 | 43,972 | 3.9% | ccom_huqin, guqin_dataset, pmemo, pop909 |
+| genre | 45,770 | 0 | 100.0% | anthology_chinese_folk_songs, ccom_huqin, chmusic, ctis, guqin_dataset (+7) |
+| instrument | 2,667 | 43,103 | 5.8% | ccom_huqin, chmusic, guqin_dataset, gz_isotech, traditional_chinese_folk_music_kaggle |
+| key | 2,374 | 43,396 | 5.2% | traditional_chinese_folk_music_kaggle |
+| province | 42,845 | 2,925 | 93.6% | anthology_chinese_folk_songs, ccom_huqin, mgd, traditional_chinese_folk_music_kaggle |
+| language | 42,884 | 2,886 | 93.7% | anthology_chinese_folk_songs, jingju_singing_audio, m4singer, mgd, pmemo (+1) |
+| tempo_bpm | 2,374 | 43,396 | 5.2% | traditional_chinese_folk_music_kaggle |
 
 ## Priority Gap-Filling Actions
 
