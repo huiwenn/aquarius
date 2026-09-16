@@ -169,17 +169,18 @@ The superset of all metadata fields discovered across all collected datasets. Ea
 | ErhuPT | 11 | clip | audio, mel | playing technique (11 classes) |
 | ACE-OpenCpop | 30 | collection | audio, MIDI, lyrics | singer (30), phoneme alignment, note alignment |
 | GTSinger | 229 | song | audio, MusicXML, TextGrid, JSON | singer (2), technique (8 groups), phoneme/word alignment |
-| Jingju Phoneme | — | segment | audio, annotations | phoneme labels, role type (not in master table yet) |
-| Jingju Pitch Contour | — | segment | pitch data | pitch contour (not in master table yet) |
-| Jingju Arias | — | aria | TextGrid | role type (5), shengqiang (2) (not in master table yet) |
-| Jingju Lyrics | — | document | text | metrical patterns (not in master table yet) |
+| Guzheng_Tech99 | 99 | song | audio, mel, annotations | technique (7 classes), onset/offset, pitch |
+| Chinese Chorales | 9 | segment | MusicXML | SATB choral arrangement |
+| FolkMusic/Zenodo | 11,966 | clip | audio (MP3) | instrument (15) |
+| Jingju Arias | 34 | song | TextGrid | role type (5), shengqiang (2) |
+| Jingju Phoneme | 65 | segment | TextGrid | phoneme labels (X-SAMPA), role type (2) |
+| Jingju Pitch Contour | 103 | segment | pitch CSV, MusicXML | role type, shengqiang, banshi |
+| Jingju Lyrics | 1,429 | segment | text | shengqiang (2), banshi (7+) |
 | Anonymized Anthology | — | song | MIDI, MusicXML, JPG | subset of Anthology (not separate in master table) |
-| Guzheng_Tech99 | — | note | audio, features | technique (7) (not in master table yet) |
-| FolkMusic/Zenodo | — | clip | audio | instrument (15) (not in master table yet) |
 
 ## Notes
 
-1. **Master table**: 46,327 items across 16 datasets in `data/unified/master_table.parquet`. Three granularity levels: song (45,670), clip (627), collection (30). Additional datasets (Jingju sub-datasets, Guzheng_Tech99, FolkMusic/Zenodo) are downloaded but not yet in the master table — loaders can be added to `src/unify.py`.
+1. **Master table**: 60,032 items across 23 datasets in `data/unified/master_table.parquet`. Four granularity levels: song (47,359), clip (12,593), segment (50), collection (30). All downloaded datasets with usable data now have loaders in `src/unify.py`.
 
 2. **Chinese mode**: CNPM provides 287 ground-truth pentatonic mode labels covering all 5 modes (宫/商/角/徵/羽) × 12 tonics × 6 scale system variants (五声/六声+变宫/六声+清角/七声清乐/七声雅乐/七声燕乐). This is the only dataset with explicit mode labels and can serve as training data for mode classifiers.
 

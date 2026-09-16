@@ -63,6 +63,19 @@ Inspected 2026-09-15 via `src/inspectors/jingju_arias_inspect.py`.
 
 ## Schema Mapping
 
+| Jingju Arias field | Unified schema field | Notes |
+|---|---|---|
+| TextGrid filename (e.g. "dan-erhuang_01") | `original_id` | Encodes role type + shengqiang + sequence |
+| Filename prefix before "-" | `role_type` | dan/jing/laosheng/laodan/xiaosheng |
+| Filename middle segment | `shengqiang` | erhuang/xipi |
+| TextGrid tier "aria" | `title` / `lyrics_text` | Aria lyrics in Chinese (not extracted to master table) |
+| TextGrid tier "artist" | `artist` | Performer name (not extracted to master table) |
+| TextGrid tier "banshi" | `sub_genre` | Metrical pattern (not extracted to master table) |
+| TextGrid tier "MBID" | external link | MusicBrainz recording ID |
+| (dataset-level) | `genre` = "Beijing Opera" | |
+| (dataset-level) | `has_audio` = false | Audio not included |
+| (dataset-level) | `has_lyrics` = true | Lyrics in TextGrid tiers |
+
 ## Gap Assessment
 - Annotations only -- no audio files included (audio requires contacting researchers)
 - 5 role types covered (broader than singing_audio which has only 2)

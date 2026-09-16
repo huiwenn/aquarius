@@ -8,9 +8,10 @@ All datasets in Aquarius and their redistribution status. This is critical for t
 
 | Status | Meaning | Datasets |
 |--------|---------|----------|
-| **Redistributable** | Can include data in Aquarius release | POP909, Kaggle Folk, CCOM-HuQin, Jingju Singing |
-| **Metadata-only** | Can reference but not redistribute raw data | CCMusic ecosystem, M4Singer, GTSinger, PMEmo, ACE-OpenCpop |
-| **Unclear** | License not specified; need to contact authors | ChMusic, Guqin, Anthology, MGD |
+| **Redistributable** | Can include data in Aquarius release | POP909, ChMusic, Kaggle Folk, CCOM-HuQin, FolkMusic/Zenodo, Jingju Singing |
+| **Metadata-only** | Can reference but not redistribute raw data | CCMusic ecosystem (CTIS, GZ_IsoTech, CNPM, ErhuPT, GuzhengTech99), M4Singer, GTSinger, PMEmo, ACE-OpenCpop |
+| **Likely redistributable** | CC license from Zenodo/CompMusic; verify variant | Jingju Arias, Jingju Phoneme, Jingju Pitch Contour, Jingju Lyrics |
+| **Unclear** | License not specified; need to contact authors | Guqin, Anthology, MGD, Chinese Chorales |
 
 ---
 
@@ -34,6 +35,13 @@ All datasets in Aquarius and their redistribution status. This is critical for t
 | 14 | ErhuPT | CC-BY-4.0 + CCMusic institutional clause | **No** | CCMusic application terms restrict to applicant's institution only |
 | 15 | ACE-OpenCpop | CC-BY-NC-4.0 | **Metadata only** | Derived from Opencpop which requires application; check if ACE extension inherits that restriction |
 | 16 | GTSinger | Custom (HuggingFace gated) | **No** | Requires acceptance of terms; redistribution not permitted |
+| 17 | Guzheng_Tech99 | CC-BY-4.0 + CCMusic institutional clause | **No** | CCMusic application terms restrict to applicant's institution only |
+| 18 | Chinese Chorales | Unspecified | **Unclear** | 9 sample MXL files from GitHub; no license in repo |
+| 19 | FolkMusic/Zenodo | CC-BY-4.0 | **Yes** | Zenodo CC-BY-4.0 International |
+| 20 | Jingju Arias | CC (Zenodo) | **Likely yes** | Check specific CC variant on Zenodo record |
+| 21 | Jingju Phoneme | CC (CompMusic) | **Likely yes** | CompMusic project; check specific terms |
+| 22 | Jingju Pitch Contour | CC (CompMusic) | **Likely yes** | CompMusic project; check specific terms |
+| 23 | Jingju Lyrics | CC (CompMusic) | **Likely yes** | CompMusic project; check specific terms |
 
 ---
 

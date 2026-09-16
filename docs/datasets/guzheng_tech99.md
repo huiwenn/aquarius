@@ -69,6 +69,19 @@ Inspected 2026-09-15 from Arrow files in `data/raw/guzheng_tech99/`.
 
 ## Schema Mapping
 
+| Guzheng_Tech99 field | Unified schema field | Notes |
+|---|---|---|
+| Split + index (e.g. "train_00") | `original_id` | Synthetic ID from split name + sequential index |
+| (dataset-level) | `instrument` = "Guzheng" | All compositions are guzheng solo |
+| (dataset-level) | `instrument_pinyin` = "古筝" | |
+| (dataset-level) | `bayin_family` = "silk" | |
+| audio (Audio 44100Hz) | `has_audio` = true | WAV, 44100 Hz |
+| label.IPT | technique annotations | 7 classes: chanyin, boxian, shanghua, xiahua, huazhi/guazou/lianmo/liantuo, yaozhi, dianyin |
+| label.onset_time / offset_time | temporal annotations | Note-level onset/offset in seconds |
+| label.note | pitch (MIDI) | MIDI note number, range 38–86 |
+| mel (Image) | mel spectrogram | Pre-computed mel spectrograms |
+| (dataset-level) | `genre` = "traditional instrumental" | |
+
 ## Gap Assessment
 - **Extreme class imbalance**: Plucks account for 75% of all annotations. Tremolo has only 56 annotations across 79 compositions. Frame-level metrics must be class-weighted. Standard accuracy metrics would be misleading.
 - **Small composition count**: Only 99 compositions (79 train, 10 val, 10 test). While the total annotation count (15,838 across all splits) is decent, the effective sample diversity is limited by the small number of independent compositions.

@@ -744,6 +744,334 @@ def load_gtsinger() -> list[dict]:
     return rows
 
 
+# ── Guzheng_Tech99 ─────────────────────────────────────────────────────────
+
+GUZHENG_TECH99_TECHNIQUES = [
+    "chanyin", "boxian", "shanghua", "xiahua",
+    "huazhi/guazou/lianmo/liantuo", "yaozhi", "dianyin",
+]
+
+def load_guzheng_tech99() -> list[dict]:
+    import pyarrow as pa
+    base = RAW / "guzheng_tech99" / "default"
+    if not base.exists():
+        return []
+    rows = []
+    for split in ["train", "validation", "test"]:
+        split_dir = base / split
+        if not split_dir.exists():
+            continue
+        arrows = sorted(split_dir.glob("data-*.arrow"))
+        idx = 0
+        for arrow_path in arrows:
+            reader = pa.ipc.open_stream(str(arrow_path))
+            table = reader.read_all()
+            labels = table.column("label").to_pylist()
+            for lab in labels:
+                row = empty_row("guzheng_tech99")
+                oid = f"{split}_{idx:02d}"
+                row["original_id"] = oid
+                row["unified_id"] = make_id("guzheng_tech99", oid)
+                row["granularity"] = "song"
+                row["instrument"] = "Guzheng"
+                row["instrument_pinyin"] = "古筝"
+                row["bayin_family"] = "silk"
+                row["has_audio"] = True
+                row["audio_format"] = "WAV"
+                row["sample_rate"] = 44100
+                row["genre"] = "traditional instrumental"
+                row["country"] = "China"
+                row["source_url"] = "https://huggingface.co/datasets/ccmusic-database/Guzheng_Tech99"
+                row["license"] = "CC-BY-4.0 (institutional restriction)"
+                row["access_status"] = "restricted"
+                rows.append(row)
+                idx += 1
+    return rows
+
+
+# ── Chinese Chorales ────────────────────────────────────────────────────────
+
+def load_chinese_chorales() -> list[dict]:
+    base = RAW / "chinese_chorales"
+    if not base.exists():
+        return []
+    rows = []
+    for mxl in sorted(base.glob("*.mxl")):
+        row = empty_row("chinese_chorales")
+        oid = mxl.stem
+        row["original_id"] = oid
+        row["unified_id"] = make_id("chinese_chorales", oid)
+        row["granularity"] = "segment"
+        row["has_musicxml"] = True
+        row["has_audio"] = False
+        row["has_midi"] = False
+        row["genre"] = "choral"
+        row["language"] = "Chinese"
+        row["country"] = "China"
+        row["source_url"] = "https://github.com/123654ad/Chinese-Chorales-Dataset"
+        row["license"] = "unspecified"
+        row["access_status"] = "open"
+        rows.append(row)
+    return rows
+
+
+# ── FolkMusic / Zenodo ─────────────────────────────────────────────────────
+
+FOLKMUSIC_INSTRUMENTS = {
+    "ba": ("Ba", "巴乌", "bamboo"),
+    "dizi": ("Dizi", "笛子", "bamboo"),
+    "dongxiao": ("Dongxiao", "洞箫", "bamboo"),
+    "erhu": ("Erhu", "二胡", "silk"),
+    "guqin": ("Guqin", "古琴", "silk"),
+    "guzheng": ("Guzheng", "古筝", "silk"),
+    "hulusi": ("Hulusi", "葫芦丝", "gourd"),
+    "liuqin": ("Liuqin", "柳琴", "silk"),
+    "pipa": ("Pipa", "琵琶", "silk"),
+    "sanxian": ("Sanxian", "三弦", "silk"),
+    "sheng": ("Sheng", "笙", "gourd"),
+    "suona": ("Suona", "唢呐", "metal"),
+    "yangqin": ("Yangqin", "扬琴", "silk"),
+    "zhongruan": ("Zhongruan", "中阮", "silk"),
+    "zhuiqin": ("Zhuiqin", "坠琴", "silk"),
+}
+
+def load_folkmusic_zenodo() -> list[dict]:
+    base = RAW / "folkmusic_zenodo"
+    if not base.exists():
+        return []
+    rows = []
+    for inst_dir in sorted(base.iterdir()):
+        if not inst_dir.is_dir():
+            continue
+        inst_key = inst_dir.name.lower()
+        info = FOLKMUSIC_INSTRUMENTS.get(inst_key)
+        if not info:
+            continue
+        for mp3 in sorted(inst_dir.glob("*.mp3")):
+            row = empty_row("folkmusic_zenodo")
+            oid = f"{inst_key}/{mp3.stem}"
+            row["original_id"] = oid
+            row["unified_id"] = make_id("folkmusic_zenodo", oid)
+            row["granularity"] = "clip"
+            row["instrument"] = info[0]
+            row["instrument_pinyin"] = info[1]
+            row["bayin_family"] = info[2]
+            row["has_audio"] = True
+            row["audio_format"] = "MP3"
+            row["sample_rate"] = 44100
+            row["channels"] = 2
+            row["duration_seconds"] = 3.0
+            row["genre"] = "traditional instrumental"
+            row["country"] = "China"
+            row["source_url"] = "https://zenodo.org/records/8012071"
+            row["license"] = "CC-BY-4.0"
+            row["access_status"] = "open"
+            rows.append(row)
+    return rows
+
+
+# ── Jingju Arias ──────────────────────────────────────────────────────────
+
+def load_jingju_arias() -> list[dict]:
+    ann_dir = RAW / "jingju_arias" / "annotated_jingju_arias_1.0" / "Annotations"
+    if not ann_dir.exists():
+        return []
+    rows = []
+    for tg in sorted(ann_dir.glob("*.TextGrid")):
+        name = tg.stem
+        parts = name.rsplit("_", 1)
+        if len(parts) != 2:
+            continue
+        role_sq = parts[0]
+        seq = parts[1]
+        role_parts = role_sq.split("-", 1)
+        if len(role_parts) != 2:
+            continue
+        role_type = role_parts[0]
+        shengqiang = role_parts[1]
+
+        row = empty_row("jingju_arias")
+        row["original_id"] = name
+        row["unified_id"] = make_id("jingju_arias", name)
+        row["granularity"] = "song"
+        row["role_type"] = role_type
+        row["shengqiang"] = shengqiang
+        row["genre"] = "Beijing Opera"
+        row["has_audio"] = False
+        row["has_lyrics"] = True
+        row["language"] = "Chinese"
+        row["country"] = "China"
+        row["source_url"] = "http://compmusic.upf.edu/node/349"
+        row["license"] = "CC (CompMusic)"
+        row["access_status"] = "open"
+        rows.append(row)
+    return rows
+
+
+# ── Jingju Phoneme Annotation ─────────────────────────────────────────────
+
+def load_jingju_phoneme() -> list[dict]:
+    base = RAW / "jingju_phoneme_annotation"
+    if not base.exists():
+        return []
+    rows = []
+    for role_dir in ["dan", "laosheng"]:
+        d = base / role_dir
+        if not d.exists():
+            continue
+        for tg in sorted(d.glob("*.TextGrid")):
+            name = tg.stem
+            prefix = name.split("-")[0] if "-" in name else name
+            sq_map = {
+                "daeh": "erhuang", "daxp": "xipi",
+                "dafeh": "fan erhuang", "dafxp": "fan xipi",
+                "dagbz": "gao bozi", "dabz": "bangzi",
+                "lseh": "erhuang", "lsxp": "xipi",
+                "lsfxp": "fan xipi", "lsfeh": "fan erhuang",
+            }
+            shengqiang = sq_map.get(prefix, "")
+
+            row = empty_row("jingju_phoneme_annotation")
+            row["original_id"] = name
+            row["unified_id"] = make_id("jingju_phoneme", name)
+            row["granularity"] = "song"
+            row["role_type"] = role_dir
+            row["shengqiang"] = shengqiang
+            row["genre"] = "Beijing Opera"
+            row["has_audio"] = False
+            row["has_lyrics"] = True
+            row["phonemes"] = True
+            row["language"] = "Chinese"
+            row["country"] = "China"
+            row["source_url"] = "https://github.com/MTG/jingjuPhonemeAnnotation"
+            row["license"] = "CC-BY-NC-SA-4.0"
+            row["access_status"] = "open"
+            rows.append(row)
+    return rows
+
+
+# ── Jingju Pitch Contour ──────────────────────────────────────────────────
+
+def load_jingju_pitch_contour() -> list[dict]:
+    gt_dir = RAW / "jingju_pitch_contour" / "SMC2016-master" / "dataset" / "groundtruth"
+    scores_dir = RAW / "jingju_pitch_contour" / "SMC2016-master" / "dataset" / "scores"
+    rows = []
+
+    if gt_dir.exists():
+        suffixes = ["_pitchtrack", "_melodicTrans", "_monoNoteOut_midi",
+                     "_monoNoteOut", "_coarseSeg", "_refinedSeg"]
+        rec_ids = set()
+        for f in gt_dir.glob("*.csv"):
+            name = f.stem
+            for suf in sorted(suffixes, key=len, reverse=True):
+                if name.endswith(suf):
+                    rec_ids.add(name[:-len(suf)])
+                    break
+        for rid in sorted(rec_ids):
+            if "Dan" in rid or rid.startswith("fem"):
+                role = "dan"
+            elif "Laosheng" in rid or rid.startswith("male"):
+                role = "laosheng"
+            else:
+                role = ""
+            row = empty_row("jingju_pitch_contour")
+            row["original_id"] = rid
+            row["unified_id"] = make_id("jingju_pitch", rid)
+            row["granularity"] = "segment"
+            row["role_type"] = role
+            row["genre"] = "Beijing Opera"
+            row["has_audio"] = False
+            row["language"] = "Chinese"
+            row["country"] = "China"
+            row["source_url"] = "https://zenodo.org/record/832736"
+            row["license"] = "CC (Zenodo)"
+            row["access_status"] = "open"
+            rows.append(row)
+
+    if scores_dir.exists():
+        score_meta = scores_dir / "0. Score corpus.xlsx"
+        if score_meta.exists():
+            df = pd.read_excel(score_meta)
+            if df is not None:
+                for _, r in df.iterrows():
+                    fname = str(r.get("File name", ""))
+                    if not fname:
+                        continue
+                    row = empty_row("jingju_pitch_contour")
+                    row["original_id"] = f"score_{fname}"
+                    row["unified_id"] = make_id("jingju_pitch", f"score_{fname}")
+                    row["granularity"] = "song"
+                    row["role_type"] = str(r.get("Role type", ""))
+                    row["shengqiang"] = str(r.get("Shengqiang", ""))
+                    title = str(r.get("Work", ""))
+                    row["title"] = title
+                    row["has_musicxml"] = True
+                    row["has_audio"] = False
+                    row["genre"] = "Beijing Opera"
+                    row["language"] = "Chinese"
+                    row["country"] = "China"
+                    row["source_url"] = "https://zenodo.org/record/832736"
+                    row["license"] = "CC (Zenodo)"
+                    row["access_status"] = "open"
+                    rows.append(row)
+        else:
+            for xml_f in sorted(scores_dir.glob("*.xml")):
+                row = empty_row("jingju_pitch_contour")
+                row["original_id"] = f"score_{xml_f.stem}"
+                row["unified_id"] = make_id("jingju_pitch", f"score_{xml_f.stem}")
+                row["granularity"] = "song"
+                row["has_musicxml"] = True
+                row["has_audio"] = False
+                row["genre"] = "Beijing Opera"
+                row["language"] = "Chinese"
+                row["country"] = "China"
+                row["source_url"] = "https://zenodo.org/record/832736"
+                row["license"] = "CC (Zenodo)"
+                row["access_status"] = "open"
+                rows.append(row)
+    return rows
+
+
+# ── Jingju Lyrics ─────────────────────────────────────────────────────────
+
+def load_jingju_lyrics() -> list[dict]:
+    base = RAW / "jingju_lyrics" / "jingju_lyrics_1.0" / "plsqbs"
+    if not base.exists():
+        return []
+    rows = []
+    for txt in sorted(base.glob("*.txt")):
+        name = txt.stem
+        sq_banshi = name.split("_", 1)
+        sq = sq_banshi[0] if len(sq_banshi) >= 1 else ""
+        aria_name = sq_banshi[1] if len(sq_banshi) >= 2 else name
+        shengqiang = ""
+        banshi = ""
+        if sq.startswith("西皮"):
+            shengqiang = "xipi"
+            banshi = sq[2:]
+        elif sq.startswith("二黄"):
+            shengqiang = "erhuang"
+            banshi = sq[2:]
+
+        row = empty_row("jingju_lyrics")
+        row["original_id"] = name
+        row["unified_id"] = make_id("jingju_lyrics", name)
+        row["granularity"] = "song"
+        row["title"] = aria_name
+        row["shengqiang"] = shengqiang
+        row["sub_genre"] = banshi
+        row["genre"] = "Beijing Opera"
+        row["has_audio"] = False
+        row["has_lyrics"] = True
+        row["language"] = "Chinese"
+        row["country"] = "China"
+        row["source_url"] = "https://compmusic.upf.edu/jingju-lyrics-datasets"
+        row["license"] = "CC (CompMusic)"
+        row["access_status"] = "open"
+        rows.append(row)
+    return rows
+
+
 # ── Main ────────────────────────────────────────────────────────────────────
 
 LOADERS = [
@@ -763,6 +1091,13 @@ LOADERS = [
     ("erhu_playing_technique", load_erhupt),
     ("ace_opencpop", load_ace_opencpop),
     ("gtsinger", load_gtsinger),
+    ("guzheng_tech99", load_guzheng_tech99),
+    ("chinese_chorales", load_chinese_chorales),
+    ("folkmusic_zenodo", load_folkmusic_zenodo),
+    ("jingju_arias", load_jingju_arias),
+    ("jingju_phoneme_annotation", load_jingju_phoneme),
+    ("jingju_pitch_contour", load_jingju_pitch_contour),
+    ("jingju_lyrics", load_jingju_lyrics),
 ]
 
 

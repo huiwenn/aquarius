@@ -57,6 +57,19 @@ Inspected 2026-09-15 via `src/inspectors/jingju_pitch_contour_inspect.py`.
 
 ## Schema Mapping
 
+| Jingju Pitch Contour field | Unified schema field | Notes |
+|---|---|---|
+| Recording ID (e.g. "fem_01_pos_1") | `original_id` | Extracted from groundtruth CSV filenames |
+| Recording prefix (fem/londonRecording_Dan) | `role_type` | dan for fem/Dan, laosheng for male/Laosheng |
+| Score corpus "File name" | `original_id` (prefixed "score_") | For MusicXML score entries |
+| Score corpus "Work" | `title` | Aria title in Chinese |
+| Score corpus "Role type" | `role_type` | dan/laosheng/jing/xiaosheng/laodan |
+| Score corpus "Shengqiang" | `shengqiang` | erhuang/xipi |
+| Groundtruth CSVs | pitch contour annotations | pitchtrack, melodicTrans, segmentation |
+| (dataset-level, groundtruth) | `has_audio` = false | Audio not included |
+| (dataset-level, scores) | `has_musicxml` = true | 62 MusicXML scores |
+| (dataset-level) | `genre` = "Beijing Opera" | |
+
 ## Gap Assessment
 - No audio included (must contact authors: rong.gong@upf.edu) -- annotations only
 - 41 recordings is moderate; covers both dan and laosheng roles

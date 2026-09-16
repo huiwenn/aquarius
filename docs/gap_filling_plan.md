@@ -8,22 +8,23 @@ Plan for filling modality and metadata gaps in Aquarius. Execution is a separate
 
 | Metric | Value |
 |--------|-------|
-| Total items | 46,327 |
-| Datasets integrated | 16 |
-| Audio coverage | 5.5% (2,558 items) |
-| MIDI coverage | 22.2% (10,292 items) |
-| MusicXML coverage | 19.5% (9,011 items) |
-| Lyrics coverage | 7.5% (3,455 items) |
-| Title coverage | 93.6% |
-| Artist coverage | 4.1% |
-| Key coverage | 5.7% (2,374 Kaggle + 287 CNPM) |
-| Province coverage | 93.4% |
-| Chinese mode coverage | 0.6% (287 CNPM items with ground-truth labels) |
+| Total items | 60,032 |
+| Datasets integrated | 23 |
+| Audio coverage | 24.4% (14,623 items) |
+| MIDI coverage | 17.1% (10,292 items) |
+| MusicXML coverage | 15.1% (9,082 items) |
+| Lyrics coverage | 8.3% (4,983 items) |
+| Metadata-only | 56.9% (34,135 items) |
+| Title coverage | ~70% |
+| Artist coverage | ~3% |
+| Key coverage | ~4.4% (2,374 Kaggle + 287 CNPM) |
+| Province coverage | ~70% |
+| Chinese mode coverage | 0.5% (287 CNPM items with ground-truth labels) |
 | Temporal/year coverage | 0.1% (57 CCOM-HuQin excerpts with year) |
 
-Key insight: MGD contributes 31,761 metadata-only items (68.6%), inflating apparent metadata coverage and deflating modality percentages. Excluding MGD, audio coverage rises to ~17.5%, MIDI to ~71%.
+Key insight: MGD contributes 31,761 metadata-only items (52.9%), inflating metadata coverage and deflating modality percentages. FolkMusic/Zenodo adds 11,966 audio clips with instrument labels, significantly boosting audio coverage from 5.5% to 24.4%.
 
-Since the initial gap analysis, 5 new datasets have been added: CCOM-HuQin (159 items with composer/region/year), CNPM (287 items with ground-truth pentatonic mode), ErhuPT (11 technique classes), ACE-OpenCpop (30 singer collections), and GTSinger (229 songs with singing technique annotations).
+Since the initial 16-dataset analysis, 7 new datasets have been integrated: Guzheng_Tech99 (99 compositions with technique annotations), Chinese Chorales (9 MXL segments), FolkMusic/Zenodo (11,966 instrument clips), Jingju Arias (34 annotated arias), Jingju Phoneme (65 phoneme-annotated segments), Jingju Pitch Contour (103 entries), and Jingju Lyrics (1,429 text segments).
 
 ---
 
@@ -54,7 +55,7 @@ Since the initial gap analysis, 5 new datasets have been added: CCOM-HuQin (159 
 
 ### 2.2 Audio→MIDI Transcription
 
-**Target**: 1,842 audio-only items (ChMusic, CTIS, GZ_IsoTech, PMEmo, Jingju)
+**Target**: ~13,800 audio-only items (FolkMusic/Zenodo 11,966, ChMusic, CTIS, GZ_IsoTech, PMEmo, Guzheng_Tech99, Jingju sub-datasets)
 
 **Method**:
 - Basic Pitch (Spotify) for monophonic transcription (erhu, dizi, vocal)
@@ -182,13 +183,15 @@ The 100% coverage is misleading — most items have a coarse genre from their da
 
 ### 3.5 Instrument Identification (Impact: Medium)
 
-**Current coverage**: 5.8% (~2,700 items)
+**Current coverage**: ~24% (~14,500 items — boosted by FolkMusic/Zenodo 11,966 clips with instrument labels)
 
 **Method**:
 1. **Dataset-level inference**: all ChMusic items get their instrument code; all CTIS items already have 219 instrument labels
-2. **CCOM-HuQin**: 159 items already have instrument labels (10 huqin types)
-3. **ErhuPT**: 11 items labeled as erhu
-4. **Audio classification**: use CTIS training data (219 Chinese instruments) to train/apply classifier on unlabeled audio
+2. **FolkMusic/Zenodo**: 11,966 items already have instrument labels (15 Chinese instruments)
+3. **CCOM-HuQin**: 159 items already have instrument labels (10 huqin types)
+4. **ErhuPT**: 11 items labeled as erhu
+5. **Guzheng_Tech99**: 99 items labeled as guzheng
+6. **Audio classification**: use CTIS + FolkMusic/Zenodo training data to train/apply classifier on unlabeled audio
 5. **MIDI program mapping**: POP909 MIDI program numbers → General MIDI instrument names
 6. **Title/filename parsing**: many Chinese music files contain instrument name in title (e.g., "二胡独奏_xxx")
 
@@ -280,13 +283,13 @@ Ordered by impact × confidence × feasibility:
 |------|------|--------|------------|----------------|--------|
 | 1 | Pentatonic mode detection | Critical | Medium-High | ~19,000 (MIDI/XML) | Medium |
 | 2 | Key detection (MIDI/XML) | High | High | ~19,000 | Low |
-| 3 | Key detection (audio) | High | Medium | ~2,500 | Medium |
+| 3 | Key detection (audio) | High | Medium | ~14,600 | Medium |
 | 4 | Artist lookup (POP909) | Medium | High | 909 | Low |
 | 5 | Year lookup (POP909) | Medium | High | 909 | Low |
 | 6 | Instrument from MIDI programs | Medium | High | 909 | Low |
 | 7 | Sub-genre from MGD types | Medium | High | 31,761 | Low |
 | 8 | Guqin dynasty mapping | Medium | Medium | 71 | Low |
-| 9 | Audio→MIDI transcription | Low | Medium | ~2,500 | High |
+| 9 | Audio→MIDI transcription | Low | Medium | ~14,600 | High |
 | 10 | MIDI→audio synthesis | Low | Medium | 10,292 | High |
 
 Note: Pentatonic mode detection confidence upgraded from "Medium" to "Medium-High" because CNPM now provides 287 ground-truth training examples covering all 5 modes × 12 tonics × 6 scale system variants.
@@ -356,11 +359,11 @@ confidence = correlation_score * (1 + final_note_bonus * 0.1)
 
 | Category | Datasets | Redistribution |
 |----------|----------|----------------|
-| **Freely redistributable** | POP909 (MIT), Kaggle Folk (CC0), CCOM-HuQin (CC-BY-4.0), Jingju Singing (CC) | Yes — data can be bundled |
+| **Freely redistributable** | POP909 (MIT), ChMusic (MIT), Kaggle Folk (CC0), CCOM-HuQin (CC-BY-4.0), Jingju Singing (CC), FolkMusic/Zenodo (CC-BY-4.0) | Yes — data can be bundled |
 | **CCMusic institutional restriction** | CTIS, GZ_IsoTech, CNPM, ErhuPT, GuzhengTech99 | No — applicant's institution only |
 | **Custom / gated** | M4Singer, GTSinger, ACE-OpenCpop | No — redistribution prohibited |
 | **Research-only** | PMEmo | No |
-| **Unspecified** | ChMusic (MIT repo), Guqin, Anthology, MGD | Needs clarification |
+| **Unspecified** | Guqin, Anthology, MGD, Jingju Arias/Phoneme/Pitch/Lyrics, Chinese Chorales | Needs clarification |
 
 **Implications for gap filling**: All imputed values (key, mode, genre, etc.) derived from non-redistributable data can still be included in the public master table as metadata. The underlying audio/scores cannot be bundled. The TISMIR article should document this as a "bring your own data" model — Aquarius provides the unified schema, download scripts, and metadata; users obtain restricted data independently.
 

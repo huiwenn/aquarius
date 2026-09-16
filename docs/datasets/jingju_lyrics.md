@@ -67,6 +67,17 @@ All lyrics of each shengqiang-banshi type concatenated into one file:
 
 ## Schema Mapping
 
+| Jingju Lyrics field | Unified schema field | Notes |
+|---|---|---|
+| Filename (e.g. "西皮原板_三家店") | `original_id` | Encodes shengqiang+banshi + aria name |
+| Filename prefix "西皮"/"二黄" | `shengqiang` | xipi or erhuang |
+| Filename prefix after shengqiang | `sub_genre` | Banshi: 原板/快板/慢板/摇板 |
+| Filename after "_" | `title` | Aria/opera name in Chinese |
+| Text file content | `has_lyrics` = true | Space-segmented lyrics text |
+| (dataset-level) | `genre` = "Beijing Opera" | |
+| (dataset-level) | `has_audio` = false | Text-only dataset |
+| (dataset-level) | `language` = "Chinese" | Classical theatrical Chinese |
+
 ## Gap Assessment
 - Text-only dataset -- no audio, no musical notation
 - Very large lyrics collection: ~2,700 unique arias across all directories

@@ -60,6 +60,18 @@ Inspected 2026-09-15 via `src/inspectors/jingju_phoneme_annotation_inspect.py`.
 
 ## Schema Mapping
 
+| Jingju Phoneme field | Unified schema field | Notes |
+|---|---|---|
+| TextGrid filename | `original_id` | Full filename without extension |
+| Parent directory (dan/laosheng) | `role_type` | dan or laosheng |
+| Filename prefix (daeh/daxp/lseh/lsxp/etc.) | `shengqiang` | Decoded via prefix map: daeh=erhuang, daxp=xipi, etc. |
+| Catalogue CSV "Work" | `title` | Aria title + opera name (not extracted to master table) |
+| TextGrid tier "details" | `phonemes` = true | X-SAMPA phoneme annotations |
+| TextGrid tier "line" | `has_lyrics` = true | Line-level lyrics |
+| (dataset-level) | `genre` = "Beijing Opera" | |
+| (dataset-level) | `has_audio` = false | Audio on Zenodo separately |
+| (dataset-level) | `license` = "CC-BY-NC-SA-4.0" | |
+
 ## Gap Assessment
 - This is the **same set of 65 recordings** as jingju_singing_audio, with identical TextGrid annotations
 - Audio not included in the GitHub clone (must be fetched separately from Zenodo)

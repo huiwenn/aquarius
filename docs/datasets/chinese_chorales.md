@@ -42,6 +42,18 @@ Published at the Second Summit on Music Intelligence (SOMI 2023), proceedings pu
 
 ## Schema Mapping
 
+| Chinese Chorales field | Unified schema field | Notes |
+|---|---|---|
+| MXL filename (e.g. "422") | `original_id` | Segment number from full dataset (422–430 in sample) |
+| (inferred from XML) | `title` | Not set — song titles available from inspection but not encoded in loader |
+| (dataset-level) | `has_musicxml` = true | Compressed MusicXML (.mxl), 4-part SATB |
+| (dataset-level) | `has_audio` = false | No audio provided |
+| (dataset-level) | `has_midi` = false | No MIDI provided |
+| (dataset-level) | `genre` = "choral" | Chinese choral arrangements |
+| (dataset-level) | `language` = "Chinese" | |
+| Key signature (fifths) | not extracted | Available in some MXL files (e.g. fifths=2 → D major, fifths=1 → G major) |
+| Time signature | not extracted | Available in some MXL files (e.g. 4/4, 2/4) |
+
 ## Gap Assessment
 - Only 9 of 441 segments (from 3 of 125 songs) are publicly available
 - The .npz processed version (with pitch/fermata/tempo/chord labels) is not on GitHub
