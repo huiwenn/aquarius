@@ -204,12 +204,12 @@ print("=" * 60)
 
 fruits = [
     (1, "Merge Anthology ↔ MGD", "6,400 songs gain both MIDI/MusicXML AND province/key metadata", "~2 hours", "critical"),
-    (2, "Key detection on MIDI/XML", "18,665 items get key estimated via Krumhansl-Schmuckler", "~4 hours", "high"),
-    (3, "Pentatonic mode detection", "18,665 items get Chinese mode estimated, trained on 287 CNPM examples", "~1 day", "critical"),
+    (2, "Key detection on MIDI/XML", "10,720 items get key estimated via Krumhansl-Schmuckler", "~4 hours", "high"),
+    (3, "Pentatonic mode detection", "10,720 items get Chinese mode estimated, trained on 287 CNPM examples", "~1 day", "critical"),
     (4, "Fix 276 duplicate IDs", "Anthology loader bug: items in both lyrics-included/ and melody-only/ get same ID", "~30 min", "quick"),
     (5, "POP909 year lookup", "909 songs get release year via MusicBrainz (artist+title known)", "~2 hours", "medium"),
-    (6, "MIDI→Audio synthesis", "9,383 folk songs get synthesized audio via FluidSynth", "~1 day", "medium"),
-    (7, "Audio→MIDI transcription", "14,524 audio clips get MIDI via Basic Pitch", "~2 days", "medium"),
+    (6, "MIDI→Audio synthesis", "9,563 folk songs get synthesized audio via FluidSynth", "~1 day", "medium"),
+    (7, "Audio→MIDI transcription", "13,894 audio clips get MIDI via Basic Pitch", "~2 days", "medium"),
     (8, "Remove/flag PMEmo", "794 items are Western pop, not Chinese music — flag or exclude", "~15 min", "quick"),
     (9, "Duration extraction", "~47,000 items missing duration — extract from audio/MIDI files", "~4 hours", "medium"),
     (10, "Cross-link singing datasets", "~200 songs shared across M4Singer/GTSinger/POP909 — multi-singer linkage", "~2 hours", "medium"),
@@ -282,7 +282,7 @@ for i, v in enumerate(vals):
 # Panel D: What's fillable
 ax = axes[1, 1]
 fill_labels = ['Key\ndetection', 'Mode\ndetection', 'Duration\nextraction', 'Audio\nsynthesis', 'MIDI\ntranscription']
-fill_vals = [18665, 18665, 47272, 9383, 14524]
+fill_vals = [10720, 10720, 47272, 9563, 13894]
 fill_colors = ['#f39c12', '#9b59b6', '#1abc9c', '#e74c3c', '#3498db']
 ax.bar(fill_labels, fill_vals, color=fill_colors, alpha=0.85)
 ax.set_ylabel('Items fillable')
