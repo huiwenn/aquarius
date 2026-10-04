@@ -46,7 +46,6 @@ Datasets below exclude the resources in the supplied inventory, except where a d
 | Anonymized Subset of Anthology of Chinese Folk Songs | https://github.com/m-july/Anonymized-Subset-of-Anthology-of-Chinese-Folk-Songs |
 | MGD (Large-Scale Chinese Folk Songs Dataset) | https://chinglohsiu.github.io/files/MGD.html |
 | Chinese Folk Songs Symbolic Collections (31,000+ songs / 1,214 selected songs) | https://chinglohsiu.github.io/resources.html |
-| SongSong / OpenSongSong | https://ojs.aaai.org/index.php/AAAI/article/view/34820/36975 |
 
 ## Notes
 

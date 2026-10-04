@@ -1,0 +1,39 @@
+JIANPU TEXT FORMAT FOR THE SKELETON LAYER (guideline v1.1-draft)
+=================================================================
+The examples below are invented to show the FORMAT only. They are not from the corpus and are not real songs.
+
+Grammar
+-------
+Header line:   1=<key> <metre>              e.g.  1=D 2/4      or   1=G 散板
+Note:          <grace>?<degree><octave>?<duration>?<links>?
+  degree       1 2 3 4 5 6 7, or 0 for a rest; altered: #4  b7 ; neutral (printed only): 4^  7v
+  octave       , = one octave lower     ' = one octave higher   (repeat for two octaves:  5,,  1'')
+  duration     (none) = one beat (quarter note)
+               _  = half of a beat (eighth)     __ = quarter of a beat (sixteenth)
+               -  = add one beat (one dash per extra beat)
+               .  = dotted (adds half of the written value)
+  grace        printed grace note(s) in parentheses before the note: (6)5  (65)3
+  links        IDs of the performance-layer events this note reduces: 5{e12,e13}
+Tie:           ~  between two notes of the same pitch:  5-~5_
+Bar line:      |       End:  ||
+Free rhythm:   no bar lines; write the header metre as 散板 and give durations only where you would print them.
+Fermata:       ^ after the duration:  6-^
+Lyrics:        an optional second line starting with "L:" with one syllable per note, separated by spaces.
+
+Example 1: metred ditty, 2/4
+----------------------------
+1=F 2/4
+| 5_6_ 1' | 6_5_ 3 | (2)3_5_ 6_1'_ | 5- ||
+L: 一 朵 花 儿 开 呀 开 得 好 哎
+
+Example 2: free-rhythm mountain song with neutral tones, 散板
+---------------------------------------------------------------
+1=C 散板
+6, 1 2-^ 4^ 2 1 6,-^ (1)2 7v, 6,--^
+L: 哎 山 高 嘛 水 又 长 啰 哎 哟
+
+Example 3: melismatic tail (拖腔), with links to performance events
+------------------------------------------------------------------
+1=D 2/4
+| 3{e1} 5_{e2}6_{e3} | 5-{e4}~ | 5_{e5}3_{e6} 2_{e7,e8}3_{e9} | 1-{e10,e11,e12} ||
+L: 唱 一 声 (哎) — — — —

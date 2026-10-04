@@ -3,7 +3,7 @@
 ## Source
 - URL: https://github.com/m-july/Anthology-of-Chinese-Folk-Songs-v251103
 - Paper: Associated with research on optical recognition of printed Jianpu musical scores (2025)
-- License: Not specified (original scanned images are copyrighted; MIDI/MusicXML derived data may have different terms)
+- License: CC BY-NC-SA 4.0 (per arXiv:2512.14758; original scanned images are copyrighted, but the derived MIDI/MusicXML data is released under this license)
 - Access method: GitHub clone
 - Status: downloaded + inspected
 
