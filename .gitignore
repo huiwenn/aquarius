@@ -14,7 +14,9 @@ env/
 
 # Data — too large for git
 data/
-.claude/
+# Claude Code: share project skills, keep worktrees and local settings private
+.claude/*
+!.claude/skills/
 docs/misc/
 
 # OS
