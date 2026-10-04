@@ -191,3 +191,91 @@ The 12 figures referenced throughout are in `notebooks/figures/`. The analysis c
 | 10 | `10_title_embeddings.png` | 2D title embedding scatter | Title Embeddings |
 | 11 | `11_conversion_opportunities.png` | Conversion opportunity counts | Low-Hanging Fruit |
 | 12 | `12_landscape_summary.png` | Four-panel landscape summary | Instrument Coverage |
+
+
+---
+
+# Part 2 — The Colour Regions corpus (updated 2026-10-02)
+
+Part 1 above describes the 23-dataset unified table. The project's main deliverable is now the **Colour Regions corpus**: folk-song recordings and scores labelled with the 15 Chinese folk-song colour regions (色彩区). The analysis code is `notebooks/04_colour_regions_corpus.py`. It reads the release tables built by `src/colour_regions/build_release.py`. Figures are `notebooks/figures/cr_*.png`; vector versions go to `../colour_regions_paper/figures/`.
+
+## What is in it
+
+- **Recordings:** 1,297 (70.8 h) from 681 channels, collected in two rounds.
+  - Round 1: 600 YouTube recordings.
+  - Round 2: 697 recordings (571 Bilibili, 118 YouTube, 8 CREM/Europeana archive). Round 2 used a channel cap, provenance tiers and composed-song exclusion.
+- **Per region:** 73 (Gan) to 90 recordings.
+- **Ethnic groups:** 39 among the singers.
+- **Scores:** 10,830 in total.
+  - Anthology of Chinese Folk Songs: 8,641 scores in 5 regions.
+  - Essen: 2,189 scores in 14 regions.
+- **Core subset:** 1,186 recordings, the default for analysis. It excludes:
+  - clear label errors: 32
+  - non-traditional arrangements: 23
+  - composed songs: 57
+  - talk-heavy documentary items: 24
+  - Some items have more than one reason.
+
+![Overview](figures/cr_01_overview.png)
+*Recordings per region by round and by provenance tier, and scores per region by source.*
+
+## Provenance is the weak point of round 1
+
+| | Tier A | Tier B | Tier A+B |
+|---|---|---|---|
+| Round 1 | 31 | 26 | 10% |
+| Round 2 | 112 | 252 | 52% |
+
+- **Source of the round-1 tiers:** after collection, the same rules were applied to every round-1 recording, using its title and description.
+- **Where round 1 came from:** most round-1 items come from studio series, TV shows and albums. These give at most a county, with no field context.
+- **Per region:** tier A+B is highest in Min–Tai (48%) and Yue (42%), and lowest in Northeast Plain (24%) and Gan (25%).
+
+## Channel concentration fell sharply
+
+| Largest channel's share of a region | Round 1 | Round 2 | Merged |
+|---|---|---|---|
+| Tibetan | 82% | 8% | ~37% |
+| Southwest Multi-ethnic | 75% | 8% | ~33% |
+| Northern Steppe | 52% | 9% | |
+| Xinjiang | 50% | 8% | |
+
+![Channel concentration](figures/cr_02_channel_concentration.png)
+
+- **Round 2 rule:** at most 4 recordings per channel per region. No round-2 channel supplies more than 12% of a region.
+- **Merged pool:** the round-1 channel still supplies about a third of the Tibetan and Southwest Multi-ethnic recordings. Evaluation must therefore be grouped by channel.
+
+## Performance type and platform
+
+![Performance and platform](figures/cr_03_performance_platform.png)
+
+- **Tradition bearers and field recordings dominate:** 87% of Tibetan and Southwest Multi-ethnic recordings.
+- **Conservatory-style singing (民族唱法) is most common in:** Gan (38%), Northeast Plain and Southwest Plateau. Few field recordings of these regions are online.
+
+## Geography
+
+![Map](figures/cr_06_map.png)
+
+- **Geocoding:** each recording's stated place was matched with a county gazetteer (DataV.GeoAtlas), using `src/colour_regions/geocode.py`.
+
+| Precision | Recordings |
+|---|---|
+| County | 580 |
+| Prefecture | 319 |
+| Province only | 364 |
+| No usable place | 34 |
+
+- **Where the recordings fall:** the east and the southwest are dense. The Tibetan plateau, Xinjiang and the northeast are sparse.
+
+## Speech screen: an audio classifier is not a speech detector for folk singing
+
+![Speech share](figures/cr_05_speech_share.png)
+
+- **Method:** an AudioSet classifier (AST) scored the speech share of each recording in 10 s windows.
+- **Result:** 119 recordings score ≥ 0.3 (2% of round 1, 15% of round 2).
+- **Many of these are real singing:** unaccompanied elderly singers, 咸水歌, 褒歌, children's songs and work chants.
+- **Earlier attempt:** a pitch-plateau heuristic failed in the same way, on recitative genres.
+- **Rule used:** an item leaves the core subset only when two signals agree: speech share ≥ 0.3, and metadata saying documentary, news, interview or heritage film. 24 items meet both.
+
+## Durations and upload years
+
+![Duration and year](figures/cr_04_duration_year.png)
