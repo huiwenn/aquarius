@@ -1,0 +1,109 @@
+diff --git a/inference/rosvot.py b/inference/rosvot.py
+index d98093f..aded4bb 100644
+--- a/inference/rosvot.py
++++ b/inference/rosvot.py
+@@ -160,10 +160,40 @@ def parse_args():
+         action='store_true',
+         help="Synchronized results saving. "
+     )
++    parser.add_argument(
++        "--device",
++        type=str,
++        default='auto',
++        help="Device: auto | cuda | mps | cpu (auto = cuda > mps > cpu). "
++    )
+     args = parser.parse_args()
+ 
+     return args
+ 
++
++def _resolve_device(name, rank=0):
++    if name == 'auto':
++        if torch.cuda.is_available():
++            return torch.device(f"cuda:{int(rank)}")
++        if torch.backends.mps.is_available():
++            return torch.device("mps")
++        return torch.device("cpu")
++    if name == 'cuda':
++        return torch.device(f"cuda:{int(rank)}")
++    return torch.device(name)
++
++
++def _move_to(batch, device):
++    if isinstance(batch, torch.Tensor):
++        return batch.to(device)
++    if isinstance(batch, list):
++        return [_move_to(x, device) for x in batch]
++    if isinstance(batch, tuple):
++        return tuple(_move_to(x, device) for x in batch)
++    if isinstance(batch, dict):
++        return {k: _move_to(v, device) for k, v in batch.items()}
++    return batch
++
+ class RosvotInfer:
+     def __init__(self, num_gpus=-1):
+         self.args = parse_args()
+@@ -248,7 +278,7 @@ class RosvotInfer:
+                                world_size=self.num_gpus, rank=rank)
+ 
+         # build models
+-        device = torch.device(f"cuda:{int(rank)}")
++        device = _resolve_device(self.args.device, rank)
+         # build mel model
+         mel_net = MelNet(self.hparams)
+         mel_net.to(device)
+@@ -275,7 +305,7 @@ class RosvotInfer:
+             for batch in loader:
+                 if batch is None or len(batch) == 0:
+                     continue
+-                batch = move_to_cuda(batch, int(rank))
++                batch = _move_to(batch, device)
+                 bsz = batch['nsamples']
+ 
+                 # get f0
+diff --git a/modules/pe/rmvpe/spec.py b/modules/pe/rmvpe/spec.py
+index 675b88a..779010a 100644
+--- a/modules/pe/rmvpe/spec.py
++++ b/modules/pe/rmvpe/spec.py
+@@ -49,16 +49,18 @@ class MelSpectrogram(torch.nn.Module):
+             pad_right = (win_length_new + 1) // 2
+             audio = F.pad(audio, (pad_left, pad_right))
+ 
++        _dev = audio.device
++        _stft_dev = 'cpu' if _dev.type == 'mps' else _dev  # MPS (torch<=2.1) lacks complex/fft
+         fft = torch.stft(
+-            audio,
++            audio.to(_stft_dev),
+             n_fft=n_fft_new,
+             hop_length=hop_length_new,
+             win_length=win_length_new,
+-            window=self.hann_window[keyshift_key],
++            window=self.hann_window[keyshift_key].to(_stft_dev),
+             center=False,
+             return_complex=True
+         )
+-        magnitude = fft.abs()
++        magnitude = fft.abs().to(_dev)
+ 
+         if keyshift != 0:
+             size = self.n_fft // 2 + 1
+diff --git a/utils/audio/mel.py b/utils/audio/mel.py
+index 3711931..6c6e06c 100644
+--- a/utils/audio/mel.py
++++ b/utils/audio/mel.py
+@@ -78,10 +78,13 @@ class MelNet(nn.Module):
+                                     mode='reflect')
+         y = y.squeeze(1)
+ 
+-        spec = torch.stft(y, self.n_fft, hop_length=self.hop_size, win_length=self.win_size, window=self.hann_window,
++        _dev = y.device
++        _stft_dev = 'cpu' if _dev.type == 'mps' else _dev  # MPS (torch<=2.1) lacks complex/fft
++        spec = torch.stft(y.to(_stft_dev), self.n_fft, hop_length=self.hop_size, win_length=self.win_size,
++                          window=self.hann_window.to(_stft_dev),
+                           center=center, pad_mode='reflect', normalized=False, onesided=True, return_complex=True)
+         if not complex:
+-            spec = torch.view_as_real(spec)
++            spec = torch.view_as_real(spec).to(_dev)
+             spec = torch.sqrt(spec.pow(2).sum(-1) + (1e-9))     # [B, n_fft, T]
+             spec = torch.matmul(self.mel_basis, spec)
+             spec = spectral_normalize_torch(spec)

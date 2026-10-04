@@ -29,3 +29,6 @@ Thumbs.db
 
 # Jupyter
 .ipynb_checkpoints/
+
+# External model repos
+third_party/

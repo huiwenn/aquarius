@@ -215,7 +215,7 @@ def load_anthology() -> list[dict]:
                 row["language"] = "Chinese"
                 row["country"] = "China"
                 row["source_url"] = "https://github.com/m-july/Anthology-of-Chinese-Folk-Songs-v251103"
-                row["license"] = "unspecified"
+                row["license"] = "CC-BY-NC-SA-4.0"
                 row["access_status"] = "open"
                 rows.append(row)
     return rows

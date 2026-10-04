@@ -1,0 +1,244 @@
+<title>色彩区 Listening Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#EEF2EF; --panel:#F8FAF8; --ink:#17201C; --muted:#5B6862; --line:#CCD6D0;
+  --accent:#2F7F6F; --accent-ink:#FFFFFF; --accent-soft:#D5E9E3;
+  --tone-a:#2F6F9F; --tone-b:#9A5B1E; --warn:#A4342A; --done:#2F7F6F;
+  --serif:"Noto Serif SC","Songti SC",serif; --sans:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101513; --panel:#171E1B; --ink:#E3EAE6; --muted:#93A39B; --line:#2A3531;
+    --accent:#63BCA8; --accent-ink:#0C1210; --accent-soft:#1D332D;
+    --tone-a:#7FB3DB; --tone-b:#D9A15F; --warn:#E07A6F; --done:#63BCA8; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101513; --panel:#171E1B; --ink:#E3EAE6; --muted:#93A39B; --line:#2A3531;
+  --accent:#63BCA8; --accent-ink:#0C1210; --accent-soft:#1D332D;
+  --tone-a:#7FB3DB; --tone-b:#D9A15F; --warn:#E07A6F; --done:#63BCA8; color-scheme:dark;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding-inline:16px;padding-block:24px 48px;display:grid;gap:20px}
+header{display:grid;gap:6px}
+h1{font-family:var(--serif);font-weight:700;font-size:28px;margin:0;text-wrap:balance;letter-spacing:.02em}
+.lede{color:var(--muted);max-width:65ch;margin:0}
+.status{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.status b{color:var(--ink);font-weight:500}
+.note-save{font-size:13px;color:var(--warn)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:20px;display:grid;gap:18px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.meta .id{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.meta .region{font-family:var(--serif);font-size:20px;font-weight:500}
+.meta .kind{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:2px 8px;border-radius:99px}
+.question{margin:0;font-size:17px;font-weight:500;max-width:60ch}
+.timeline{position:relative;height:40px;border-radius:6px;background:var(--bg);border:1px solid var(--line);overflow:hidden}
+.timeline .hl{position:absolute;top:0;bottom:0;background:var(--accent-soft);border-inline:2px solid var(--accent)}
+.timeline .head{position:absolute;top:0;bottom:0;width:2px;background:var(--ink);opacity:.7;left:0}
+.timeline .lab{position:absolute;bottom:3px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:9px 14px;display:inline-flex;gap:8px;align-items:center}
+button:hover{border-color:var(--accent)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+button .k{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+button.primary .k{color:var(--accent-ink);border-color:currentColor;opacity:.8}
+.tone-a{border-color:var(--tone-a)} .tone-a .sw{background:var(--tone-a)}
+.tone-b{border-color:var(--tone-b)} .tone-b .sw{background:var(--tone-b)}
+.sw{width:10px;height:10px;border-radius:50%;display:inline-block}
+.answers{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.answers button{justify-content:space-between}
+.answers button.chosen{background:var(--accent-soft);border-color:var(--accent);font-weight:600}
+.nav{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.grid-title{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.cells{display:grid;grid-template-columns:repeat(auto-fill,minmax(22px,1fr));gap:4px}
+.cells button{padding:0;height:22px;border-radius:4px;font-family:var(--mono);font-size:10px;color:var(--muted);justify-content:center}
+.cells button.done{background:var(--done);border-color:var(--done);color:var(--accent-ink)}
+.cells button.cur{outline:2px solid var(--ink);outline-offset:1px}
+.help{font-size:13px;color:var(--muted);max-width:65ch}
+.help kbd{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.finished{font-family:var(--serif);font-size:18px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>色彩区 Listening Audit</h1>
+    <p class="lede">Each item is a note from our automatic transcriptions of the 色彩区 folk-song dataset. Listen to the sung note (highlighted) and say which reference tone matches it. Your answers measure how often the transcriber and its critic are right on real field recordings.</p>
+    <div class="status" id="status"><span>Loading items…</span></div>
+    <div class="note-save" id="saveNote" hidden></div>
+  </header>
+
+  <section class="card" id="card" aria-live="polite">
+    <div class="meta"><span class="region" id="mRegion">—</span><span class="kind" id="mKind" hidden>—</span><span class="id" id="mId"></span></div>
+    <p class="question" id="question">Which tone matches the highlighted sung note?</p>
+    <div class="timeline" id="timeline"><div class="hl" id="hl"></div><div class="head" id="head"></div><span class="lab" style="left:6px">−1 s</span><span class="lab" style="right:6px">+1 s</span></div>
+    <div class="row">
+      <button class="primary" id="bClip">Play clip <span class="k">space</span></button>
+      <button id="bNote">Play note only <span class="k">n</span></button>
+      <button class="tone-a" id="bA"><span class="sw"></span>Tone A <span class="k">a</span></button>
+      <button class="tone-b" id="bB"><span class="sw"></span>Tone B <span class="k">b</span></button>
+      <button id="bSeq">Note → A → B <span class="k">s</span></button>
+    </div>
+    <div class="answers" id="answers">
+      <button data-c="A">A matches <span class="k">1</span></button>
+      <button data-c="B">B matches <span class="k">2</span></button>
+      <button data-c="neither">Neither <span class="k">3</span></button>
+      <button data-c="no_singing">No singing here <span class="k">4</span></button>
+      <button data-c="unsure">Can't tell <span class="k">5</span></button>
+    </div>
+    <div class="nav">
+      <button id="bPrev">← Previous</button>
+      <button id="bNext">Next unrated →</button>
+    </div>
+  </section>
+
+  <section>
+    <p class="grid-title">All items</p>
+    <div class="cells" id="cells"></div>
+  </section>
+
+  <p class="help">Tones are played in the singer's own tuning, so a match means the same scale step even if the singer is slightly sharp or flat of A440. Slides and vibrato are normal: judge the pitch the note settles on. Use <kbd>Can't tell</kbd> freely; a guess is worse than no answer. Keys: <kbd>space</kbd> clip, <kbd>n</kbd> note, <kbd>a</kbd>/<kbd>b</kbd> tones, <kbd>1</kbd>–<kbd>5</kbd> answer, <kbd>←</kbd>/<kbd>→</kbd> move.</p>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let items = [], i = 0, answers = {}, uid = null, db = null, actx = null;
+  const audio = new Audio();
+  audio.preload = "auto";
+  let stopTimer = null, rafId = null;
+
+  const LS_KEY = "gold-answers-v1";
+  const loadLocal = () => { try { return JSON.parse(localStorage.getItem(LS_KEY) || "{}"); } catch { return {}; } };
+  const saveLocal = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(answers)); } catch {} };
+
+  const hz = (midi, tuning) => 440 * Math.pow(2, (midi + tuning - 69) / 12);
+  const kindText = { repitch: "critic changed the pitch", ok: "critic: correct", uncertain: "critic: unsure",
+                     fill: "critic added this note", delete: "critic removed this note" };
+
+  function tone(midi, tuning, dur) {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    const t0 = actx.currentTime + 0.02, d = Math.min(Math.max(dur, 0.6), 1.6);
+    const real = new Float32Array([0, 1, 0.45, 0.25, 0.12, 0.06]), imag = new Float32Array(real.length);
+    const osc = actx.createOscillator(); osc.setPeriodicWave(actx.createPeriodicWave(real, imag));
+    osc.frequency.value = hz(midi, tuning);
+    const g = actx.createGain();
+    g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(0.25, t0 + 0.04);
+    g.gain.setValueAtTime(0.25, t0 + d - 0.12); g.gain.linearRampToValueAtTime(0, t0 + d);
+    osc.connect(g).connect(actx.destination); osc.start(t0); osc.stop(t0 + d + 0.02);
+    return new Promise(r => setTimeout(r, (d + 0.1) * 1000));
+  }
+
+  function drawHead() {
+    const it = items[i]; if (!it) return;
+    const total = (it.note_end - it.note_start) + it.clip_offset + 1.0;
+    $("head").style.left = Math.min(100, (audio.currentTime / total) * 100) + "%";
+    if (!audio.paused) rafId = requestAnimationFrame(drawHead);
+  }
+  function play(from, to) {
+    clearTimeout(stopTimer); cancelAnimationFrame(rafId);
+    audio.currentTime = from;
+    audio.play().then(() => { drawHead(); if (to != null) stopTimer = setTimeout(() => audio.pause(), (to - from) * 1000); })
+      .catch(() => {});
+    return new Promise(r => setTimeout(r, ((to ?? audio.duration ?? 3) - from) * 1000 + 150));
+  }
+  const noteSpan = (it) => [it.clip_offset, it.clip_offset + (it.note_end - it.note_start)];
+
+  function render() {
+    const it = items[i]; if (!it) return;
+    $("mRegion").textContent = it.region;
+    // category deliberately not shown: the rating must stay blind to what the critic did
+    $("mId").textContent = `${it.id} · ${i + 1}/${items.length} · ${it.video_id} @ ${it.note_start.toFixed(2)} s`;
+    $("question").textContent = (it.stratum === "fill" || it.stratum === "delete")
+      ? "Is someone singing at the highlighted moment? If so, which tone matches?"
+      : "Which tone matches the highlighted sung note?";
+    const total = (it.note_end - it.note_start) + it.clip_offset + 1.0;
+    $("hl").style.left = (it.clip_offset / total * 100) + "%";
+    $("hl").style.width = ((it.note_end - it.note_start) / total * 100) + "%";
+    $("head").style.left = "0%";
+    audio.src = `clips/${it.id}.mp3`;
+    document.querySelectorAll("#answers button").forEach(b => b.classList.toggle("chosen", answers[it.id] === b.dataset.c));
+    renderCells(); renderStatus();
+  }
+  function renderCells() {
+    const box = $("cells");
+    if (!box.children.length) items.forEach((it, k) => {
+      const b = document.createElement("button"); b.textContent = k + 1; b.title = `${it.id} · ${it.region}`;
+      b.addEventListener("click", () => { i = k; render(); }); box.appendChild(b);
+    });
+    [...box.children].forEach((b, k) => { b.classList.toggle("done", !!answers[items[k].id]); b.classList.toggle("cur", k === i); });
+  }
+  function renderStatus() {
+    const n = items.filter(it => answers[it.id]).length;
+    const st = $("status"); st.textContent = "";
+    const parts = [["Rated", `${n} / ${items.length}`], ["Saving to", db ? "shared results (Claude can read them)" : "this browser only"]];
+    parts.forEach(([k, v]) => { const s = document.createElement("span"); s.append(k + " "); const b = document.createElement("b"); b.textContent = v; s.append(b); st.append(s); });
+    if (n === items.length) { const s = document.createElement("span"); s.className = "finished"; s.textContent = "All items rated. Thank you."; st.append(s); }
+  }
+
+  async function answer(c) {
+    const it = items[i]; if (!it) return;
+    answers[it.id] = c; saveLocal(); render();
+    if (db && uid) {
+      try {
+        await db.collection("ratings").doc(`${it.id}__${uid}`).set({ item: it.id, choice: c, rater: uid,
+          stratum: it.stratum, region: it.region, ts: new Date().toISOString() });
+        $("saveNote").hidden = true;
+      } catch (e) {
+        $("saveNote").hidden = false;
+        $("saveNote").textContent = "Couldn't save that answer to the shared results (" + (e && e.code || "error") + "). It's kept in this browser; answer it again later to sync.";
+      }
+    }
+    nextUnrated();
+  }
+  function nextUnrated() {
+    for (let k = 1; k <= items.length; k++) { const j = (i + k) % items.length; if (!answers[items[j].id]) { i = j; render(); return; } }
+    render();
+  }
+
+  $("bClip").addEventListener("click", () => play(0, null));
+  $("bNote").addEventListener("click", () => { const [a, b] = noteSpan(items[i]); play(a, b); });
+  $("bA").addEventListener("click", () => { const it = items[i]; tone(it.A.midi, it.tuning, it.note_end - it.note_start); });
+  $("bB").addEventListener("click", () => { const it = items[i]; tone(it.B.midi, it.tuning, it.note_end - it.note_start); });
+  $("bSeq").addEventListener("click", async () => {
+    const it = items[i]; const [a, b] = noteSpan(it); const d = it.note_end - it.note_start;
+    await play(a, b); await tone(it.A.midi, it.tuning, d); await tone(it.B.midi, it.tuning, d);
+  });
+  document.querySelectorAll("#answers button").forEach(b => b.addEventListener("click", () => answer(b.dataset.c)));
+  $("bPrev").addEventListener("click", () => { i = (i - 1 + items.length) % items.length; render(); });
+  $("bNext").addEventListener("click", nextUnrated);
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest && e.target.closest("input,textarea")) return;
+    const k = e.key.toLowerCase();
+    if (k === " ") { e.preventDefault(); $("bClip").click(); }
+    else if (k === "n") $("bNote").click(); else if (k === "a") $("bA").click(); else if (k === "b") $("bB").click();
+    else if (k === "s") $("bSeq").click();
+    else if ("12345".includes(k) && k.length === 1) answer(["A", "B", "neither", "no_singing", "unsure"][+k - 1]);
+    else if (e.key === "ArrowLeft") $("bPrev").click(); else if (e.key === "ArrowRight") $("bNext").click();
+  });
+
+  (async () => {
+    answers = loadLocal();
+    try { items = await (await fetch("items.json")).json(); } catch { $("status").textContent = "Couldn't load the items. Reload the page to try again."; return; }
+    render();
+    const [dbNs, userNs] = await Promise.all([window.claude?.use?.("db") ?? null, window.claude?.use?.("user") ?? null]);
+    db = dbNs;
+    try { uid = userNs ? await userNs.id() : null; } catch { uid = null; }
+    if (db && uid) {
+      try {
+        const snap = await db.collection("ratings").where("rater", "==", uid).get();
+        snap.docs.forEach(d => { const v = d.data(); if (v && v.item) answers[v.item] = v.choice; });
+        saveLocal();
+      } catch {}
+    } else { db = null; }
+    const firstOpen = items.findIndex(it => !answers[it.id]);
+    i = firstOpen >= 0 ? firstOpen : 0;
+    render();
+  })();
+})();
+</script>
