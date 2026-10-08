@@ -22,7 +22,8 @@ The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) i
 | `ethnic_group`, `ethnic_subgroup` | As stated by the source |
 | `song_name`, `song_key`, `genre`, `performance_type` | Song title, normalised title, genre, and performance type (原生态, field, 民族唱法, …) |
 | `singer`, `singer_id`, `singer_inheritor` | The singer's name is given only for national heritage bearers; `singer_id` is a pseudonymous ID |
-| `provenance_tier`, `provenance_evidence` | A1/A2/B/C, and the evidence behind the region label (other singers' names redacted) |
+| `provenance_tier`, `provenance_evidence` | A1/A2/B/C (Musical Map of China items: A2 when the description names the singer and one county, else C), and the evidence behind the region label (other singers' names redacted) |
+| `feature_flags` | Semantic features, separated by `;`: `series:musical_map_of_china` (the 中国音乐地图 / Rhymoi Music series), `accompanied` / `unaccompanied`, `instrument:<name>` (as named by the source), `multiple_singers`, `song_and_dance`. Empty where the source does not say. |
 | `dating_flag`, `label_status` | traditional / check / composed; result of the label review |
 | `speech_share` | Share of 10 s windows classified as speech |
 | `core`, `core_exclusion` | Default analysis subset, and the reasons for exclusion |

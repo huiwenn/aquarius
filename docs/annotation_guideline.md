@@ -17,6 +17,8 @@ Please do not:
 
 ## What you receive
 
+Each notator receives a private folder. Open `index.html` in Chrome, Firefox or Safari. It works offline and uploads nothing. It holds this guideline, your excerpt order, a player that marks the excerpt window, the notes form (step 3), the background form, the debrief form, a format check for your `_jianpu.txt` and `_performance.csv` files, and an Export button. Your answers stay in the browser until you export them; export regularly as a backup. The audio files are in `audio/`:
+
 | File | Content |
 |---|---|
 | `E##_mix.wav` | **Primary audio.** The original recording: the excerpt plus 2 s of context before and after. |

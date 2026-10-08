@@ -19,7 +19,7 @@ OUT = ROOT / "metadata"
 COLS = ["item_id", "round", "platform", "url", "title", "channel", "channel_key", "upload_date", "duration_s",
         "region", "region_en", "region_code", "region_type", "province", "county_or_area", "geo_level", "lon", "lat",
         "ethnic_group", "ethnic_subgroup", "song_name", "song_key", "genre", "performance_type", "singer",
-        "singer_id", "singer_inheritor", "provenance_tier", "provenance_evidence", "dating_flag", "label_status",
+        "singer_id", "singer_inheritor", "provenance_tier", "provenance_evidence", "feature_flags", "dating_flag", "label_status",
         "speech_share", "core", "core_exclusion", "group_id", "fold"]
 
 

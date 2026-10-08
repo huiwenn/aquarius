@@ -18,6 +18,7 @@ Missing inputs are tolerated: their columns stay empty, so the tables can be reb
 Run (py312): python src/colour_regions/build_release.py
 """
 
+import hashlib
 import pickle
 import re
 import subprocess
@@ -40,7 +41,7 @@ R2 = ROOT / "data" / "regions_v2"
 FIELDS = ["item_id", "round", "platform", "url", "title", "channel", "channel_key", "upload_date", "duration_s",
           "region", "region_en", "region_code", "region_type", "province", "county_or_area", "ethnic_group", "ethnic_subgroup",
           "song_name", "song_key", "genre", "performance_type", "singer", "singer_id", "singer_inheritor", "provenance_tier", "provenance_tier_curator",
-          "provenance_evidence", "dating_flag", "song_type", "label_concern", "content_concern",
+          "provenance_evidence", "feature_flags", "dating_flag", "song_type", "label_concern", "content_concern",
           "label_status", "speech_share", "speech_doc_meta", "sung_share", "music_share", "transcription_model", "n_notes",
           "notes_per_s", "vocal_db", "game_rosvot_agreement", "core", "core_exclusion", "group_id", "fold"]
 # Speech rule (docs/collection_v2.md, "Speech screen"): the AudioSet classifier also scores unaccompanied, speech-like
@@ -91,8 +92,8 @@ def singer_ids(d: pd.DataFrame) -> pd.Series:
         n = re.sub(r"[（(].*?[)）]", "", str(n))
         return re.sub(r"\s|演唱|领唱|等$", "", n) or None
     names = d.singer.map(norm)
-    ids = {n: f"S{i:04d}" for i, n in enumerate(sorted(set(names.dropna())), 1)}
-    return names.map(ids)
+    # a hash of the normalised name, so ids do not shift when singers are added (sequential ids did)
+    return names.map(lambda n: None if n is None else "S" + hashlib.sha1(n.encode()).hexdigest()[:8])
 
 
 PROV_ZH = {"Hebei": "河北", "Tianjin": "天津", "Jilin": "吉林", "Jiangsu": "江苏", "Shanghai": "上海", "Guangdong": "广东",
@@ -242,10 +243,27 @@ def main() -> None:
     for c in ("speech_share", "dating_flag"):
         if c not in d:
             d[c] = np.nan
+    # Musical Map of China series (src/colour_regions/rhymoi.py): fields parsed from the structured descriptions.
+    # Tier by stated area (author decision 2026-10-04): named singer + one stated county → A; else the curator tier.
+    d["provenance_tier_curator"] = d.provenance_tier
+    rh = read(ROOT / "data" / "rhymoi" / "rhymoi_items.csv")
+    d["feature_flags"] = ""
+    if len(rh):
+        rh = rh.set_index("item_id")
+        on = d.item_id.isin(rh.index)
+        p = rh.reindex(d.loc[on, "item_id"]).set_index(d.index[on])
+        d.loc[on, "feature_flags"] = p["feature_flags"].fillna("")
+        d.loc[on, "singer"] = d.loc[on, "singer"].fillna(p.singers)
+        d.loc[on, "genre"] = p.genre_native.fillna(d.loc[on, "genre"])
+        up = on & d.index.isin(p.index[p.tier == "A2"]) & d.provenance_tier.isin(["B", "C"])
+        d.loc[up, "provenance_tier"] = "A"
+        d.loc[up, "provenance_evidence"] = ("Musical Map of China description: named singer, 地区 "
+                                            + p.loc[d.index[up], "area"].astype(str) + " (county stated)")
+    d["feature_flags"] = d["feature_flags"].replace("", np.nan)
+    d["singer_id"] = singer_ids(d)  # again: the series descriptions name singers the curators left blank
     # tier A split (src/colour_regions/check_inheritors.py): A1 = named singer found on the national heritage-bearer
     # list with a matching province (also upgrades B/C items); A2 = other tier-A items (uploader states the place)
     ih = read(ROOT / "data" / "regions_curated" / "ihchina_items.csv")
-    d["provenance_tier_curator"] = d.provenance_tier
     if len(ih):
         on = d.item_id.isin(ih.loc[ih.on_national_list, "item_id"])
         d.loc[on, "provenance_tier"] = "A1"

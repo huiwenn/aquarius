@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Colour Regions Notation</title>
+<style>
+:root{
+  --bg:#f6f4ef; --panel:#fffdf8; --ink:#1f1d1a; --ink2:#5b564d; --muted:#8a8478; --line:#e3ded3;
+  --accent:#9b2f1f; --accent-soft:#f3e3dc; --ok:#2f6b3a; --ok-soft:#e2efe2; --warn:#8a5a00; --warn-soft:#f8ecd2;
+  --err:#a1261b; --err-soft:#f7dfdb; --win:#e8d9b8; --head:#efe9de;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei","Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{--bg:#191714; --panel:#221f1b; --ink:#ece6da; --ink2:#bdb5a6; --muted:#8d8678; --line:#3a352e;
+    --accent:#e07a5f; --accent-soft:#3b2620; --ok:#7cc48a; --ok-soft:#1f3324; --warn:#e3b45a; --warn-soft:#3a2f17;
+    --err:#f08a7e; --err-soft:#3d221e; --win:#4a3f28; --head:#2a2621; color-scheme:dark}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg); color:var(--ink); font:15px/1.6 var(--sans)}
+header{position:sticky; top:0; z-index:5; background:var(--panel); border-bottom:1px solid var(--line)}
+.bar{max-width:1100px; margin:0 auto; padding:10px 16px; display:flex; gap:16px; align-items:center; flex-wrap:wrap}
+.brand{font-weight:650; letter-spacing:.01em}
+.brand small{display:block; font-weight:400; color:var(--muted); font-size:12px}
+.prog{margin-left:auto; color:var(--ink2); font-variant-numeric:tabular-nums; font-size:13px}
+nav{max-width:1100px; margin:0 auto; padding:0 16px; display:flex; gap:2px; overflow-x:auto}
+nav button{border:0; background:none; color:var(--ink2); padding:8px 12px; font:inherit; font-size:14px; cursor:pointer;
+  border-bottom:2px solid transparent; white-space:nowrap}
+nav button[aria-current="true"]{color:var(--ink); border-bottom-color:var(--accent); font-weight:600}
+main{max-width:1100px; margin:0 auto; padding:20px 16px 80px}
+h1{font-size:22px; margin:0 0 4px; text-wrap:balance}
+h2{font-size:18px; margin:28px 0 8px; text-wrap:balance}
+h3{font-size:15px; margin:20px 0 6px}
+p{margin:6px 0 10px; max-width:70ch}
+.en{color:var(--muted); font-size:.86em; font-weight:400}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:16px}
+.grid{display:grid; gap:14px}
+.two{grid-template-columns:repeat(auto-fit,minmax(min(400px,100%),1fr))}
+.card>:first-child{margin-top:0}
+.grid>*,.player>*,.row>*{min-width:0}
+main{overflow-wrap:anywhere}
+a{color:var(--accent)}
+label.check{display:grid; grid-template-columns:auto 1fr; gap:8px; align-items:start; font-weight:400; margin:10px 0}
+label.check input{margin-top:5px}
+label{display:block; font-weight:600; font-size:14px; margin-bottom:4px}
+input[type=text],input[type=number],select,textarea{width:100%; font:inherit; color:var(--ink); background:var(--bg);
+  border:1px solid var(--line); border-radius:6px; padding:7px 9px}
+textarea{min-height:84px; resize:vertical}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.radios{display:flex; gap:12px; flex-wrap:wrap; font-weight:400}
+.radios label{font-weight:400; display:flex; gap:5px; align-items:center; margin:0}
+button.btn{font:inherit; font-size:14px; padding:7px 13px; border-radius:6px; border:1px solid var(--line);
+  background:var(--panel); color:var(--ink); cursor:pointer}
+button.btn:hover{border-color:var(--ink2)}
+button.primary{background:var(--accent); border-color:var(--accent); color:#fff}
+button.small{padding:4px 9px; font-size:13px}
+.pill{display:inline-block; font-size:12px; padding:1px 8px; border-radius:99px; background:var(--head); color:var(--ink2)}
+.pill.done{background:var(--ok-soft); color:var(--ok)}
+.pill.prog{background:var(--warn-soft); color:var(--warn)}
+.pill.cal{background:var(--accent-soft); color:var(--accent)}
+table{border-collapse:collapse; width:100%; font-size:14px}
+th,td{border-bottom:1px solid var(--line); padding:7px 8px; text-align:left; vertical-align:top}
+th{background:var(--head); font-weight:600}
+.tablewrap{overflow-x:auto}
+td.num,th.num{text-align:right; font-variant-numeric:tabular-nums}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--head)}
+.note{border-left:3px solid var(--accent); background:var(--accent-soft); padding:8px 12px; border-radius:4px; margin:10px 0}
+.msg{font-size:14px; padding:6px 10px; border-radius:5px; margin:3px 0; font-family:var(--mono)}
+.msg.err{background:var(--err-soft); color:var(--err)}
+.msg.warn{background:var(--warn-soft); color:var(--warn)}
+.msg.ok{background:var(--ok-soft); color:var(--ok)}
+.player{display:grid; gap:10px}
+.timeline{position:relative; height:44px; background:var(--head); border-radius:6px; cursor:pointer; overflow:hidden}
+.timeline .win{position:absolute; top:0; bottom:0; background:var(--win)}
+.timeline .head{position:absolute; top:0; bottom:0; width:2px; background:var(--accent)}
+.timeline .lbl{position:absolute; bottom:3px; font-size:11px; color:var(--ink2); font-family:var(--mono)}
+.clock{font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:20px}
+.files li{margin:3px 0}
+code,kbd{font-family:var(--mono); font-size:.9em; background:var(--head); padding:1px 5px; border-radius:4px}
+.guide h1{font-size:20px} .guide h2{font-size:17px} .guide table{margin:8px 0 14px}
+.guide ul{padding-left:22px; max-width:72ch}
+.fam td{padding:4px 8px}
+.muted{color:var(--muted)}
+[hidden]{display:none!important}
+.drop{border:2px dashed var(--line); border-radius:8px; padding:22px; text-align:center; color:var(--ink2)}
+.drop.over{border-color:var(--accent); background:var(--accent-soft)}
+.saved{font-size:12px; color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">色彩区 记谱研究 <small>Colour Regions notation study · <span id="who"></span></small></div>
+    <div class="prog" id="prog"></div>
+    <button class="btn small" onclick="exportAll()">导出 Export</button>
+  </div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+
+<script id="config" type="application/json">/*__CONFIG__*/</script>
+<script>
+"use strict";
+const CFG = JSON.parse(document.getElementById("config").textContent);
+const KEY = "colour-regions-notation:" + CFG.study_version + ":" + CFG.notator;
+const TYPES = ["note","grace","glide","vocable_note","spoken","non_pitched","free_rhythm_start","free_rhythm_end","free_cadence"];
+const MARKERS = ["free_rhythm_start","free_rhythm_end","free_cadence"];
+const COLS = ["event_id","onset_s","arrival_s","offset_s","steady_start_s","steady_end_s","type","glide_from","glide_to",
+  "scoop_in","vibrato","throw","neutral","falsetto","glottal","melisma_group","syllable","voice","doubled",
+  "conf_exists","conf_pitch","conf_onset"];
+
+// ---------- state (autosaved in this browser; Export makes the file you send us) ----------
+let S = load();
+function blank(){ return {notator:CFG.notator, consent:{}, background:{}, excerpts:{}, sessions:[], debrief:{items:[], answers:{}}}; }
+function load(){ try{ const s = JSON.parse(localStorage.getItem(KEY)); if(s && s.notator===CFG.notator) return s; }catch(e){} return blank(); }
+let saveTimer=null;
+function save(){ clearTimeout(saveTimer); saveTimer=setTimeout(()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+  const el=document.getElementById("saved"); if(el) el.textContent="已自动保存 Saved "+new Date().toLocaleTimeString(); },300); }
+function ex(id){ return S.excerpts[id] ||= {status:"todo", notes:{}, seconds:0, files:{}}; }
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = t => { t=Math.max(0,t||0); const m=Math.floor(t/60), s=(t%60).toFixed(2).padStart(5,"0"); return m+":"+s; };
+const hm = sec => { sec=Math.round(sec||0); return Math.floor(sec/3600)+" h "+String(Math.floor(sec%3600/60)).padStart(2,"0")+" min"; };
+
+// ---------- navigation ----------
+const TABS = [["start","开始","Start"],["background","背景表","Background"],["list","片段","Excerpts"],
+  ["check","检查文件","Check files"],["guide","指南","Guideline"],["debrief","复盘","Debrief"],["export","导出","Export"]];
+let view = {tab:"start", excerpt:null};
+function go(tab, excerpt){ view={tab, excerpt:excerpt||null}; stopAudio(); render(); window.scrollTo(0,0); }
+function renderNav(){
+  document.getElementById("nav").innerHTML = TABS.map(([k,zh,en])=>
+    `<button aria-current="${view.tab===k||(k==="list"&&view.tab==="excerpt")}" onclick="go('${k}')">${zh} <span class="en">${en}</span></button>`).join("");
+  const done = CFG.order.filter(o=>ex(o.excerpt).status==="done").length;
+  document.getElementById("prog").textContent = `${done} / ${CFG.order.length} 完成 done`;
+  document.getElementById("who").textContent = "Notator " + CFG.notator;
+}
+function render(){
+  renderNav();
+  const m = document.getElementById("main");
+  ({start:vStart, background:vBackground, list:vList, excerpt:vExcerpt, check:vCheck, guide:vGuide, debrief:vDebrief, export:vExport})[view.tab](m);
+}
+
+// ---------- start ----------
+function vStart(m){
+  const c = S.consent;
+  m.innerHTML = `
+  <h1>欢迎 <span class="en">Welcome</span></h1>
+  <p>感谢参与。本页面在您的电脑上离线运行：音频、表格和您的输入都不会上传。请完成后点击 <b>导出</b>，把导出的文件连同记谱文件一起发给联系人。</p>
+  <p class="en">Thank you for taking part. This page runs offline on your computer. Nothing is uploaded. When you finish, press <b>Export</b> and send the exported file with your notation files to the project contact.</p>
+  <div class="grid two">
+    <div class="card">
+      <h3>步骤 <span class="en">Steps</span></h3>
+      <ol>
+        <li>阅读 <a href="#" onclick="go('guide');return false">指南</a> <span class="en">Read the guideline</span></li>
+        <li>填写 <a href="#" onclick="go('background');return false">背景表</a>（一次） <span class="en">Background form (once)</span></li>
+        <li>按顺序完成 <a href="#" onclick="go('list');return false">片段</a>，先做 E00 校准 <span class="en">Excerpts in your order, E00 first</span></li>
+        <li>用 <a href="#" onclick="go('check');return false">检查文件</a> 核对格式 <span class="en">Check your file formats</span></li>
+        <li><a href="#" onclick="go('export');return false">导出</a> 并发送 <span class="en">Export and send</span></li>
+      </ol>
+    </div>
+    <div class="card">
+      <h3>同意书 <span class="en">Consent</span></h3>
+      ${[["use","我同意我的记谱和匿名背景信息被分析并作为开放数据发布（拟用 CC BY 4.0）。","My notations and anonymised background answers may be analysed and released as open data (proposed licence CC BY 4.0)."],
+         ["audio","音频仅用于本任务；我不会分享，任务结束后会删除。","The audio is for this task only. I will not share it, and I will delete it when the task is finished."],
+         ["independent","我将独立完成，不与其他记谱人讨论，不查找歌曲，不使用自动转录工具。","I will work alone: no discussion with other notators, no looking up the songs, no automatic transcription."],
+         ["name","我同意在致谢中署名（可选）。","I agree to be acknowledged by name (optional)."]]
+        .map(([k,zh,en])=>`<label class="check"><input type="checkbox" ${c[k]?"checked":""} onchange="S.consent['${k}']=this.checked;S.consent.date=new Date().toISOString();save()"> <span>${zh}<br><span class="en">${en}</span></span></label>`).join("")}
+      <p class="muted" style="font-size:13px">报酬与时间安排见指南末尾。<span class="en">Pay and time: see the end of the guideline.</span> ${esc(CFG.pay||"")}</p>
+    </div>
+  </div>
+  <p class="saved" id="saved"></p>`;
+}
+
+// ---------- background form ----------
+function vBackground(m){
+  const b = S.background;
+  const f = (k,zh,en,type="text") => `<div><label>${zh} <span class="en">${en}</span></label>
+     <input type="${type}" value="${esc(b[k])}" oninput="S.background['${k}']=this.value;save()"></div>`;
+  const yn = (k,zh,en) => `<div><label>${zh} <span class="en">${en}</span></label><div class="radios">
+     ${["yes","no","unsure"].map(v=>`<label><input type="radio" name="${k}" ${b[k]===v?"checked":""} onchange="S.background['${k}']='${v}';save()">${{yes:"是 yes",no:"否 no",unsure:"不确定 unsure"}[v]}</label>`).join("")}</div></div>`;
+  m.innerHTML = `
+  <h1>背景表 <span class="en">Background form</span></h1>
+  <p>只需填写一次。信息将匿名处理。<span class="en">Fill this in once. Your answers are anonymised.</span></p>
+  <div class="card grid two">
+    ${f("institution","毕业/就读院校","Institution")}
+    ${f("major","专业（作曲、民族音乐理论、民族音乐学、表演…）","Major")}
+    ${f("years_transcription","记谱/采录经验（年）","Years of transcription experience","number")}
+    ${f("fieldwork_regions","田野调查地区","Regions of fieldwork")}
+    ${f("native_language","母语及方言","Native language and dialect")}
+    ${yn("absolute_pitch","绝对音感","Absolute pitch")}
+    ${f("instrument","主修乐器","Main instrument")}
+    ${f("tools","Sonic Visualiser / Tony 使用经验","Experience with the tools")}
+  </div>
+  <h2>对各色彩区的熟悉程度 <span class="en">Familiarity with each region (1 = none, 5 = expert)</span></h2>
+  <div class="card tablewrap"><table class="fam"><thead><tr><th>色彩区 <span class="en">Region</span></th>${[1,2,3,4,5].map(i=>`<th class="num">${i}</th>`).join("")}</tr></thead><tbody>
+    ${CFG.regions.map(r=>`<tr><td>${esc(r.zh)} <span class="en">${esc(r.en)}</span></td>${[1,2,3,4,5].map(i=>
+      `<td class="num"><input type="radio" aria-label="${esc(r.en)} ${i}" name="fam_${r.code}" ${(b.familiarity||{})[r.code]==i?"checked":""} onchange="(S.background.familiarity ||= {})['${r.code}']=${i};save()"></td>`).join("")}</tr>`).join("")}
+  </tbody></table></div>
+  <p class="saved" id="saved"></p>`;
+}
+
+// ---------- excerpt list ----------
+function vList(m){
+  const st = o => { const e=ex(o.excerpt); return e.status==="done"?`<span class="pill done">完成 done</span>`:
+     e.status==="doing"?`<span class="pill prog">进行中 in progress</span>`:`<span class="pill">未开始 to do</span>`; };
+  m.innerHTML = `
+  <h1>片段 <span class="en">Excerpts, in your order</span></h1>
+  <p>请按此顺序完成。部分片段会以不同编号再次出现：请把每个片段都当作新的。<span class="en">Work in this order. Some excerpts appear twice under different IDs: treat every excerpt as new.</span></p>
+  <div class="card tablewrap"><table><thead><tr><th class="num">#</th><th>编号 ID</th><th>状态 Status</th><th class="num">记谱时长 Time</th><th class="num">片段长度 Length</th></tr></thead><tbody>
+  ${CFG.order.map(o=>`<tr class="click" onclick="go('excerpt','${o.excerpt}')"><td class="num">${o.position}</td>
+     <td><b>${o.excerpt}</b> ${o.calibration?'<span class="pill cal">校准 calibration</span>':""}</td><td>${st(o)}</td>
+     <td class="num">${hm(ex(o.excerpt).seconds)}</td><td class="num">${(o.end-o.start).toFixed(0)} s</td></tr>`).join("")}
+  </tbody></table></div>
+  <h2>会话记录 <span class="en">Work sessions</span></h2>
+  <p class="muted">每次不超过 2 小时。计时器会记录日期和时间。<span class="en">At most 2 hours per session. The timer records the date and time.</span></p>
+  <div class="card tablewrap"><table><thead><tr><th>片段 Excerpt</th><th>开始 Start</th><th class="num">时长 Minutes</th></tr></thead><tbody>
+  ${S.sessions.slice().reverse().slice(0,30).map(s=>`<tr><td>${esc(s.excerpt)}</td><td>${new Date(s.start).toLocaleString()}</td><td class="num">${(s.seconds/60).toFixed(1)}</td></tr>`).join("")||`<tr><td colspan="3" class="muted">尚无 none yet</td></tr>`}
+  </tbody></table></div>`;
+}
+
+// ---------- one excerpt ----------
+let audio=null, raf=null, timer=null, sessionStart=null, loopOn=false;
+function stopAudio(){ if(audio){ audio.pause(); } cancelAnimationFrame(raf); stopTimer(); }
+function stopTimer(){
+  if(timer){ clearInterval(timer); timer=null; const sec=(Date.now()-sessionStart)/1000;
+    if(sec>5){ S.sessions.push({excerpt:view.excerpt||"?", start:new Date(sessionStart).toISOString(), seconds:Math.round(sec)}); }
+    save(); }
+}
+function vExcerpt(m){
+  const o = CFG.order.find(x=>x.excerpt===view.excerpt); const e = ex(o.excerpt); const n = e.notes;
+  const files = [`${o.excerpt}_${CFG.notator}_jianpu.txt`,`${o.excerpt}_${CFG.notator}_performance.csv`,`${o.excerpt}_${CFG.notator}_notes.txt (本页导出 / from Export)`,`${o.excerpt}_${CFG.notator}.sv / .ton`];
+  const idx = CFG.order.indexOf(o), prev = CFG.order[idx-1], next = CFG.order[idx+1];
+  const conf = (k) => `<div class="radios">${[1,2,3].map(i=>`<label><input type="radio" name="${k}" ${n[k]==i?"checked":""} onchange="setN('${k}',${i})">${i}</label>`).join("")}</div>`;
+  m.innerHTML = `
+  <div class="row"><button class="btn small" onclick="go('list')">← 片段列表 List</button>
+    ${prev?`<button class="btn small" onclick="go('excerpt','${prev.excerpt}')">← ${prev.excerpt}</button>`:""}
+    ${next?`<button class="btn small" onclick="go('excerpt','${next.excerpt}')">${next.excerpt} →</button>`:""}</div>
+  <h1 style="margin-top:12px">${o.excerpt} ${o.calibration?'<span class="pill cal">校准 calibration</span>':""} <span class="en">position ${o.position} of ${CFG.order.length}</span></h1>
+  ${o.calibration?`<div class="note">校准片段：请先完成并发送。我们只检查格式（时间、列、文件名），不评论音乐上的选择。<br><span class="en">Calibration excerpt: notate it first and send it to us. We check only the format, and do not comment on musical choices.</span></div>`:""}
+  <div class="card player">
+    <div class="row">
+      <div class="radios"><label><input type="radio" name="src" value="mix" checked onchange="setSrc('mix')">原录音 mix (primary)</label>
+      ${o.voice?`<label><input type="radio" name="src" value="voice" onchange="setSrc('voice')">分离人声 voice (optional)</label>`:""}</div>
+      <span class="muted" style="margin-left:auto">片段 excerpt: <b>${fmt(o.start)} – ${fmt(o.end)}</b>（文件内时间 time in file）</span>
+    </div>
+    <div class="timeline" id="tl" onclick="seek(event)"><div class="win" style="left:${o.start/o.clip*100}%;width:${(o.end-o.start)/o.clip*100}%"></div>
+      <div class="head" id="ph"></div><span class="lbl" style="left:4px">0:00</span><span class="lbl" style="right:4px">${fmt(o.clip)}</span></div>
+    <div class="row">
+      <span class="clock" id="clk">0:00.00</span>
+      <button class="btn primary" onclick="playWin()">▶ 播放片段 Play excerpt</button>
+      <button class="btn" onclick="playAll()">▶ 含前后 2 秒 With context</button>
+      <button class="btn" onclick="audio.paused?audio.play():audio.pause()">⏯ 暂停/继续 Pause</button>
+      <label class="radios" style="font-weight:400"><input type="checkbox" onchange="loopOn=this.checked"> 循环 Loop</label>
+      <select style="width:auto" onchange="audio.playbackRate=+this.value" aria-label="speed"><option value="1">1×</option><option value="0.75">0.75×</option><option value="0.5">0.5×</option></select>
+    </div>
+    <p class="muted" style="font-size:13px;margin:0">本播放器仅用于聆听。表演层请在 Sonic Visualiser 或 Tony 中完成，时间从 <code>${o.excerpt}_mix.wav</code> 开头算起。骨架层请先凭耳朵记，不看音高显示。<br><span class="en">This player is for listening. Do the performance layer in Sonic Visualiser or Tony, timed from the start of <code>${o.excerpt}_mix.wav</code>. Write the skeleton first, by ear, with no pitch display.</span></p>
+  </div>
+
+  <div class="card" style="margin-top:14px">
+    <div class="row"><span class="clock" id="tmr">${hm(e.seconds)}</span>
+      <button class="btn" id="tbtn" onclick="toggleTimer()">${timer?"■ 停止计时 Stop":"● 开始计时 Start timer"}</button>
+      <span class="muted">每次不超过 2 小时 · at most 2 h per session</span>
+      <span style="margin-left:auto">状态 Status:
+        <select style="width:auto" onchange="ex('${o.excerpt}').status=this.value;save();renderNav()">
+        ${[["todo","未开始 to do"],["doing","进行中 in progress"],["done","完成 done"]].map(([v,t])=>`<option value="${v}" ${e.status===v?"selected":""}>${t}</option>`).join("")}</select></span></div>
+  </div>
+
+  <h2>第 3 步：笔记 <span class="en">Step 3: notes</span></h2>
+  <div class="grid two">
+    <div class="card"><label>1. 犹豫之处及原因 <span class="en">Hesitations, and why</span></label>
+      <textarea oninput="setN('hesitations',this.value)">${esc(n.hesitations)}</textarea></div>
+    <div class="card"><label>2. 两层都无法表达的内容 <span class="en">What neither layer can show</span></label>
+      <textarea oninput="setN('cannot_show',this.value)">${esc(n.cannot_show)}</textarea></div>
+    <div class="card"><label>3. 猜测：色彩区 <span class="en">Guess: region</span></label>
+      <select onchange="setN('region_guess',this.value)"><option value="">—</option><option value="unknown" ${n.region_guess==="unknown"?"selected":""}>不知道 don't know</option>
+      ${CFG.regions.map(r=>`<option value="${r.code}" ${n.region_guess===r.code?"selected":""}>${esc(r.zh)} · ${esc(r.en)}</option>`).join("")}</select>
+      <label style="margin-top:8px">把握 <span class="en">Confidence 1–3</span></label>${conf("region_conf")}
+      <label style="margin-top:10px">猜测：体裁 <span class="en">Guess: genre</span></label>
+      <input type="text" value="${esc(n.genre_guess)}" oninput="setN('genre_guess',this.value)">
+      <label style="margin-top:8px">把握 <span class="en">Confidence 1–3</span></label>${conf("genre_conf")}</div>
+    <div class="card"><label>4. 时间与音频 <span class="en">Time and audio</span></label>
+      <p class="muted" style="margin:0 0 6px">计时器已记录 ${hm(e.seconds)}。如有离线工作，请在下面补充。<span class="en">The timer has logged this. Add any time worked away from this page.</span></p>
+      <input type="text" placeholder="例如 e.g. +40 min 在 SV 中 in SV" value="${esc(n.extra_time)}" oninput="setN('extra_time',this.value)">
+      <label style="margin-top:10px">使用的音频 <span class="en">Audio used</span></label>
+      <div class="radios">${[["mix","仅原录音 mix only"],["both","两者 both"],["voice","主要用人声 mostly voice"]].map(([v,t])=>`<label><input type="radio" name="aud" ${n.audio_used===v?"checked":""} onchange="setN('audio_used','${v}')">${t}</label>`).join("")}</div>
+      <label style="margin-top:8px">哪些段落用了人声文件 <span class="en">Passages where you used the voice file</span></label>
+      <input type="text" placeholder="例如 e.g. 12.0–18.5 s" value="${esc(n.voice_passages)}" oninput="setN('voice_passages',this.value)">
+      <label class="check"><input type="checkbox" ${n.under10?"checked":""} onchange="setN('under10',this.checked)"> <span>演唱少于 10 秒，我已在开始前联系联系人 <span class="en">Less than 10 s is sung; I told the contact before starting</span></span></label></div>
+  </div>
+
+  <h2>要发送的文件 <span class="en">Files to send for this excerpt</span></h2>
+  <div class="card"><ul class="files">${files.map(f=>`<li><code>${esc(f)}</code></li>`).join("")}</ul>
+    <button class="btn small" onclick="go('check')">检查格式 Check formats →</button></div>
+  <p class="saved" id="saved"></p>`;
+  audio = new Audio(); audio.preload="auto"; setSrc("mix");
+  audio.addEventListener("timeupdate",()=>{ if(audio._stopAt && audio.currentTime>=audio._stopAt){ if(loopOn){audio.currentTime=audio._from;} else {audio.pause(); audio._stopAt=null;} } });
+  audio.addEventListener("error",()=>{ document.getElementById("clk").textContent="找不到音频 audio file not found: audio/"+o.excerpt+"_"+audio._src+".wav"; });
+  const tick=()=>{ const t=audio.currentTime||0; const c=document.getElementById("clk"); if(!c) return;
+    if(!audio.error) c.textContent=fmt(t); document.getElementById("ph").style.left=(t/o.clip*100)+"%"; raf=requestAnimationFrame(tick); };
+  tick();
+}
+function setN(k,v){ const e=ex(view.excerpt); e.notes[k]=v; if(e.status==="todo"){e.status="doing"; renderNav();} save(); }
+function setSrc(s){ const o=CFG.order.find(x=>x.excerpt===view.excerpt); const t=audio.currentTime||0; const p=!audio.paused;
+  audio._src=s; audio.src="audio/"+o.excerpt+"_"+s+".wav"; audio.addEventListener("loadedmetadata",()=>{audio.currentTime=t; if(p) audio.play();},{once:true}); }
+function playFrom(a,b){ audio._from=a; audio._stopAt=b; audio.currentTime=a; audio.play(); }
+function playWin(){ const o=CFG.order.find(x=>x.excerpt===view.excerpt); playFrom(o.start,o.end); }
+function playAll(){ const o=CFG.order.find(x=>x.excerpt===view.excerpt); playFrom(0,o.clip); }
+function seek(ev){ const o=CFG.order.find(x=>x.excerpt===view.excerpt); const r=ev.currentTarget.getBoundingClientRect();
+  audio._stopAt=null; audio.currentTime=(ev.clientX-r.left)/r.width*o.clip; }
+function toggleTimer(){
+  const b=document.getElementById("tbtn");
+  if(timer){ stopTimer(); b.textContent="● 开始计时 Start timer"; return; }
+  sessionStart=Date.now(); const e=ex(view.excerpt); if(e.status==="todo"){e.status="doing"; renderNav();}
+  let last=Date.now();
+  timer=setInterval(()=>{ const now=Date.now(); e.seconds+=(now-last)/1000; last=now; const t=document.getElementById("tmr"); if(t) t.textContent=hm(e.seconds);
+    if((now-sessionStart)/1000>7200){ stopTimer(); const bb=document.getElementById("tbtn"); if(bb) bb.textContent="● 开始计时 Start timer";
+      const t2=document.getElementById("tmr"); if(t2) t2.textContent=hm(e.seconds)+" · 已满 2 小时，请休息 2 h reached, please take a break"; }
+    save(); },1000);
+  b.textContent="■ 停止计时 Stop";
+}
+
+// ---------- validators (same rules as src/annotation/validate.py) ----------
+function parseCSV(text){
+  const rows=[]; let row=[], f="", q=false;
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else if(c==='"') q=true; else if(c===','){row.push(f);f="";} else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(f); rows.push(row); row=[]; f=""; }
+    else f+=c; }
+  if(f!==""||row.length){row.push(f); rows.push(row);} return rows.filter(r=>r.some(x=>x.trim()!==""));
+}
+function checkPerformance(text, o){
+  const out=[]; const E=(l,m)=>out.push(["err",l,m]), W=(l,m)=>out.push(["warn",l,m]);
+  const rows=parseCSV(text.replace(/^﻿/,"")); if(!rows.length){E(0,"文件为空 empty file");return {out,ids:new Set()};}
+  const head=rows[0].map(h=>h.trim()); const miss=COLS.filter(c=>!head.includes(c)); const extra=head.filter(c=>!COLS.includes(c));
+  if(miss.length) E(1,"缺少列 missing columns: "+miss.join(", ")); if(extra.length) W(1,"多余的列 extra columns: "+extra.join(", "));
+  const ix=Object.fromEntries(head.map((h,i)=>[h,i])); const ids=new Set(); const ev=[];
+  const num=(v)=>v===undefined||v.trim()===""?null:(/^-?\d+(\.\d+)?$/.test(v.trim())?+v:NaN);
+  rows.slice(1).forEach((r,k)=>{ const L=k+2; const g=c=>(r[ix[c]]??"").trim();
+    const id=g("event_id"), type=g("type");
+    if(!/^e\d+$/.test(id)) E(L,`event_id "${id}" 应为 e1, e2… (should be e1, e2, …)`); else if(ids.has(id)) E(L,`event_id ${id} 重复 duplicated`); ids.add(id);
+    if(!TYPES.includes(type)){ E(L,`type "${type}" 不在列表中 not one of: ${TYPES.join(", ")}`); return; }
+    const on=num(g("onset_s")), off=num(g("offset_s")), arr=num(g("arrival_s")), s0=num(g("steady_start_s")), s1=num(g("steady_end_s"));
+    for(const [c,v] of [["onset_s",on],["offset_s",off],["arrival_s",arr],["steady_start_s",s0],["steady_end_s",s1],["glide_from",num(g("glide_from"))],["glide_to",num(g("glide_to"))]])
+      if(Number.isNaN(v)) E(L,`${c} 不是数字 not a number: "${g(c)}"`);
+    for(const c of ["onset_s","offset_s","arrival_s","steady_start_s","steady_end_s"]) if(/\.\d{3,}/.test(g(c))) W(L,`${c} 精确到 0.01 秒即可 0.01 s is enough`);
+    if(on===null){ E(L,"缺少 onset_s missing"); return; }
+    if(on<o.start-0.5||on>o.end+0.5) W(L,`onset ${on} 在片段外 outside the excerpt (${o.start.toFixed(2)}–${o.end.toFixed(2)} s, from the start of the mix file)`);
+    if(MARKERS.includes(type)){ ev.push({L,id,type,on,off:on}); return; }
+    if(off===null) E(L,"缺少 offset_s missing"); else if(off<=on) E(L,"offset_s 必须大于 onset_s must be after onset_s");
+    if(arr!==null && off!==null && (arr<on||arr>off)) E(L,"arrival_s 应在 onset 与 offset 之间 must lie between onset and offset");
+    if(type==="glide"){ if(s0!==null||s1!==null) E(L,"glide 不填 steady span (leave steady_start_s/steady_end_s empty for a glide)");
+      if(num(g("glide_from"))===null||num(g("glide_to"))===null) E(L,"glide 需要 glide_from 和 glide_to (MIDI numbers)"); }
+    else if((s0===null)!==(s1===null)) E(L,"steady_start_s 和 steady_end_s 要么都填要么都空 fill both or neither");
+    else if(s0!==null && off!==null && (s0<on-0.005||s1>off+0.005||s1<=s0)) E(L,"steady span 应在事件内且有长度 must lie inside the event");
+    if(type!=="glide" && s0===null && ["note","vocable_note"].includes(type)) W(L,"note 没有 steady span (only a glide may leave it empty)");
+    for(const c of ["scoop_in","vibrato","throw","neutral","falsetto","glottal","doubled"]) if(g(c)!==""&&g(c)!=="1") E(L,`${c} 只能是 1 或空 must be 1 or empty`);
+    if(type==="vocable_note"&&!g("syllable")) E(L,"vocable_note 必须填 syllable (required for vocables)");
+    if(g("voice")&&!["lead","second","chorus"].includes(g("voice"))) E(L,`voice "${g("voice")}" 应为 lead/second/chorus`);
+    if(!["non_pitched","spoken"].includes(type)) for(const c of ["conf_exists","conf_pitch","conf_onset"]) if(!["1","2","3"].includes(g(c))) E(L,`${c} 应为 1–3 must be 1, 2 or 3`);
+    for(const c of ["glide_from","glide_to"]){ const v=num(g(c)); if(v!==null&&!Number.isNaN(v)&&(v<24||v>108)) W(L,`${c}=${v} 不像 MIDI 音高 does not look like a MIDI pitch`); }
+    ev.push({L,id,type,on,off});
+  });
+  const evs=ev.filter(e=>!MARKERS.includes(e.type)).sort((a,b)=>a.on-b.on);
+  evs.forEach((e,i)=>{ if(e.type==="grace"){ const nx=evs.slice(i+1).find(x=>x.type!=="grace"); if(nx&&e.off>nx.on+0.005) E(e.L,`装饰音 ${e.id} 与主音 ${nx.id} 重叠 overlaps its main note (a grace note ends where the main note begins)`);} });
+  const fs=ev.filter(e=>e.type==="free_rhythm_start").length, fe=ev.filter(e=>e.type==="free_rhythm_end").length;
+  if(fs!==fe) W(0,`free_rhythm_start (${fs}) 与 free_rhythm_end (${fe}) 数量不同 counts differ`);
+  if(!out.some(x=>x[0]==="err")) out.push(["ok",0,`${evs.length} 个事件，格式正确 events, format OK`]);
+  const linkable=new Set(ev.filter(e=>!MARKERS.includes(e.type)&&!["grace","non_pitched"].includes(e.type)).map(e=>e.id));
+  return {out, ids, linkable};
+}
+function checkJianpu(text, perfIds){
+  const out=[]; const E=(l,m)=>out.push(["err",l,m]), W=(l,m)=>out.push(["warn",l,m]);
+  const lines=text.replace(/^﻿/,"").split(/\r?\n/); const nonEmpty=lines.map((l,i)=>[l.trim(),i+1]).filter(x=>x[0]);
+  if(!nonEmpty.length){E(0,"文件为空 empty file");return out;}
+  const [h,hl]=nonEmpty[0]; const hm_=h.match(/^1=([A-G](?:#|b)?)\s+(\d+\/\d+|散板)$/);
+  if(!hm_) E(hl,`首行应为调和拍子，例如 "1=D 2/4" 或 "1=G 散板" (header must look like "1=D 2/4" or "1=G 散板"): "${h}"`);
+  const free = hm_&&hm_[2]==="散板"; const beats = hm_&&!free ? (()=>{const [a,b]=hm_[2].split("/").map(Number); return a*4/b;})() : null;
+  const NOTE=/^(\([#b]?[0-7](?:\^|v)?[,']*(?:[#b]?[0-7](?:\^|v)?[,']*)*\))?([#b]?)([0-7])(\^|v)?([,']*)(_{1,2})?(-*)(\.?)(\^?)(\{e\d+(?:,e\d+)*\})?(~)?$/;
+  const linked=new Set(); let notes=0; const unl=[];
+  nonEmpty.slice(1).forEach(([l,L])=>{
+    if(l.startsWith("L:")) return;
+    let bar=0, inBar=false;
+    for(const tok of l.split(/\s+/)){
+      if(tok==="|"||tok==="||"){ if(inBar&&beats&&Math.abs(bar-beats)>1e-6) W(L,`小节时值 ${bar} 拍，与 ${hm_[2]} 不符 bar has ${bar} beats, metre says ${beats}`); bar=0; inBar=true; continue; }
+      // a token may hold several notes written together: 5_6_  or  (2)3_5_
+      const parts = tok.match(/(\([^)]*\))?[#b]?[0-7](?:\^|v)?[,']*(?:_{1,2})?-*\.?\^?(?:\{[^}]*\})?~?/g);
+      if(!parts||parts.join("")!==tok){ E(L,`无法识别 cannot read "${tok}"`); continue; }
+      for(const p of parts){ const m=p.match(NOTE); if(!m){E(L,`无法识别 cannot read "${p}"`); continue;}
+        notes++; let d=m[6]==="__"?0.25:m[6]==="_"?0.5:1; d+=m[7].length; if(m[8]) d*=1.5; bar+=d;
+        if(m[4]&&!["4","7"].includes(m[3])) W(L,`中立音记号一般只用于 4^ 和 7v (neutral marks are for 4^ and 7v): "${p}"`);
+        if(m[10]) m[10].slice(1,-1).split(",").forEach(id=>{ linked.add(id); if(perfIds&&perfIds.size&&!perfIds.has(id)) E(L,`链接 ${id} 在表演层中不存在 link ${id} is not in the performance file`); });
+        else unl.push(p); }
+    }
+    if(free && /\|/.test(l)) W(L,"散板一般不写小节线 free rhythm: usually no bar lines");
+  });
+  if(unl.length) W(0,`${unl.length} 个音符没有链接到表演层事件 skeleton notes have no links to performance events (add them after step 2): ${unl.slice(0,10).join(" ")}${unl.length>10?" …":""}`);
+  if(perfIds&&perfIds.size){ const un=[...(perfIds.linkable||perfIds)].filter(i=>!linked.has(i)); if(un.length) W(0,`${un.length} 个表演层事件未被骨架链接 performance events not reduced by any skeleton note: ${un.slice(0,12).join(", ")}${un.length>12?"…":""}`); }
+  if(!out.some(x=>x[0]==="err")) out.push(["ok",0,`${notes} 个音符，格式正确 notes, format OK`]);
+  return out;
+}
+
+// ---------- check files ----------
+let checked = {};
+function vCheck(m){
+  m.innerHTML = `
+  <h1>检查文件 <span class="en">Check your files</span></h1>
+  <p>把一个片段的 <code>_jianpu.txt</code> 和 <code>_performance.csv</code> 拖到下面。文件只在本页内读取，不会上传。<br><span class="en">Drop one excerpt's jianpu and performance files here. They are read inside this page only.</span></p>
+  <div class="drop" id="drop">拖放文件到这里，或 <span class="en">drop files here, or</span> <input type="file" multiple accept=".txt,.csv" onchange="readFiles(this.files)"></div>
+  <div id="res" style="margin-top:14px"></div>`;
+  const d=document.getElementById("drop");
+  d.addEventListener("dragover",e=>{e.preventDefault(); d.classList.add("over");});
+  d.addEventListener("dragleave",()=>d.classList.remove("over"));
+  d.addEventListener("drop",e=>{e.preventDefault(); d.classList.remove("over"); readFiles(e.dataTransfer.files);});
+  showChecks();
+}
+async function readFiles(list){
+  for(const f of list){ const t=await f.text(); const m=f.name.match(/^(E\d+)_([A-Za-z0-9]+)_(jianpu|performance)\.(txt|csv)$/);
+    if(!m){ checked[f.name]={name:f.name, kind:"?", out:[["err",0,`文件名应为 E##_${CFG.notator}_jianpu.txt 或 E##_${CFG.notator}_performance.csv (file name)`]]}; continue; }
+    checked[m[1]] ||= {}; checked[m[1]][m[3]]={name:f.name, text:t, notator:m[2]}; }
+  showChecks();
+}
+function showChecks(){
+  const res=document.getElementById("res"); if(!res) return; let h="";
+  for(const [k,v] of Object.entries(checked)){
+    if(v.kind==="?"){ h+=`<div class="card" style="margin-bottom:10px"><b>${esc(v.name)}</b>${msgs(v.out)}</div>`; continue; }
+    const o=CFG.order.find(x=>x.excerpt===k);
+    if(!o){ h+=`<div class="card" style="margin-bottom:10px"><b>${esc(k)}</b><div class="msg err">不在您的列表中 not in your list</div></div>`; continue; }
+    let ids=null, perf="", jp="";
+    if(v.performance){ const r=checkPerformance(v.performance.text,o); ids=r.ids; ids.linkable=r.linkable; perf=msgs(r.out); ex(k).files.performance=new Date().toISOString(); }
+    if(v.jianpu){ jp=msgs(checkJianpu(v.jianpu.text, ids)); ex(k).files.jianpu=new Date().toISOString(); }
+    const who=[v.performance,v.jianpu].filter(Boolean).some(x=>x.notator!==CFG.notator)?`<div class="msg warn">文件名中的记谱人编号不是 ${CFG.notator} (notator ID in the file name is not ${CFG.notator})</div>`:"";
+    h+=`<div class="card" style="margin-bottom:10px"><h3 style="margin-top:0">${k}</h3>${who}
+      ${v.performance?`<b>${esc(v.performance.name)}</b>${perf}`:`<div class="msg warn">尚未提供表演层文件 no performance file yet</div>`}
+      ${v.jianpu?`<b>${esc(v.jianpu.name)}</b>${jp}`:`<div class="msg warn">尚未提供简谱文件 no jianpu file yet</div>`}</div>`;
+  }
+  res.innerHTML=h||`<p class="muted">尚未检查文件 no files checked yet</p>`; save();
+}
+function msgs(out){ return out.map(([k,l,m])=>`<div class="msg ${k}">${l?"第 "+l+" 行 line "+l+": ":""}${esc(m)}</div>`).join(""); }
+
+// ---------- guideline (markdown rendered here) ----------
+function md(src){
+  const inl=s=>esc(s).replace(/`([^`]+)`/g,"<code>$1</code>").replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>").replace(/\*([^*]+)\*/g,"<i>$1</i>");
+  const L=src.split("\n"); let h="", i=0;
+  while(i<L.length){ const l=L[i];
+    if(/^#{1,4} /.test(l)){ const n=l.match(/^#+/)[0].length; h+=`<h${n}>${inl(l.slice(n+1))}</h${n}>`; i++; }
+    else if(/^\|/.test(l)){ const rows=[]; while(i<L.length&&/^\|/.test(L[i])){ rows.push(L[i]); i++; }
+      const cells=r=>r.replace(/^\||\|$/g,"").split("|").map(c=>c.trim());
+      h+=`<div class="tablewrap"><table><thead><tr>${cells(rows[0]).map(c=>`<th>${inl(c)}</th>`).join("")}</tr></thead><tbody>`+
+        rows.slice(2).map(r=>`<tr>${cells(r).map(c=>`<td>${inl(c)}</td>`).join("")}</tr>`).join("")+`</tbody></table></div>`; }
+    else if(/^\s*[-*] /.test(l)){ h+="<ul>"; while(i<L.length&&/^\s*[-*] /.test(L[i])){ h+=`<li>${inl(L[i].replace(/^\s*[-*] /,""))}</li>`; i++; } h+="</ul>"; }
+    else if(/^\d+\. /.test(l)){ h+="<ol>"; while(i<L.length&&/^\d+\. /.test(L[i])){ h+=`<li>${inl(L[i].replace(/^\d+\. /,""))}</li>`; i++; } h+="</ol>"; }
+    else if(l.trim()===""){ i++; }
+    else { let p=[]; while(i<L.length&&L[i].trim()!==""&&!/^(#|\||\s*[-*] |\d+\. )/.test(L[i])){ p.push(L[i]); i++; } h+=`<p>${inl(p.join(" "))}</p>`; }
+  }
+  return h;
+}
+function vGuide(m){
+  m.innerHTML = `<div class="guide">${md(CFG.guideline)}</div>
+  <h2>简谱文本格式 <span class="en">Jianpu text format</span></h2><div class="card tablewrap"><pre style="margin:0;font-family:var(--mono);font-size:13px">${esc(CFG.jianpu_examples)}</pre></div>`;
+}
+
+// ---------- debrief ----------
+function vDebrief(m){
+  const D=S.debrief;
+  m.innerHTML = `
+  <h1>复盘 <span class="en">Debrief</span></h1>
+  <p>完成所有片段后，联系人会发给您一个复盘文件（<code>debrief_${CFG.notator}.json</code>），列出您与其他记谱人不同的地方（不说明是谁）。请为每一处选择一个原因。<br>
+  <span class="en">After all excerpts, the contact sends you a debrief file listing where your notation differs from the others (without saying who wrote them). Choose one reason for each.</span></p>
+  <p>载入复盘文件 <span class="en">Load the debrief file</span>: <input type="file" accept=".json" onchange="loadDebrief(this.files[0])"></p>
+  ${D.items.length?`<div class="card tablewrap"><table><thead><tr><th>片段 Excerpt</th><th>时间 Time (s)</th><th>差异 Difference</th><th>原因 Reason</th><th>说明 Comment</th></tr></thead><tbody>
+  ${D.items.map(it=>{ const a=D.answers[it.id]||{}; return `<tr><td>${esc(it.excerpt)}</td><td class="num">${esc(it.time)}</td><td>${esc(it.description)}</td>
+    <td><div class="radios" style="flex-direction:column;gap:2px">${[["P","听到的不同 heard differently"],["C","惯例/记法选择 convention"],["G","指南不清 guideline unclear"],["S","笔误/错误 slip"]].map(([k,t])=>
+      `<label><input type="radio" name="d_${esc(it.id)}" ${a.code===k?"checked":""} onchange="setD('${esc(it.id)}','code','${k}')"><b>${k}</b> ${t}</label>`).join("")}</div></td>
+    <td><textarea style="min-height:60px" oninput="setD('${esc(it.id)}','comment',this.value)">${esc(a.comment)}</textarea></td></tr>`; }).join("")}
+  </tbody></table></div><p class="muted">${Object.values(D.answers).filter(a=>a.code).length} / ${D.items.length} 已回答 answered</p>`:`<p class="muted">尚未载入 not loaded yet</p>`}
+  <p class="saved" id="saved"></p>`;
+}
+async function loadDebrief(f){ try{ const j=JSON.parse(await f.text()); if(j.notator!==CFG.notator){ alert("This debrief file is for notator "+j.notator); return; }
+  S.debrief.items=j.items; save(); render(); }catch(e){ document.getElementById("main").insertAdjacentHTML("afterbegin",`<div class="msg err">无法读取 cannot read this file</div>`); } }
+function setD(id,k,v){ (S.debrief.answers[id] ||= {})[k]=v; save(); }
+
+// ---------- export / import ----------
+function exportObj(){ return {study:"colour-regions-notation", study_version:CFG.study_version, guideline_sha256:CFG.guideline_sha256,
+  notator:CFG.notator, exported:new Date().toISOString(), user_agent:navigator.userAgent, ...S}; }
+function download(name, text, type){ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([text],{type}));
+  a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href); a.remove();},500); }
+function exportAll(){ const d=new Date().toISOString().slice(0,10); download(`${CFG.notator}_forms_${d}.json`, JSON.stringify(exportObj(),null,1), "application/json"); }
+function notesTxt(id){ const n=ex(id).notes, rg=CFG.regions.find(r=>r.code===n.region_guess);
+  return `Excerpt ${id} · notator ${CFG.notator}\n\n1. Hesitations\n${n.hesitations||""}\n\n2. What neither layer can show\n${n.cannot_show||""}\n\n`+
+    `3. Guess\nRegion: ${rg?rg.zh+" / "+rg.en:(n.region_guess||"")} (confidence ${n.region_conf||"-"})\nGenre: ${n.genre_guess||""} (confidence ${n.genre_conf||"-"})\n\n`+
+    `4. Time and audio\nTimer: ${hm(ex(id).seconds)}; extra: ${n.extra_time||""}\nAudio used: ${n.audio_used||""}; voice-file passages: ${n.voice_passages||""}\n`+
+    (n.under10?"Less than 10 s sung: contact informed\n":""); }
+function vExport(m){
+  m.innerHTML = `
+  <h1>导出 <span class="en">Export</span></h1>
+  <p>本页的输入保存在此浏览器中。请定期导出备份，完成后把导出文件发给联系人。<br><span class="en">Your answers are kept in this browser. Export regularly as a backup, and send the export to the contact when you finish.</span></p>
+  <div class="card row"><button class="btn primary" onclick="exportAll()">导出全部 Export everything (.json)</button>
+    <span class="muted">包括背景表、所有笔记、计时和复盘 <span class="en">background, all notes, timings and debrief</span></span></div>
+  <h2>单个片段的笔记 <span class="en">Notes file per excerpt</span></h2>
+  <div class="card tablewrap"><table><tbody>${CFG.order.map(o=>`<tr><td><b>${o.excerpt}</b></td><td>${ex(o.excerpt).status}</td>
+    <td><button class="btn small" onclick="download('${o.excerpt}_${CFG.notator}_notes.txt', notesTxt('${o.excerpt}'), 'text/plain')">下载 ${o.excerpt}_${CFG.notator}_notes.txt</button></td></tr>`).join("")}</tbody></table></div>
+  <h2>恢复 <span class="en">Restore from an export</span></h2>
+  <p class="muted">换电脑或浏览器时使用。<span class="en">Use this when you move to another computer or browser.</span></p>
+  <input type="file" accept=".json" onchange="restore(this.files[0])">
+  <p class="muted" style="margin-top:20px;font-size:12px">study ${esc(CFG.study_version)} · guideline sha256 ${esc((CFG.guideline_sha256||"").slice(0,16))}</p>`;
+}
+async function restore(f){ try{ const j=JSON.parse(await f.text()); if(j.notator!==CFG.notator) throw 0;
+  S={notator:j.notator, consent:j.consent||{}, background:j.background||{}, excerpts:j.excerpts||{}, sessions:j.sessions||[], debrief:j.debrief||{items:[],answers:{}}};
+  save(); go("list"); }catch(e){ document.getElementById("main").insertAdjacentHTML("afterbegin",`<div class="msg err">无法恢复：文件不对或不是 ${CFG.notator} 的 cannot restore this file</div>`); } }
+
+window.addEventListener("beforeunload",()=>{ stopTimer(); try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} });
+{ const h=location.hash.slice(1); if(TABS.some(t=>t[0]===h)) view.tab=h; else if(CFG.order.some(o=>o.excerpt===h)) view={tab:"excerpt", excerpt:h}; }
+render();
+</script>
+</body>
+</html>

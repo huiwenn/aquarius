@@ -144,6 +144,40 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
    - F0 ornamentation (润腔) view for dual-view.
    - Tune-family analysis (茉莉花, 孟姜女, …) — see `critiques.md` §1.
 
+### Session 2026-10-04: Musical Map of China, feature flags, notator page
+
+**Author decisions (2026-10-04):**
+- The Musical Map of China channel (中国音乐地图 / 瑞鸣音乐 Rhymoi, YouTube `UCN19zbpNCX9lrbKreffuSAQ`) is a good source and is **no longer capped**. Its items go into the **main pool**, marked in a new semantic-flags column.
+- **Tier by stated area:** a named singer plus one stated county → A2; province or prefecture only → C; heritage bearers → A1 as usual. This replaces the 2026-10-02 decision "Rhymoi items stay tier C".
+- **Notator page:** an offline `index.html` inside each private package, not a hosted artifact (the audio is third-party).
+
+**Done:**
+- `src/colour_regions/rhymoi.py` parses the series descriptions (体裁, 民族, 地区, 演唱, instruments) into `data/rhymoi/rhymoi_items.csv`. It adds a rule-based region with `needs_review`, an area level, a tier and the flags.
+  - On the 181 Round 1 items, the rules agree with the curators' regions 100% where no review is flagged. Disagreements are Anhui south (curators: Jiangsu–Zhejiang Plain) and Hunan Miao/Tujia (curators: Xiang); both are flagged for review.
+- `build_release.py`:
+  - adds the column **`feature_flags`** (`series:musical_map_of_china; accompanied|unaccompanied; instrument:<x>; multiple_singers; song_and_dance`);
+  - fills singers and genre from the descriptions;
+  - upgrades 52 Rhymoi items from C to A2 (`provenance_tier_curator` keeps C);
+  - **`singer_id` is now a hash of the normalised name** (`S` + 8 hex characters). The old sequential `S0001` ids shifted whenever a singer was added. This changes every `singer_id`, `group_id` and `fold` in `metadata/` (not yet committed).
+  - The column is named `feature_flags`, not `flags`, because `DataFrame.flags` is a pandas attribute.
+- `export_metadata.py` and `metadata/README.md` include `feature_flags`; the release, metadata and corpus view are rebuilt.
+- **Channel catalogue:** `data/rhymoi/channel_flat.json` and `channel_titles.csv` list 1,599 videos.
+  - About 667 have song-like titles; 168 of those are already in the corpus.
+  - About 590 are instrumental or opera by title.
+- **Metadata fetch running:** `src/colour_regions/rhymoi_fetch.py` fetches 833 videos (song-like titles first), paced at 45–90 s, no cookies, no audio, so about 15 h. Log: `data/rhymoi/fetch.out`. It is resumable: rerun the same command. Some videos are "not available" and are skipped on rerun.
+- **Notator page:** `src/annotation/portal_template.html` plus `build_package.py`, which now builds one folder per notator: `index.html`, `audio/E##_{mix,voice,guide}.wav`, the guideline and the jianpu examples.
+  - The page has: consent; the background form; the excerpt list in the notator's order; a player with the excerpt window, loop and speed; a session timer with a 2 h cap; the notes form (the 4 required headings); a format check for `_jianpu.txt` and `_performance.csv` (links, grace overlap, steady spans, confidence, metre per bar); the debrief (load `debrief_N#.json`, code P/C/G/S); and export or restore as JSON plus per-excerpt `_notes.txt`.
+  - Test with `python src/annotation/build_package.py --demo`, which builds `data/annotation_package_demo/` from 3 arbitrary core items. That folder is for testing only.
+
+**Next:**
+1. When the fetch ends, run `python src/colour_regions/rhymoi.py`, then review the eligible new items:
+   - the `needs_review` regions (border provinces, minorities inside Han provinces);
+   - sung vs instrumental;
+   - composed songs.
+2. Ask the author before downloading the audio of new items (paced, about 500 items), then transcribe them as Round 3 and add a `round3()` to `build_release.py`.
+3. **Open question for the author:** `select_excerpts.py` excludes the "dominant Round 1 commercial channel" (Rhymoi) from the notation study. Keep that, or allow Rhymoi items now that the channel is valued?
+4. Write the Chinese translation of the guideline body; the page UI is already bilingual.
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.
