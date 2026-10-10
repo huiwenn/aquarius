@@ -7,6 +7,7 @@ This folder contains links and metadata for the 1,297 Chinese folk-song recordin
 - `recordings.csv`: all recordings, one row each.
 - `by_region/<Region>.csv`: the same rows, one file per colour region.
 - `link_status.csv`: the latest check of whether each link still works.
+- `pending/round3_candidates.csv`: 30 Round 3 candidates for the Northern Steppe, Xinjiang and Tibetan regions. They are **not yet in `recordings.csv`**. Their audio is downloaded but not transcribed (`transcription_status: pending`), and their labels are not reviewed. See "Pending items" below.
 
 The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) is released separately.
 
@@ -28,6 +29,21 @@ The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) i
 | `speech_share` | Share of 10 s windows classified as speech |
 | `core`, `core_exclusion` | Default analysis subset, and the reasons for exclusion |
 | `group_id`, `fold` | Channel ∪ singer group, and the recommended evaluation fold (0–4) |
+
+## Pending items
+
+`pending/round3_candidates.csv` lists candidates that wait for transcription and review. They are kept apart from the release so that the release numbers do not change.
+
+- The list comes from the curator's own search, not from a model's memory. All 30 links were checked as live on 2026-10-09.
+- Columns: the curation fields of `recordings.csv` that the curator could state, plus `title`, `channel`, `channel_key`, `upload_date` and `duration_s` from the platform, `curation_note`, `download_status` and `transcription_status`.
+- Extra `feature_flags` used only here:
+  - `instrumental`: no singing.
+  - `documentary`: a film or TV segment about the genre, with narration.
+  - `compilation`: more than one song or piece in one upload.
+  - `filmed_in_mongolia`: filmed in Mongolia (the country), not in China.
+  - `tv_performance`: a staged TV performance.
+  - `needs_review`: the region, the genre or the sung/instrumental status needs a check.
+- `src/secaiqu/round3/download_pending.py` downloads the audio to `data/round3/` (not tracked) and fills in the platform fields.
 
 ## How it was made
 

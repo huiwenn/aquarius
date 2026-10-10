@@ -178,6 +178,27 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
 3. **Open question for the author:** `select_excerpts.py` excludes the "dominant Round 1 commercial channel" (Rhymoi) from the notation study. Keep that, or allow Rhymoi items now that the channel is valued?
 4. Write the Chinese translation of the guideline body; the page UI is already bilingual.
 
+### Session 2026-10-09: Round 3 candidates for Northern Steppe, Xinjiang and Tibetan (Olivia)
+
+**Input:** 44 YouTube links from a curator's own search (Olivia), for Inner Mongolia, Xinjiang and Tibet. Every link was checked as live before the run.
+
+**Done:**
+- 14 of the 44 links are already in the release (Round 1). They were not added again.
+- The 30 new links are in `metadata/pending/round3_candidates.csv`: 12 Northern Steppe, 10 Xinjiang, 8 Tibetan.
+  - They are **not in `recordings.csv`** yet. `build_release.py` does not read the file, so the release numbers do not change.
+  - The author decided to keep all 30 and mark them with flags instead of dropping them. New flags: `instrumental` (7 items), `documentary` (5), `compilation` (2), `filmed_in_mongolia` (2), `tv_performance` (1), `needs_review` (8).
+- `src/secaiqu/round3/download_pending.py` downloaded all 30 audio files to `data/round3/audio/<region_code>/` (30/30 ok, 187 min, 188 MB). It used the same settings as `v2/download.py`: native audio, U(45, 90) s pacing, one process. It used **no browser cookies**. It wrote `data/round3/manifest.csv` and filled title, channel, channel_key, upload_date and duration_s in the pending list.
+- **Not done: transcription.** The Mac used for this run has no separation or transcription environments (no `~/miniforge3/envs`) and little free disk space. Every item has `transcription_status: pending`.
+
+**Rule conflicts to review (from `collection_v2.md` item rules):**
+- Longer than 10 min: `eCulAKP9cPI` (38 min, compilation), `oS4CBOiLlHA` (13 min, compilation), `3NcQtIS0s1M` (10.7 min), `hV8EJOvvPvY` and `Sh73S0piXyA` (10.0 min each).
+- Instrumental items: Northern Steppe has 4, Xinjiang has 1, Tibetan has 2, plus items flagged `needs_review` that may be instrumental. The rule allows at most 3 per region.
+- `hV8EJOvvPvY` and `Sh73S0piXyA` were filmed in Mongolia (the country), which is outside the region's area.
+
+**Next:**
+1. On a Mac with the GPU environments, copy or re-download the audio (`python src/secaiqu/round3/download_pending.py` is resumable), then run the transcription pipeline (GAME ens3 + pp) on `data/round3/audio/`.
+2. Review the `needs_review` items and the rule conflicts above. Then decide which items go into the release as Round 3, and add a `round3()` to `build_release.py`.
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.
