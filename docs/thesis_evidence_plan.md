@@ -57,7 +57,7 @@ Decisions by the author (2026-10-02):
 
 | Set | n | Content | Matching |
 |---|---|---|---|
-| Base | 15 | One per colour region | Excludes the dominant Round 1 commercial channel; prefers Round 2 and tier A/B |
+| Base | 15 | One per colour region | Prefers tier A/B and Rounds 2–3. The Musical Map of China series is eligible since 2026-10-08 (author decision; it was excluded before) |
 | 苦音 targets | 8 (incl. the NW base) | Northwest Plateau, ≥ 8 different singers | Comparators are matched on field/studio and accompaniment |
 | Han comparators | 15 (incl. 10 Han base) | Other Han regions | — |
 | Long-song targets | 8 (incl. the Steppe base) | Northern Steppe 长调, ≥ 8 singers | Comparators are **free-rhythm** excerpts only (信天游, 散板 山歌, Tibetan pastoral songs), not metred ones |

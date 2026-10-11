@@ -37,11 +37,14 @@ from regionclf.corpus import norm_title  # noqa: E402
 OUT = ROOT / "data" / "colour_regions"
 R1 = ROOT / "data" / "regions_transcription"
 R2 = ROOT / "data" / "regions_v2"
+R3 = ROOT / "data" / "regions_v3"
 
 FIELDS = ["item_id", "round", "platform", "url", "title", "channel", "channel_key", "upload_date", "duration_s",
           "region", "region_en", "region_code", "region_type", "province", "county_or_area", "ethnic_group", "ethnic_subgroup",
           "song_name", "song_key", "genre", "performance_type", "singer", "singer_id", "singer_inheritor", "provenance_tier", "provenance_tier_curator",
-          "provenance_evidence", "feature_flags", "dating_flag", "song_type", "label_concern", "content_concern",
+          "provenance_evidence", "feature_flags", "dating_flag", "song_type", "song_class", "song_genre",
+          "song_genre_native", "composer", "lyricist", "arranger", "composition_period", "composition_year",
+          "composition_year_kind", "song_label_confidence", "label_concern", "content_concern",
           "label_status", "speech_share", "speech_doc_meta", "sung_share", "music_share", "transcription_model", "n_notes",
           "notes_per_s", "vocal_db", "game_rosvot_agreement", "core", "core_exclusion", "group_id", "fold"]
 # Speech rule (docs/collection_v2.md, "Speech screen"): the AudioSet classifier also scores unaccompanied, speech-like
@@ -130,28 +133,32 @@ def round1() -> pd.DataFrame:
         else d.drop(columns=["province_or_area"])
 
 
-def round2() -> pd.DataFrame:
-    m = pd.read_csv(R2 / "manifest.csv")
+def round2(base: Path = R2, rnd: int = 2) -> pd.DataFrame:
+    """Rounds 2 and 3 share the manifest format (round 3: data/regions_v3, src/colour_regions/rhymoi_download.py)."""
+    if not (base / "manifest.csv").exists():
+        return pd.DataFrame()
+    m = pd.read_csv(base / "manifest.csv")
     m = m[m.status == "ok"]
     plat = m.platform.map({"bili": "bilibili", "yt": "youtube", "europeana": "europeana"})
     m = m.copy()
     m["duration_s_actual"] = [d if pd.notna(d) else probe_duration(ROOT / p)
                               for d, p in zip(m.duration_s_actual, m.audio_path)]
     d = pd.DataFrame({
-        "item_id": m.id, "round": 2, "platform": plat, "url": m.url, "title": m.title,
+        "item_id": m.id, "round": rnd, "platform": plat, "url": m.url, "title": m.title,
         "channel": m.uploader.fillna(m.channel), "channel_key": plat + ":" + m.channel_id.astype(str),
         "upload_date": m.upload_date, "duration_s": m.duration_s_actual, "region": m.region,
         "province": m.province, "county_or_area": m.county_or_area, "ethnic_group": m.ethnic_group,
-        "song_name": m.song_name, "genre": m.genre, "performance_type": m.performance_type, "singer": m.singer,
+        "song_name": m.song_name.fillna(m.title.str.extract(r"《\s*([^》]+?)\s*》")[0].str.split(r"\s*\.\s*").str[0]),
+        "genre": m.genre, "performance_type": m.performance_type, "singer": m.singer,
         "singer_inheritor": m.singer_inheritor, "provenance_tier": m.provenance_tier,
         "provenance_evidence": m.provenance_evidence, "dating_flag": m.dating_flag,
         "content_concern": m.note})
-    idx = read(R2 / "transcription" / "dataset_index.csv")
+    idx = read(base / "transcription" / "dataset_index.csv")
     if len(idx):
         q = idx.rename(columns={"video_id": "item_id", "game_rosvot_conp": "game_rosvot_agreement"})
         d = d.merge(q[["item_id", "transcription_model", "n_notes", "notes_per_s", "vocal_db",
                        "game_rosvot_agreement"]], on="item_id", how="left")
-    s = speech(R2)
+    s = speech(base)
     return d.merge(s, on="item_id", how="left") if len(s) else d
 
 
@@ -222,7 +229,7 @@ def scores_table() -> pd.DataFrame:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    d = pd.concat([round1(), round2()], ignore_index=True)
+    d = pd.concat([x for x in (round1(), round2(), round2(R3, 3)) if len(x)], ignore_index=True)
     d["region_en"], d["region_code"], d["region_type"] = d.region.map(EN), d.region.map(CODE), d.region.map(TYPE)
     d["song_key"] = [song_key(n, i) for n, i in zip(d.song_name, d.item_id)]
     d["singer_id"] = singer_ids(d)
@@ -287,6 +294,17 @@ def main() -> None:
         return ev
     d["provenance_evidence"] = d.provenance_evidence.map(redact_all)
     d["singer"] = d.singer.where(keep)
+    # song-level labels (docs/song_labelling_protocol.md; src/colour_regions/song_labels_check.py): class, genre,
+    # composer / lyricist / arranger, period of composition, with the label confidence
+    sl = read(OUT / "song_labels.csv")
+    if len(sl):
+        sl = sl.drop_duplicates(["region", "song_key"]).set_index(["region", "song_key"])
+        keys = list(zip(d.region, d.song_key))
+        for src, dst in (("song_class", "song_class"), ("genre", "song_genre"), ("genre_native", "song_genre_native"),
+                         ("composer", "composer"), ("lyricist", "lyricist"), ("arranger", "arranger"),
+                         ("composition_period", "composition_period"), ("year_best", "composition_year"),
+                         ("year_kind", "composition_year_kind"), ("confidence", "song_label_confidence")):
+            d[dst] = [sl.at[k, src] if k in sl.index else np.nan for k in keys]
     add_core(d)
     d["group_id"] = channel_singer_groups(d)
     d["fold"] = add_folds(d)
@@ -298,7 +316,8 @@ def main() -> None:
         from colour_regions import geocode
         geocode.main()
     # merged transcription index of both rounds (repo-relative paths) for the audits in src/transcription/audit/
-    ix = [read(R1 / "dataset_index.csv").assign(round=1), read(R2 / "transcription" / "dataset_index.csv").assign(round=2)]
+    ix = [read(R1 / "dataset_index.csv").assign(round=1), read(R2 / "transcription" / "dataset_index.csv").assign(round=2),
+          read(R3 / "transcription" / "dataset_index.csv").assign(round=3)]
     ix = pd.concat([i for i in ix if len(i)], ignore_index=True)
     ix = ix[ix.video_id.isin(d.loc[d.core, "item_id"])]
     ix.to_csv(OUT / "transcription_index.csv", index=False)
@@ -315,7 +334,8 @@ def main() -> None:
     print(f"score matches: {len(sm)} pairs, {sm.recording_id.nunique()} recordings, "
           f"{sm[sm.same_region].recording_id.nunique()} with a same-region score, "
           f"{sm[sm.same_province].recording_id.nunique()} with a same-province score")
-    print(f"recordings: {len(d)} ({(d['round'] == 1).sum()} round 1, {(d['round'] == 2).sum()} round 2); "
+    print(f"recordings: {len(d)} ({(d['round'] == 1).sum()} round 1, {(d['round'] == 2).sum()} round 2, "
+          f"{(d['round'] == 3).sum()} round 3); "
           f"scores: {len(s)}")
     print("core:", int(d.core.sum()), "| exclusions:", d.core_exclusion.value_counts().to_dict())
     print(d.groupby("region_en").agg(n=("item_id", "size"), core=("core", "sum"), channels=("channel_key", "nunique"),

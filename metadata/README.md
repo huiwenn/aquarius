@@ -7,6 +7,8 @@ This folder contains links and metadata for the 1,297 Chinese folk-song recordin
 - `recordings.csv`: all recordings, one row each.
 - `by_region/<Region>.csv`: the same rows, one file per colour region.
 - `link_status.csv`: the latest check of whether each link still works.
+- `anthology_overlap.csv`: songs of this corpus that are also printed in the Anthology of Chinese Folk Songs (《中国民间歌曲集成》, OMR edition, 11 volumes): one row per (song, score) pair, with the title match type, province agreement, a key-invariant melodic similarity and its percentile against random same-region pairs, and a verdict (`match` or `uncertain`). Made by `src/colour_regions/anthology_overlap.py`.
+- `song_labels.csv`: one row per song (region + normalised title): class, genre, composer, period of composition, with the evidence, sources and confidence behind each label.
 
 The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) is released separately.
 
@@ -24,6 +26,11 @@ The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) i
 | `singer`, `singer_id`, `singer_inheritor` | The singer's name is given only for national heritage bearers; `singer_id` is a pseudonymous ID |
 | `provenance_tier`, `provenance_evidence` | A1/A2/B/C (Musical Map of China items: A2 when the description names the singer and one county, else C), and the evidence behind the region label (other singers' names redacted) |
 | `feature_flags` | Semantic features, separated by `;`: `series:musical_map_of_china` (the 中国音乐地图 / Rhymoi Music series), `accompanied` / `unaccompanied`, `instrument:<name>` (as named by the source), `multiple_singers`, `song_and_dance`. Empty where the source does not say. |
+| `song_class` | `folk_traditional`, `folk_adapted` (traditional tune, new words or a named arrangement), `folk_style_composed`, `composed`, `court`, `religious`, `narrative_quyi`, `opera`, `instrumental`, `unknown` |
+| `song_genre`, `song_genre_native` | Folk-song genre in the classification of 《中国民间歌曲集成》 (`work_song` 号子, `mountain_song` 山歌, `field_song`, `ditty` 小调, `song_and_dance`, `ritual_custom`, `narrative`, `children`, `long_song` 长调, `short_song` 短调, `multipart`, `religious`, `other`), and the Chinese term as attested |
+| `composer`, `lyricist`, `arranger` | Named authors, only when a source gives them; empty for anonymous tradition |
+| `composition_period`, `composition_year`, `composition_year_kind` | `traditional_undated`, `ming`, `qing`, `republic`, `prc_1949_1965`, `prc_1966_1976`, `prc_1977_1999`, `after_2000`; a year and what it dates (composition, adaptation, first publication or recording, collection, earliest attestation) |
+| `song_label_confidence` | `high`, `medium`, `low` (protocol: `docs/song_labelling_protocol.md`; sources per song in `song_labels.csv`) |
 | `dating_flag`, `label_status` | traditional / check / composed; result of the label review |
 | `speech_share` | Share of 10 s windows classified as speech |
 | `core`, `core_exclusion` | Default analysis subset, and the reasons for exclusion |

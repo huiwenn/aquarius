@@ -19,7 +19,7 @@ OUT = ROOT / "metadata"
 COLS = ["item_id", "round", "platform", "url", "title", "channel", "channel_key", "upload_date", "duration_s",
         "region", "region_en", "region_code", "region_type", "province", "county_or_area", "geo_level", "lon", "lat",
         "ethnic_group", "ethnic_subgroup", "song_name", "song_key", "genre", "performance_type", "singer",
-        "singer_id", "singer_inheritor", "provenance_tier", "provenance_evidence", "feature_flags", "dating_flag", "label_status",
+        "singer_id", "singer_inheritor", "provenance_tier", "provenance_evidence", "feature_flags", "song_class", "song_genre", "song_genre_native", "composer", "lyricist", "arranger", "composition_period", "composition_year", "composition_year_kind", "song_label_confidence", "dating_flag", "label_status",
         "speech_share", "core", "core_exclusion", "group_id", "fold"]
 
 
@@ -34,6 +34,13 @@ def main() -> None:
     if ls.exists():
         l = pd.read_csv(ls)
         l[l.checked_on == l.checked_on.max()].to_csv(OUT / "link_status.csv", index=False)
+    sl = SRC / "song_labels.csv"  # one row per song, with the evidence and sources behind each label
+    if sl.exists():
+        pd.read_csv(sl).drop(columns=["blind", "anth_same_prov"], errors="ignore").to_csv(OUT / "song_labels.csv",
+                                                                                         index=False)
+    ao = SRC / "anthology_overlap.csv"  # corpus songs that are also printed in the Anthology (anthology_overlap.py)
+    if ao.exists():
+        pd.read_csv(ao).to_csv(OUT / "anthology_overlap.csv", index=False)
     print(len(rec), "recordings,", rec.region_en.nunique(), "region files →", OUT)
 
 

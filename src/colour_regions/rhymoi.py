@@ -29,7 +29,10 @@ ROOT = Path(__file__).resolve().parents[2]
 D = ROOT / "data" / "rhymoi"
 CHANNEL_ID = "UCN19zbpNCX9lrbKreffuSAQ"
 
-FORMS = ("民间歌曲", "民间歌舞", "民间器乐", "民间音乐", "说唱音乐", "戏曲音乐", "宗教音乐", "宫廷音乐", "文人音乐")
+# header form labels (first word of the header line). Opera, narrative singing (曲艺), court, temple and poetry
+# recitation are not folk song; instrumental forms count only when a voice is named (some sung items say 民间乐曲)
+NOT_SONG = re.compile(r"戏曲|曲艺|秧歌剧|诗词|宫廷|寺庙|庙堂|宗教")
+COMPOSER = re.compile(r"(?:作词|作曲)(?:[、/](?:作词|作曲))?\s*[：:]\s*([^\s（(]+)")
 VOICE_ROLE = re.compile(r"演唱|领唱|合唱|伴唱|对唱|独唱|歌手|呼麦|吟唱|说唱")
 # ethnic group → colour region for the four minority song areas; Han and other groups go by province (below)
 ETHNIC_REGION = {
@@ -39,6 +42,9 @@ ETHNIC_REGION = {
     **{e: "西南多民族古老原始文化民歌区" for e in (
         "苗", "侗", "彝", "壮", "白", "哈尼", "傣", "傈僳", "佤", "拉祜", "纳西", "景颇", "布朗", "阿昌", "普米", "怒",
         "独龙", "基诺", "德昂", "布依", "水", "仡佬", "瑶", "土家", "毛南", "仫佬", "京", "羌", "摩梭")},
+    # groups outside the four minority song areas, placed by where they live (curator review): Manchu in the
+    # Northeast Plain, She (畲) in eastern Fujian. Korean (朝鲜族) songs have no colour region and stay unmapped.
+    **{e: "东北部平原" for e in ("满",)}, **{e: "闽台" for e in ("畲",)},
     # hua'er singers of the Hehuang area are coded Northwest Plateau (docs/thesis_evidence_plan.md B4)
     **{e: "西北部高原" for e in ("回", "土", "撒拉", "东乡", "保安", "裕固")},
 }
@@ -70,7 +76,8 @@ def parse(desc: str, title: str = "") -> dict:
     zh = "\n".join(l for l in (desc or "").splitlines() if re.search(r"[一-鿿]", l)
                    and not re.search(r"订阅|rhymoi|Rhymoi|版权|All Rights|#", l))
     head = next((l for l in zh.splitlines() if KEY.search(l)), "")
-    form = next((f for f in FORMS if f in head), None)
+    form = (re.split(r"\s+|体裁|民族|地区", head.strip())[0] or None) if head else None
+    comp = [c for c in COMPOSER.findall(zh) if c not in ("佚名", "民间", "传统", "无")]
     hf = header_fields(head)
     singers, instruments, roles = [], [], []
     for line in zh.splitlines():
@@ -89,7 +96,7 @@ def parse(desc: str, title: str = "") -> dict:
     return dict(form=form, genre_native=hf.get("体裁"), ethnic_native=hf.get("民族"), area=area,
                 singers="、".join(dict.fromkeys(singers)) or None, n_singers=len(dict.fromkeys(singers)),
                 instruments="、".join(dict.fromkeys(i for i in instruments if i)) or None,
-                roles="|".join(roles) or None)
+                roles="|".join(roles) or None, composer="、".join(dict.fromkeys(comp)) or None)
 
 
 def area_level(area: str | None, gaz: pd.DataFrame) -> tuple[str | None, str | None, str]:
@@ -127,7 +134,8 @@ def region_of(ethnic: str | None, prov: str | None, text: str) -> tuple[str | No
             if e in ("回", "土", "撒拉", "东乡", "保安", "裕固") and prov == "新疆":
                 return "新疆民歌区", f"ethnic:{e}+province", True
             # minority groups living inside Han regions (e.g. 湘西 Miao/Tujia) are a curator decision
-            return r, f"ethnic:{e}", len(eth) > 1 or (r == "西南多民族古老原始文化民歌区" and prov in ("湖南", "湖北"))
+            return r, f"ethnic:{e}", len(eth) > 1 or e in ("满", "畲") or \
+                (r == "西南多民族古老原始文化民歌区" and prov in ("湖南", "湖北"))
     if HAKKA.search(text):
         return "客家特区", "hakka", False
     if eth and eth[0] not in ("汉", ""):
@@ -135,6 +143,27 @@ def region_of(ethnic: str | None, prov: str | None, text: str) -> tuple[str | No
     if prov in PROVINCE_REGION:
         return PROVINCE_REGION[prov], "province", prov in SPLIT_PROVINCES
     return None, "none", True
+
+
+# Border decisions, following the round-1 curators (data/regions_curated/v1_provenance.csv) for consistency:
+# southern Anhui (皖南: Huangshan, Chizhou, Ma'anshan, Xuancheng, Wuhu, Tongling) → Jiangsu–Zhejiang Plain; the rest of
+# Anhui → Jiang–Huai; 湘西 Miao/Tujia → Xiang; 龙岩 mountain songs → Hakka; She of 宁德 → Min–Tai; Manchu → Northeast
+# Plain. Each rule is (pattern on area + title, region); the first match wins.
+PRECEDENT = [
+    (r"黄山|石台|贵池|池州|当涂|马鞍山|宣城|芜湖|铜陵|徽州|歙县|祁门|休宁", "江浙平原"),
+    (r"五河|巢湖|桐城|安庆|蚌埠|淮南|淮北|阜阳|六安|凤阳|合肥", "江淮"),
+    (r"湘西|龙山|永顺|古丈|桑植|永州|湖南", "湘"),
+    (r"龙岩|永定|上杭|长汀|武平|连城|客家", "客家特区"),
+    (r"宁德|莆田|泉州|漳州|厦门|福州", "闽台"),
+    (r"满族|Manchu", "东北部平原"),
+    (r"陕北|陕西|青海", "西北部高原"),
+    (r"扬州|江苏", "江淮"),
+]
+NOT_SONG_TITLE = re.compile(r"老腔|二人转|二人台|清音|琴书|南词|贤孝")
+
+
+def precedent(text: str) -> str | None:
+    return next((r for pat, r in PRECEDENT if re.search(pat, text)), None)
 
 
 def semantic_flags(p: dict, series: bool) -> str:
@@ -151,6 +180,10 @@ def semantic_flags(p: dict, series: bool) -> str:
         f.append("multiple_singers")
     if p.get("form") == "民间歌舞":
         f.append("song_and_dance")
+    if "仪式" in (p.get("form") or ""):
+        f.append("ritual")
+    if p.get("roles") and "呼麦" in p["roles"]:
+        f.append("khoomei")
     return ";".join(f) or ""
 
 
@@ -168,7 +201,9 @@ def items() -> pd.DataFrame:
         p = parse(j.get("description") or "", j.get("title") or "")
         prov, county, lvl = area_level(p["area"], gaz)
         reg, rule, review = region_of(p["ethnic_native"], prov, (j.get("title") or "") + (p["genre_native"] or ""))
-        sung = bool(p["singers"]) or p["form"] in ("民间歌曲", "民间歌舞")
+        if review and (pr := precedent(f"{p['area'] or ''} {j.get('title') or ''}")):
+            reg, rule, review = pr, rule + "+precedent", False
+        sung = bool(p["singers"])
         rows.append(dict(item_id=j["id"], title=j.get("title"), duration_s=j.get("duration"),
                          upload_date=j.get("upload_date"), in_round1="regions_audio" in f, **p,
                          province=prov, county_or_area=county, area_level=lvl, region=reg, region_rule=rule,
@@ -176,8 +211,9 @@ def items() -> pd.DataFrame:
                          tier=("A2" if p["singers"] and lvl == "county" else "C"),
                          feature_flags=semantic_flags(p, True)))
     d = pd.DataFrame(rows).drop_duplicates("item_id")
-    d["eligible"] = d.sung & d.form.isin(["民间歌曲", "民间歌舞"]).fillna(False) & d.duration_s.between(40, 600) \
-        & d.region.notna()
+    d["not_song_form"] = d.form.fillna("").str.contains(NOT_SONG) | d.title.fillna("").str.contains(NOT_SONG_TITLE)
+    d["composed"] = d.composer.notna()
+    d["eligible"] = d.sung & ~d.not_song_form & ~d.composed & d.duration_s.between(40, 600) & d.region.notna()
     return d
 
 

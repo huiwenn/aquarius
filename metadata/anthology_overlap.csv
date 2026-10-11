@@ -1,0 +1,250 @@
+song_id,song_name,region,our_provinces,item_ids,anthology_item_id,anthology_volume,anthology_title,anthology_section,match_type,same_province,same_region,melodic_similarity,melodic_percentile,verdict,reason
+NOR-0002,二十四棵树,东北部平原,河北,BV1LxhD6jET4,anthology:hebei2/794_十四棵树,hebei2,十四棵树,,fuzzy,yes,True,0.3917,100.0,match,"manual: 二十四棵树 vs 十四棵树 (title differs by one character, likely truncated title); same province (Hebei); melodic pct 100"
+NOR-0002,二十四棵树,东北部平原,河北,BV1LxhD6jET4,anthology:hebei2/795_二十四拨树,hebei2,二十四拨树,,fuzzy,yes,True,0.3182,15.0,uncertain,"near-identical title, same province; melodic pct 15.0"
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/206_哭五更（一）,tianjin,哭五更（一）,ditty,exact,yes,True,0.675,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/207_哭五更（二）,tianjin,哭五更（二）,ditty,exact,yes,True,0.4083,60.6,match,title exact + same province (melodic pct 60.6)
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/208_哭五更（三）,tianjin,哭五更（三）,ditty,exact,yes,True,0.4167,32.6,uncertain,"homonym-prone title, same province, but melodic pct 32.6 < 50 (may be a different song of the same title)"
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/209_哭五更（四）,tianjin,哭五更（四）,ditty,exact,yes,True,0.4417,87.2,match,title exact + same province (melodic pct 87.2)
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/405_哭五更（一）,tianjin,哭五更（一）,ditty,exact,yes,True,0.6333,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/406_哭五更（二）,tianjin,哭五更（二）,ditty,exact,yes,True,0.3833,38.5,uncertain,"homonym-prone title, same province, but melodic pct 38.5 < 50 (may be a different song of the same title)"
+NOR-0011,哭五更,东北部平原,天津,7zyWgK_bqlY,anthology:tianjin/477_哭五更,tianjin,哭五更,ditty,exact,yes,True,0.4417,87.2,match,title exact + same province (melodic pct 87.2)
+NOR-0014,回娘家,东北部平原,河北,fqtiBkLCKIA,anthology:hebei1/477_回娘家,hebei1,回娘家,,exact,yes,True,0.3833,63.6,uncertain,manual: Song labels (verified): our 回娘家 is the 1982 Taiwanese song 《小媳妇回娘家》 (孙仪/汤尼) misreported as a Hebei folk song; the Hebei Anthology 回娘家 is a traditional song of the same title; melodic pct 63.6 does not support identity
+NOR-0020,姐妹捡棉花,东北部平原,吉林,BV1ZK4y1p7Pr,anthology:jilin/266_捡棉花（二）,jilin,捡棉花（二）,,contained,yes,True,0.25,91.2,uncertain,manual: 姐妹捡棉花 contains 捡棉花; same province (Jilin); melodic pct 91.2
+NOR-0022,孟姜女,东北部平原,河北,BV1wc41187df,anthology:hebei1/276_孟姜女哭长城,hebei1,孟姜女哭长城,ditty,contained,yes,True,0.2667,94.1,uncertain,manual: 孟姜女哭长城 is the same narrative title as 孟姜女; same province (Hebei); melodic pct 94.1 just below 95
+NOR-0022,孟姜女,东北部平原,河北,BV1wc41187df,anthology:jiangsu2/788_孟姜女（三）,jiangsu2,孟姜女（三）,,exact,no,False,0.2917,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.5"
+NOR-0022,孟姜女,东北部平原,河北,BV1wc41187df,anthology:jiangsu2/790_孟姜女（五）,jiangsu2,孟姜女（五）,,exact,no,False,0.275,97.1,uncertain,"title exact, other province; melodic pct 97.1 (≥95, below corrected 99.5)"
+NOR-0022,孟姜女,东北部平原,河北,BV1wc41187df,anthology:shanghai/507_孟姜女寻夫,shanghai,孟姜女寻夫,ditty,contained,no,False,0.3083,100.0,uncertain,"title contained only, other province; melodic pct 100.0"
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/132_对花,hebei1,对花,work_song,exact,yes,True,0.3333,11.2,uncertain,"homonym-prone title, same province, but melodic pct 11.2 < 50 (may be a different song of the same title)"
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/213_对花（一）,hebei1,对花（一）,song_and_dance,exact,yes,True,0.3667,80.7,match,title exact + same province (melodic pct 80.7)
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/214_对花（二）,hebei1,对花（二）,song_and_dance,exact,yes,True,0.4118,48.5,uncertain,"homonym-prone title, same province, but melodic pct 48.5 < 50 (may be a different song of the same title)"
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/299_对花（一）,hebei1,对花（一）,ditty,exact,yes,True,0.35,64.0,match,title exact + same province (melodic pct 64.0)
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/300_对花（二）,hebei1,对花（二）,ditty,exact,yes,True,0.4231,20.5,uncertain,"homonym-prone title, same province, but melodic pct 20.5 < 50 (may be a different song of the same title)"
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/301_对花（三）,hebei1,对花（三）,ditty,exact,yes,True,0.3571,8.5,uncertain,"homonym-prone title, same province, but melodic pct 8.5 < 50 (may be a different song of the same title)"
+NOR-0024,对花,东北部平原,山东; 河北,cD60Z2FGOgQ; IFrNNx6EbD8; BV1pM4y1L7oL,anthology:hebei1/302_对花（四）,hebei1,对花（四）,ditty,exact,yes,True,0.3804,56.5,match,title exact + same province (melodic pct 56.5)
+NOR-0026,小拜年,东北部平原,黑龙江,E6IxSZJTg50,anthology:jilin/252_小拜年儿（一）,jilin,小拜年儿（一）,ritual_custom,variant,no,True,0.3167,99.2,uncertain,"title variant, other province; melodic pct 99.2 (≥95, below corrected 99.8)"
+NOR-0027,小放牛,东北部平原,河北,Orl2WbccyM0; XIxzeMG2J4E,anthology:hebei1/272_小放牛（一）,hebei1,小放牛（一）,ditty,exact,yes,True,0.4583,68.5,match,title exact + same province (melodic pct 68.5)
+NOR-0027,小放牛,东北部平原,河北,Orl2WbccyM0; XIxzeMG2J4E,anthology:hebei1/273_小放牛（二）,hebei1,小放牛（二）,ditty,exact,yes,True,0.3833,18.9,match,title exact + same province (melodic pct 18.9)
+NOR-0027,小放牛,东北部平原,河北,Orl2WbccyM0; XIxzeMG2J4E,anthology:hebei1/274_小放牛（三）,hebei1,小放牛（三）,ditty,exact,yes,True,0.4833,87.4,match,title exact + same province (melodic pct 87.4)
+NOR-0027,小放牛,东北部平原,河北,Orl2WbccyM0; XIxzeMG2J4E,anthology:henan/395_小放牛调,henan,小放牛调,ditty,variant,no,False,0.7333,100.0,match,"title variant, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+NOR-0027,小放牛,东北部平原,河北,Orl2WbccyM0; XIxzeMG2J4E,anthology:tianjin/119_小放牛（一）,tianjin,小放牛（一）,song_and_dance,exact,no,True,0.7411,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+NOR-0027,小放牛,东北部平原,河北,Orl2WbccyM0; XIxzeMG2J4E,anthology:tianjin/120_小放牛（二）,tianjin,小放牛（二）,song_and_dance,exact,no,True,0.525,99.2,match,"title exact, other province; melodic pct 99.2 ≥ corrected threshold 99.0"
+NOR-0028,小白菜,东北部平原,河北,wygWU8bxJ2Y; xiLJCbgcuOM,anthology:hebei2/1117_小白菜（一）,hebei2,小白菜（一）,,exact,yes,True,0.8542,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0028,小白菜,东北部平原,河北,wygWU8bxJ2Y; xiLJCbgcuOM,anthology:hebei2/1118_小白菜（二）,hebei2,小白菜（二）,,exact,yes,True,0.5962,96.5,match,title exact + same province (melodic pct 96.5)
+NOR-0028,小白菜,东北部平原,河北,wygWU8bxJ2Y; xiLJCbgcuOM,anthology:hebei2/1119_小白菜（三）,hebei2,小白菜（三）,,exact,yes,True,0.5238,74.0,match,title exact + same province (melodic pct 74.0)
+NOR-0028,小白菜,东北部平原,河北,wygWU8bxJ2Y; xiLJCbgcuOM,anthology:hebei2/1120_小白菜（四）,hebei2,小白菜（四）,,exact,yes,True,0.5172,87.0,match,title exact + same province (melodic pct 87.0)
+NOR-0029,小看戏,东北部平原,东北,NYY3fAlCIIg,anthology:jilin/93_小看戏（一）,jilin,小看戏（一）,ditty,exact,yes,True,0.2551,17.8,match,title exact + same province (melodic pct 17.8)
+NOR-0029,小看戏,东北部平原,东北,NYY3fAlCIIg,anthology:jilin/94_小看戏（二）,jilin,小看戏（二）,ditty,exact,yes,True,0.35,53.0,match,title exact + same province (melodic pct 53.0)
+NOR-0029,小看戏,东北部平原,东北,NYY3fAlCIIg,anthology:jilin/95_小看戏（三）,jilin,小看戏（三）,ditty,exact,yes,True,0.2647,37.2,match,title exact + same province (melodic pct 37.2)
+NOR-0029,小看戏,东北部平原,东北,NYY3fAlCIIg,anthology:jilin/96_小看戏（四）,jilin,小看戏（四）,ditty,exact,yes,True,0.3667,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0031,张生游寺,东北部平原,东北,Zy0Hc-Raw1E,anthology:hebei1/282_张生游寺（二）,hebei1,张生游寺（二）,ditty,exact,no,True,0.2417,81.1,uncertain,"distinctive title, other province; melodic pct 81.1 neither supports nor contradicts"
+NOR-0031,张生游寺,东北部平原,东北,Zy0Hc-Raw1E,anthology:jilin/47_张生游寺,jilin,张生游寺,ditty,exact,yes,True,0.2583,87.4,match,title exact + same province (melodic pct 87.4)
+NOR-0036,捡棉花,东北部平原,河北,BV1d3GReTEWm,anthology:hebei2/566_捡棉花（一）,hebei2,捡棉花（一）,,exact,yes,True,0.3421,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0036,捡棉花,东北部平原,河北,BV1d3GReTEWm,anthology:hebei2/567_捡棉花（二）,hebei2,捡棉花（二）,,exact,yes,True,0.2333,72.7,match,title exact + same province (melodic pct 72.7)
+NOR-0036,捡棉花,东北部平原,河北,BV1d3GReTEWm,anthology:hebei2/568_捡棉花（三）,hebei2,捡棉花（三）,,exact,yes,True,0.2451,69.4,match,title exact + same province (melodic pct 69.4)
+NOR-0036,捡棉花,东北部平原,河北,BV1d3GReTEWm,anthology:hebei2/569_捡棉花（四）,hebei2,捡棉花（四）,,exact,yes,True,0.2273,29.2,uncertain,"homonym-prone title, same province, but melodic pct 29.2 < 50 (may be a different song of the same title)"
+NOR-0038,探妹,东北部平原,东北,1or6wbe2jpE,anthology:jilin/154_探妹（一）,jilin,探妹（一）,ditty,exact,yes,True,0.2604,22.2,uncertain,"homonym-prone title, same province, but melodic pct 22.2 < 50 (may be a different song of the same title)"
+NOR-0038,探妹,东北部平原,东北,1or6wbe2jpE,anthology:jilin/155_探妹（二）,jilin,探妹（二）,ditty,exact,yes,True,0.2778,37.0,uncertain,"homonym-prone title, same province, but melodic pct 37.0 < 50 (may be a different song of the same title)"
+NOR-0039,探情郎,东北部平原,东北; 天津,0ubXXbE48pc; iApXLFL1LNE,anthology:jilin/141_探情郎（一）,jilin,探情郎（一）,ditty,exact,yes,True,0.3364,41.5,uncertain,"homonym-prone title, same province, but melodic pct 41.5 < 50 (may be a different song of the same title)"
+NOR-0039,探情郎,东北部平原,东北; 天津,0ubXXbE48pc; iApXLFL1LNE,anthology:jilin/142_探情郎（二）,jilin,探情郎（二）,ditty,exact,yes,True,0.337,21.1,uncertain,"homonym-prone title, same province, but melodic pct 21.1 < 50 (may be a different song of the same title)"
+NOR-0039,探情郎,东北部平原,东北; 天津,0ubXXbE48pc; iApXLFL1LNE,anthology:jilin/143_探情郎（三）,jilin,探情郎（三）,ditty,exact,yes,True,0.3452,17.9,uncertain,"homonym-prone title, same province, but melodic pct 17.9 < 50 (may be a different song of the same title)"
+NOR-0039,探情郎,东北部平原,东北; 天津,0ubXXbE48pc; iApXLFL1LNE,anthology:tianjin/252_探情郎,tianjin,探情郎,ditty,exact,yes,True,0.5,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0040,探清水河,东北部平原,河北,BV1K84y177oe,anthology:hebei2/729_探清水河,hebei2,探清水河,ditty,exact,yes,True,0.3583,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0040,探清水河,东北部平原,河北,BV1K84y177oe,anthology:jiangsu2/797_a_探清水河,jiangsu2,a_探清水河,,exact,no,False,0.3556,96.1,uncertain,"title exact, other province; melodic pct 96.1 (≥95, below corrected 99.0)"
+NOR-0040,探清水河,东北部平原,河北,BV1K84y177oe,anthology:jilin/61_探清水河,jilin,探清水河,ditty,exact,no,True,0.3409,88.7,uncertain,"distinctive title, other province; melodic pct 88.7 neither supports nor contradicts"
+NOR-0040,探清水河,东北部平原,河北,BV1K84y177oe,anthology:tianjin/121_探清水河（一）,tianjin,探清水河（一）,song_and_dance,exact,no,True,0.2917,75.5,uncertain,"distinctive title, other province; melodic pct 75.5 neither supports nor contradicts"
+NOR-0040,探清水河,东北部平原,河北,BV1K84y177oe,anthology:tianjin/122_探清水河（二）,tianjin,探清水河（二）,song_and_dance,exact,no,True,0.3083,94.9,uncertain,"distinctive title, other province; melodic pct 94.9 neither supports nor contradicts"
+NOR-0040,探清水河,东北部平原,河北,BV1K84y177oe,anthology:tianjin/123_探清水河（三）,tianjin,探清水河（三）,song_and_dance,exact,no,True,0.3,88.8,uncertain,"distinctive title, other province; melodic pct 88.8 neither supports nor contradicts"
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/169_放风筝,hebei1,放风筝,,exact,yes,True,0.5417,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/245_放风筝,hebei1,放风筝,,exact,yes,True,0.3583,98.9,match,title exact + same province (melodic pct 98.9)
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/294_放风筝（一）,hebei1,放风筝（一）,ditty,exact,yes,True,0.3542,81.1,match,title exact + same province (melodic pct 81.1)
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/295_放风筝（二）,hebei1,放风筝（二）,ditty,exact,yes,True,0.3583,98.9,match,title exact + same province (melodic pct 98.9)
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/296_放风筝（三）,hebei1,放风筝（三）,ditty,exact,yes,True,0.35,94.6,match,title exact + same province (melodic pct 94.6)
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/297_放风筝（四）,hebei1,放风筝（四）,ditty,exact,yes,True,0.2917,12.6,uncertain,"homonym-prone title, same province, but melodic pct 12.6 < 50 (may be a different song of the same title)"
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/298_小放风筝,hebei1,小放风筝,ditty,fuzzy,yes,True,0.3208,61.4,uncertain,"near-identical title, same province; melodic pct 61.4"
+NOR-0043,放风筝,东北部平原,河北,bSx8xQmaNCc; qv_O-YnsUQ8,anthology:hebei1/75_放风筝,hebei1,放风筝,,exact,yes,True,0.3167,77.2,match,title exact + same province (melodic pct 77.2)
+NOR-0045,月牙五更,东北部平原,东北,lzs2IIV6yjQ; By334DK4svU; vPgVF2NMwOw; BV1BP411877q,anthology:jilin/38_月牙五更,jilin,月牙五更,ditty,exact,yes,True,0.575,100.0,match,title exact + same province (melodic pct 100.0)
+NOR-0046,梁山伯与祝英台（河北）,东北部平原,河北,euxV2GFqqYU,anthology:guangdong/190_梁山伯与祝英台,guangdong,梁山伯与祝英台,,exact,no,False,0.35,90.4,uncertain,"distinctive title, other province; melodic pct 90.4 neither supports nor contradicts"
+NOR-0046,梁山伯与祝英台（河北）,东北部平原,河北,euxV2GFqqYU,anthology:jilin/41_梁山伯与祝英台,jilin,梁山伯与祝英台,ditty,exact,no,True,0.3673,83.2,uncertain,"distinctive title, other province; melodic pct 83.2 neither supports nor contradicts"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:jilin/144_送情郎（一）,jilin,送情郎（一）,ditty,variant,yes,True,0.3,16.7,uncertain,"homonym-prone title, same province, but melodic pct 16.7 < 50 (may be a different song of the same title)"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:jilin/145_送情郎（二）,jilin,送情郎（二）,ditty,variant,yes,True,0.275,9.6,uncertain,"homonym-prone title, same province, but melodic pct 9.6 < 50 (may be a different song of the same title)"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:jilin/146_送情郎（三）,jilin,送情郎（三）,ditty,variant,yes,True,0.4417,99.1,match,title variant + same province (melodic pct 99.1)
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:tianjin/246_送情郎（二）,tianjin,送情郎（二）,ditty,variant,no,True,0.45,99.1,uncertain,"title variant, other province; melodic pct 99.1 (≥95, below corrected 99.8)"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:tianjin/248_送情郎（四）,tianjin,送情郎（四）,ditty,variant,no,True,0.4583,99.1,uncertain,"title variant, other province; melodic pct 99.1 (≥95, below corrected 99.8)"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:tianjin/250_送情郎（六）,tianjin,送情郎（六）,ditty,variant,no,True,0.5283,100.0,match,"title variant, other province; melodic pct 100.0 ≥ corrected threshold 99.8"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:tianjin/251_送情郎（七）,tianjin,送情郎（七）,ditty,variant,no,True,0.4917,100.0,match,"title variant, other province; melodic pct 100.0 ≥ corrected threshold 99.8"
+NOR-0050,江南送情郎,东北部平原,东北,BV1wobYzsEYM,anthology:tianjin/450_送情郎,tianjin,送情郎,song_and_dance,variant,no,True,0.5444,100.0,match,"title variant, other province; melodic pct 100.0 ≥ corrected threshold 99.8"
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/108_画扇面（一）,tianjin,画扇面（一）,song_and_dance,exact,yes,True,0.325,98.2,match,title exact + same province (melodic pct 98.2)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/109_画扇面（二）,tianjin,画扇面（二）,song_and_dance,exact,yes,True,0.3,96.4,match,title exact + same province (melodic pct 96.4)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/110_画扇面（三）,tianjin,画扇面（三）,song_and_dance,exact,yes,True,0.2167,14.3,match,title exact + same province (melodic pct 14.3)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/111_画扇面（四）,tianjin,画扇面（四）,song_and_dance,exact,yes,True,0.3167,98.2,match,title exact + same province (melodic pct 98.2)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/112_画扇面（五）,tianjin,画扇面（五）,song_and_dance,exact,yes,True,0.2333,37.5,match,title exact + same province (melodic pct 37.5)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/113_画扇面（六）,tianjin,画扇面（六）,song_and_dance,exact,yes,True,0.2083,11.6,match,title exact + same province (melodic pct 11.6)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/114_画扇面（七）,tianjin,画扇面（七）,song_and_dance,exact,yes,True,0.2583,72.3,match,title exact + same province (melodic pct 72.3)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/115_画扇面（八）,tianjin,画扇面（八）,song_and_dance,exact,yes,True,0.2917,93.8,match,title exact + same province (melodic pct 93.8)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/116_画扇面（九）,tianjin,画扇面（九）,song_and_dance,exact,yes,True,0.2456,46.7,match,title exact + same province (melodic pct 46.7)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/117_画扇面（十）,tianjin,画扇面（十）,song_and_dance,exact,yes,True,0.2583,72.3,match,title exact + same province (melodic pct 72.3)
+NOR-0055,画扇面,东北部平原,天津,BV181QsBJEzv,anthology:tianjin/118_画扇面（十一）,tianjin,画扇面（十一）,song_and_dance,exact,yes,True,0.3036,9.5,match,title exact + same province (melodic pct 9.5)
+NOR-0057,瞧情郎,东北部平原,东北,FSb3FzbufBc,anthology:jilin/140_瞧情郎,jilin,瞧情郎,ditty,exact,yes,True,0.2333,82.7,match,title exact + same province (melodic pct 82.7)
+NOR-0060,绣云肩,东北部平原,东北,BV1zu411P7s2,anthology:jilin/57_绣云肩,jilin,绣云肩,ditty,exact,yes,True,0.2667,66.3,match,title exact + same province (melodic pct 66.3)
+NOR-0062,绣荷包（山东）,东北部平原,山东,m_rjaSYqUKM,anthology:hebei1/325_绣荷包（二）,hebei1,绣荷包（二）,ditty,exact,no,True,0.4906,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.8"
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:hebei1/167_茉莉花（一）,hebei1,茉莉花（一）,,exact,yes,True,0.3333,57.6,match,title exact + same province (melodic pct 57.6)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:hebei1/168_茉莉花（二）,hebei1,茉莉花（二）,,exact,yes,True,0.3417,66.7,match,title exact + same province (melodic pct 66.7)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:hebei1/290_茉莉花（一）,hebei1,茉莉花（一）,ditty,exact,yes,True,0.375,91.9,match,title exact + same province (melodic pct 91.9)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:hebei1/291_茉莉花（二）,hebei1,茉莉花（二）,ditty,exact,yes,True,0.3333,57.6,match,title exact + same province (melodic pct 57.6)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:hebei1/292_茉莉花（三）,hebei1,茉莉花（三）,ditty,exact,yes,True,0.3583,84.8,match,title exact + same province (melodic pct 84.8)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:hebei1/293_茉莉花（四）,hebei1,茉莉花（四）,ditty,exact,yes,True,0.325,48.5,match,title exact + same province (melodic pct 48.5)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:jiangsu2/805_茉莉花（一）,jiangsu2,茉莉花（一）,ditty,exact,no,False,0.4,97.0,uncertain,"title exact, other province; melodic pct 97.0 (≥95, below corrected 99.4)"
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:jilin/42_茉莉花（一）,jilin,茉莉花（一）,ditty,exact,yes,True,0.3333,57.6,match,title exact + same province (melodic pct 57.6)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:jilin/43_茉莉花（二）,jilin,茉莉花（二）,ditty,exact,yes,True,0.3167,38.4,match,title exact + same province (melodic pct 38.4)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:jilin/44_茉莉花（三）,jilin,茉莉花（三）,ditty,exact,yes,True,0.35,73.7,match,title exact + same province (melodic pct 73.7)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:jilin/45_茉莉花（四）,jilin,茉莉花（四）,ditty,exact,yes,True,0.3333,57.6,match,title exact + same province (melodic pct 57.6)
+NOR-0066,茉莉花（东北）,东北部平原,东北; 河北,Tcdb9EqhGPo; BV1mhWqzFEGA,anthology:jilin/46_茉莉花（五）,jilin,茉莉花（五）,ditty,exact,yes,True,0.35,73.7,match,title exact + same province (melodic pct 73.7)
+NOR-0073,跑南海,东北部平原,东北,AkSGk2bC6IA,anthology:jilin/642_跑南海,jilin,跑南海,,exact,yes,True,0.46,99.5,match,title exact + same province (melodic pct 99.5)
+NOR-0074,送情郎,东北部平原,东北,w4HbcixB-7o,anthology:jilin/144_送情郎（一）,jilin,送情郎（一）,ditty,exact,yes,True,0.3417,62.2,match,title exact + same province (melodic pct 62.2)
+NOR-0074,送情郎,东北部平原,东北,w4HbcixB-7o,anthology:jilin/145_送情郎（二）,jilin,送情郎（二）,ditty,exact,yes,True,0.2917,17.1,uncertain,"homonym-prone title, same province, but melodic pct 17.1 < 50 (may be a different song of the same title)"
+NOR-0074,送情郎,东北部平原,东北,w4HbcixB-7o,anthology:jilin/146_送情郎（三）,jilin,送情郎（三）,ditty,exact,yes,True,0.3583,79.3,match,title exact + same province (melodic pct 79.3)
+NOR-0075,逛花灯,东北部平原,山东,BV1nt42187b9,anthology:tianjin/194_逛花灯（一）,tianjin,逛花灯（一）,song_and_dance,exact,no,True,0.7632,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.2"
+NOR-0075,逛花灯,东北部平原,山东,BV1nt42187b9,anthology:tianjin/195_逛花灯（二）,tianjin,逛花灯（二）,song_and_dance,exact,no,True,0.6818,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.2"
+NOR-0075,逛花灯,东北部平原,山东,BV1nt42187b9,anthology:tianjin/444_逛花灯（一）,tianjin,逛花灯（一）,song_and_dance,exact,no,True,0.6818,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.2"
+NOR-0075,逛花灯,东北部平原,山东,BV1nt42187b9,anthology:tianjin/446_逛花灯（三）,tianjin,逛花灯（三）,song_and_dance,exact,no,True,0.5732,98.9,uncertain,"title exact, other province; melodic pct 98.9 (≥95, below corrected 99.2)"
+NOR-0087,万丽,北方草原文化民歌区,内蒙古,BV1yw411o7YA,anthology:jilin/819_万丽,jilin,万丽,,exact,no,False,0.5763,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+NOR-0101,却吉敖斯尔,北方草原文化民歌区,内蒙古,BV1ZxW5eREoE,anthology:jilin/827_却吉敖斯尔,jilin,却吉敖斯尔,,exact,no,False,0.7193,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+NOR-0110,嘎达梅林,北方草原文化民歌区,内蒙古,ZMq-pGFXlXI; GI4FngAG-Gs,anthology:jilin/767_嘎达梅林,jilin,嘎达梅林,ritual_custom,exact,no,False,0.5278,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+NOR-0181,金珠尔玛,北方草原文化民歌区,吉林,EGZ2HVzQVmA,anthology:jilin/848_金珠尔玛,jilin,金珠尔玛,,exact,yes,False,0.4886,93.4,match,title exact + same province (melodic pct 93.4)
+HAK-0199,十二月古人,客家特区,台湾,WLseIb-dkbc,anthology:guangdong/680_十二月古人,guangdong,十二月古人,ditty,exact,no,False,0.3667,65.8,uncertain,"distinctive title, other province; melodic pct 65.8 neither supports nor contradicts"
+HAK-0235,有好山歌溜等来,客家特区,广西,pfzlivLiIWw,anthology:guangdong/307_有好山歌溜等来,guangdong,有好山歌溜等来,mountain_song,exact,no,False,0.5208,79.5,uncertain,"distinctive title, other province; melodic pct 79.5 neither supports nor contradicts"
+HAK-0235,有好山歌溜等来,客家特区,广西,pfzlivLiIWw,anthology:guangdong/316_有好山歌溜等来,guangdong,有好山歌溜等来,mountain_song,exact,no,False,0.6053,91.5,uncertain,"distinctive title, other province; melodic pct 91.5 neither supports nor contradicts"
+HAK-0252,皆歌一唱闹洋洋（惠阳皆歌）,客家特区,广东,BV13M4y1S71h,anthology:guangdong/634_皆歌一唱闹洋洋,guangdong,皆歌一唱闹洋洋,,exact,yes,False,0.7417,100.0,match,title exact + same province (melodic pct 100.0)
+HAK-0263,落水天,客家特区,广东,wUGaaaI7l3A; BV1SW4y1P7gK,anthology:guangdong/406_落水天,guangdong,落水天,mountain_song,exact,yes,False,0.82,100.0,match,title exact + same province (melodic pct 100.0)
+HAK-0266,送郎,客家特区,台湾,Etwt-1wHFZE; 9hMlusxAYww,anthology:sichuan1/530_送郎,sichuan1,送郎,,exact,no,False,0.5909,99.5,uncertain,"title exact, other province; melodic pct 99.5 (≥95, below corrected 99.8)"
+JIA-0397,一把芝麻撒上天,江汉,湖北,IqzboWeGius,anthology:jiangsu1/627_一把芝麻撒上天（一）,jiangsu1,一把芝麻撒上天（一）,,exact,no,False,0.4216,64.0,uncertain,"distinctive title, other province; melodic pct 64.0 neither supports nor contradicts"
+JIA-0397,一把芝麻撒上天,江汉,湖北,IqzboWeGius,anthology:jiangsu1/628_一把芝麻撒上天（二）,jiangsu1,一把芝麻撒上天（二）,,exact,no,False,0.4231,50.0,uncertain,"distinctive title, other province; melodic pct 50.0 neither supports nor contradicts"
+JIA-0397,一把芝麻撒上天,江汉,湖北,IqzboWeGius,anthology:jiangsu1/630_一把芝麻撒上天（四）,jiangsu1,一把芝麻撒上天（四）,,exact,no,False,0.52,68.5,uncertain,"distinctive title, other province; melodic pct 68.5 neither supports nor contradicts"
+JIA-0437,掐菜苔,江汉,湖北,BV1yG4y1T7Xt; BV1eDtLewEUj,anthology:jiangsu2/911_掐菜薹,jiangsu2,掐菜薹,,exact,no,False,0.55,97.2,uncertain,"title exact, other province; melodic pct 97.2 (≥95, below corrected 99.0)"
+JIA-0442,望郎调,江汉,河南,BV1kkhx6tERf,anthology:henan/225_望郎,henan,望郎,ditty,variant,yes,True,0.3417,48.7,uncertain,"homonym-prone title, same province, but melodic pct 48.7 < 50 (may be a different song of the same title)"
+JIA-0465,一把芝麻撒上天,江浙平原,江苏,BV1Hq4y137mD,anthology:jiangsu1/627_一把芝麻撒上天（一）,jiangsu1,一把芝麻撒上天（一）,,exact,yes,True,0.2353,21.4,match,title exact + same province (melodic pct 21.4)
+JIA-0465,一把芝麻撒上天,江浙平原,江苏,BV1Hq4y137mD,anthology:jiangsu1/628_一把芝麻撒上天（二）,jiangsu1,一把芝麻撒上天（二）,,exact,yes,True,0.3333,79.8,match,title exact + same province (melodic pct 79.8)
+JIA-0465,一把芝麻撒上天,江浙平原,江苏,BV1Hq4y137mD,anthology:jiangsu1/629_一把芝麻撒上天（三）,jiangsu1,一把芝麻撒上天（三）,,exact,yes,True,0.3833,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0465,一把芝麻撒上天,江浙平原,江苏,BV1Hq4y137mD,anthology:jiangsu1/630_一把芝麻撒上天（四）,jiangsu1,一把芝麻撒上天（四）,,exact,yes,True,0.38,65.5,match,title exact + same province (melodic pct 65.5)
+JIA-0468,五姑娘,江浙平原,上海; 浙江,BV1FF411b723; BV1fi421e7gN,anthology:shanghai/165_五姑娘,shanghai,五姑娘,,exact,yes,True,0.25,22.0,match,title exact + same province (melodic pct 22.0)
+JIA-0468,五姑娘,江浙平原,上海; 浙江,BV1FF411b723; BV1fi421e7gN,anthology:shanghai/286_五姑娘,shanghai,五姑娘,mountain_song,exact,yes,True,0.2917,73.4,match,title exact + same province (melodic pct 73.4)
+JIA-0473,十只台子,江浙平原,浙江,BV1no4y1S7uw,anthology:shanghai/453_十只台子,shanghai,十只台子,ditty,exact,no,True,0.4737,99.1,uncertain,"title exact, other province; melodic pct 99.1 (≥95, below corrected 99.3)"
+JIA-0484,四季棉花,江浙平原,江苏,Fvq3ufHx0Kg,anthology:jiangsu2/1038_四季棉花,jiangsu2,四季棉花,ditty,exact,yes,True,0.9681,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0486,四绣红绣鞋,江浙平原,安徽,hp_hqb6r188,anthology:jiangsu2/1054_a_红绣鞋,jiangsu2,a_红绣鞋,,contained,no,True,0.3417,100.0,uncertain,"manual: 四绣红绣鞋 (Anhui) vs 红绣鞋 (Jiangsu, neighbouring); melodic pct 100 but title only contained and 红绣鞋 is a common theme title"
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:henan/392_孟姜女哭长城,henan,孟姜女哭长城,,contained,no,False,0.6441,100.0,match,"manual: 孟姜女哭长城 = the 孟姜女 tune/story; melodic pct 100, similarity 0.64 (one of the highest cross-province scores)"
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu1/745_孟姜女,jiangsu1,孟姜女,mountain_song,exact,yes,True,0.4417,50.4,match,title exact + same province (melodic pct 50.4)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu2/1232_孟姜女,jiangsu2,孟姜女,,exact,yes,True,0.5083,93.0,match,title exact + same province (melodic pct 93.0)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu2/786_孟姜女（一）,jiangsu2,孟姜女（一）,,exact,yes,True,0.6098,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu2/787_孟姜女（二）,jiangsu2,孟姜女（二）,,exact,yes,True,0.625,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu2/788_孟姜女（三）,jiangsu2,孟姜女（三）,,exact,yes,True,0.5083,93.0,match,title exact + same province (melodic pct 93.0)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu2/789_孟姜女（四）,jiangsu2,孟姜女（四）,,exact,yes,True,0.5333,98.3,match,title exact + same province (melodic pct 98.3)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:jiangsu2/790_孟姜女（五）,jiangsu2,孟姜女（五）,,exact,yes,True,0.575,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0491,孟姜女,江浙平原,江苏,oNEfgUbL2pA; RkrtYoWaTvw; OLUJT-58Xt0,anthology:shanghai/507_孟姜女寻夫,shanghai,孟姜女寻夫,ditty,contained,no,True,0.6083,100.0,match,"manual: 孟姜女寻夫 = the 孟姜女 tune/story; neighbouring Shanghai volume; melodic pct 100, similarity 0.61"
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/631_山歌好唱口难开（一）,jiangsu1,山歌好唱口难开（一）,mountain_song,exact,yes,True,0.3684,95.7,match,title exact + same province (melodic pct 95.7)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/632_山歌好唱口难开（二）,jiangsu1,山歌好唱口难开（二）,mountain_song,exact,yes,True,0.3019,46.7,match,title exact + same province (melodic pct 46.7)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/633_山歌好唱口难开（三）,jiangsu1,山歌好唱口难开（三）,mountain_song,exact,yes,True,0.35,26.0,match,title exact + same province (melodic pct 26.0)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/634_山歌好唱口难开（四）,jiangsu1,山歌好唱口难开（四）,mountain_song,exact,yes,True,0.3103,64.3,match,title exact + same province (melodic pct 64.3)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/635_山歌好唱口难开（五）,jiangsu1,山歌好唱口难开（五）,mountain_song,exact,yes,True,0.3636,77.7,match,title exact + same province (melodic pct 77.7)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/636_山歌好唱口难开（六）,jiangsu1,山歌好唱口难开（六）,mountain_song,exact,yes,True,0.3364,81.3,match,title exact + same province (melodic pct 81.3)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/637_山歌好唱口难开（七）,jiangsu1,山歌好唱口难开（七）,mountain_song,exact,yes,True,0.2889,18.1,match,title exact + same province (melodic pct 18.1)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/638_山歌好唱口难开（八）,jiangsu1,山歌好唱口难开（八）,mountain_song,exact,yes,True,0.4,46.5,match,title exact + same province (melodic pct 46.5)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/639_山歌好唱口难开（九）,jiangsu1,山歌好唱口难开（九）,mountain_song,exact,yes,True,0.3,58.8,match,title exact + same province (melodic pct 58.8)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:jiangsu1/640_山歌好唱口难开（十）,jiangsu1,山歌好唱口难开（十）,mountain_song,exact,yes,True,0.2583,21.6,match,title exact + same province (melodic pct 21.6)
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:shanghai/291_山歌好唱口难开,shanghai,山歌好唱口难开,mountain_song,exact,no,True,0.3864,88.6,uncertain,"distinctive title, other province; melodic pct 88.6 neither supports nor contradicts"
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:shanghai/328_山歌好唱口难开,shanghai,山歌好唱口难开,mountain_song,exact,no,True,0.3415,52.2,uncertain,"distinctive title, other province; melodic pct 52.2 neither supports nor contradicts"
+JIA-0494,山歌好唱口难开,江浙平原,江苏,BV1Ce411G7FR,anthology:sichuan1/199_山歌好唱口难开,sichuan1,山歌好唱口难开,mountain_song,exact,no,False,0.3,58.8,uncertain,"distinctive title, other province; melodic pct 58.8 neither supports nor contradicts"
+JIA-0501,搭凉棚,江浙平原,江苏,BV1YZ4y1T7KM,anthology:jiangsu1/688_搭凉棚,jiangsu1,搭凉棚,mountain_song,exact,yes,True,0.4833,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0501,搭凉棚,江浙平原,江苏,BV1YZ4y1T7KM,anthology:shanghai/539_搭凉棚,shanghai,搭凉棚,,exact,no,True,0.4917,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+JIA-0506,无锡景,江浙平原,江苏,mK9sGWsYx4A; wJCGuZtLXp8,anthology:jiangsu2/797_无锡景,jiangsu2,无锡景,,exact,yes,True,0.6864,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0509,杨柳青（苏滩）,江浙平原,江苏,tf9-jE7spBg,anthology:jiangsu2/847_杨柳青青（一）,jiangsu2,杨柳青青（一）,ditty,fuzzy,yes,True,0.3667,82.1,uncertain,"near-identical title, same province; melodic pct 82.1"
+JIA-0509,杨柳青（苏滩）,江浙平原,江苏,tf9-jE7spBg,anthology:jiangsu2/848_杨柳青青（二）,jiangsu2,杨柳青青（二）,ditty,fuzzy,yes,True,0.45,100.0,uncertain,"title fuzzy only, same province; melodic pct 100.0"
+JIA-0509,杨柳青（苏滩）,江浙平原,江苏,tf9-jE7spBg,anthology:shanghai/500_杨柳青,shanghai,杨柳青,ditty,exact,no,True,0.4083,97.2,uncertain,"title exact, other province; melodic pct 97.2 (≥95, below corrected 99.0)"
+JIA-0509,杨柳青（苏滩）,江浙平原,江苏,tf9-jE7spBg,anthology:shanghai/543_杨柳青青,shanghai,杨柳青青,,fuzzy,no,True,0.425,99.1,uncertain,"title fuzzy only, other province; melodic pct 99.1"
+JIA-0522,紫竹调,江浙平原,江苏,7Lq8gzNQrPA; RbPH_fIu-40; llB7nbQhDhY,anthology:jiangsu2/807_紫竹调（一）,jiangsu2,紫竹调（一）,ditty,exact,yes,True,0.4561,80.8,match,title exact + same province (melodic pct 80.8)
+JIA-0522,紫竹调,江浙平原,江苏,7Lq8gzNQrPA; RbPH_fIu-40; llB7nbQhDhY,anthology:jiangsu2/808_紫竹调（二）,jiangsu2,紫竹调（二）,ditty,exact,yes,True,0.475,87.3,match,title exact + same province (melodic pct 87.3)
+JIA-0522,紫竹调,江浙平原,江苏,7Lq8gzNQrPA; RbPH_fIu-40; llB7nbQhDhY,anthology:jiangsu2/809_紫竹调（三）,jiangsu2,紫竹调（三）,ditty,exact,yes,True,0.5667,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0522,紫竹调,江浙平原,江苏,7Lq8gzNQrPA; RbPH_fIu-40; llB7nbQhDhY,anthology:shanghai/522_紫竹调（二）,shanghai,紫竹调（二）,ditty,exact,no,True,0.7583,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:hebei1/168_茉莉花（二）,hebei1,茉莉花（二）,,exact,no,False,0.5417,97.3,uncertain,"title exact, other province; melodic pct 97.3 (≥95, below corrected 99.7)"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:hebei1/291_茉莉花（二）,hebei1,茉莉花（二）,ditty,exact,no,False,0.5583,99.1,uncertain,"title exact, other province; melodic pct 99.1 (≥95, below corrected 99.7)"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:hebei1/292_茉莉花（三）,hebei1,茉莉花（三）,ditty,exact,no,False,0.5417,97.3,uncertain,"title exact, other province; melodic pct 97.3 (≥95, below corrected 99.7)"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:henan/412_一朵茉莉花,henan,一朵茉莉花,ditty,contained,no,False,0.5948,100.0,match,"manual: 一朵茉莉花 = 好一朵茉莉花 (the 茉莉花/鲜花调 tune family); melodic pct 100, similarity 0.59"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:jiangsu2/805_茉莉花（一）,jiangsu2,茉莉花（一）,ditty,exact,yes,True,0.7833,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:jiangsu2/806_茉莉花（二）,jiangsu2,茉莉花（二）,ditty,exact,yes,True,0.525,96.4,match,title exact + same province (melodic pct 96.4)
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:jilin/44_茉莉花（三）,jilin,茉莉花（三）,ditty,exact,no,False,0.5833,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.7"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:jilin/46_茉莉花（五）,jilin,茉莉花（五）,ditty,exact,no,False,0.6583,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.7"
+JIA-0535,茉莉花（江苏）,江浙平原,江苏,SGx66fj3ngQ; P8svqjux5V4; SwudG7NaXos,anthology:shanghai/488_茉莉花调,shanghai,茉莉花调,ditty,variant,no,True,0.5167,95.5,uncertain,"title variant, other province; melodic pct 95.5 (≥95, below corrected 99.7)"
+JIA-0546,马灯调,江浙平原,浙江,ek7JhOIacwc; BV1pK411g7Zs,anthology:shanghai/475_马灯调,shanghai,马灯调,song_and_dance,exact,no,True,0.4038,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+JIA-0549,一根丝线牵过河,江淮,江苏,ZA6P0UreVQg,anthology:jiangsu1/3_一根丝线牵过河,jiangsu1,一根丝线牵过河,,exact,yes,False,0.3917,99.1,match,title exact + same province (melodic pct 99.1)
+JIA-0549,一根丝线牵过河,江淮,江苏,ZA6P0UreVQg,anthology:jiangsu1/4_一根丝线拖过河,jiangsu1,一根丝线拖过河,,fuzzy,yes,False,0.325,93.4,uncertain,"near-identical title, same province; melodic pct 93.4"
+JIA-0549,一根丝线牵过河,江淮,江苏,ZA6P0UreVQg,anthology:jiangsu1/772_一根麻线牵过河,jiangsu1,一根麻线牵过河,,fuzzy,yes,False,0.3929,76.5,uncertain,"near-identical title, same province; melodic pct 76.5"
+JIA-0550,三十六码头,江淮,江苏,BV1ZQ4y187xX,anthology:jiangsu1/687_三十六码头,jiangsu1,三十六码头,mountain_song,exact,yes,False,0.4118,44.9,match,title exact + same province (melodic pct 44.9)
+JIA-0559,凤阳歌,江淮,安徽,wFDN_waKpK4,anthology:tianjin/441_凤阳歌,tianjin,凤阳歌,,exact,no,False,0.6167,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+JIA-0560,凤阳花鼓,江淮,安徽,_-AiYyX7Ptg; Tj3wSdZJFEs; eqaiFiVHtFo; BV1ob4y1b7Fp,anthology:shanghai/431_凤阳花鼓（二）,shanghai,凤阳花鼓（二）,song_and_dance,exact,no,False,0.825,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.8"
+JIA-0569,号子好嗐口难开,江淮,江苏,BV1e4411r7gJ,anthology:jiangsu1/57_号子好打口难开,jiangsu1,号子好打口难开,work_song,fuzzy,yes,False,0.1863,82.6,uncertain,"near-identical title, same province; melodic pct 82.6"
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu1/745_孟姜女,jiangsu1,孟姜女,mountain_song,exact,yes,False,0.325,9.5,match,title exact + same province (melodic pct 9.5)
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu2/1232_孟姜女,jiangsu2,孟姜女,,exact,yes,False,0.3833,60.0,match,title exact + same province (melodic pct 60.0)
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu2/786_孟姜女（一）,jiangsu2,孟姜女（一）,,exact,yes,False,0.4268,59.8,match,title exact + same province (melodic pct 59.8)
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu2/787_孟姜女（二）,jiangsu2,孟姜女（二）,,exact,yes,False,0.4667,97.1,match,title exact + same province (melodic pct 97.1)
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu2/788_孟姜女（三）,jiangsu2,孟姜女（三）,,exact,yes,False,0.3917,66.7,match,title exact + same province (melodic pct 66.7)
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu2/789_孟姜女（四）,jiangsu2,孟姜女（四）,,exact,yes,False,0.4167,86.7,match,title exact + same province (melodic pct 86.7)
+JIA-0578,孟姜女（扬州清曲·十二月调）,江淮,江苏,8CStXzhcV_s; BV1aj411A7C5,anthology:jiangsu2/790_孟姜女（五）,jiangsu2,孟姜女（五）,,exact,yes,False,0.4667,97.1,match,title exact + same province (melodic pct 97.1)
+JIA-0581,小花船,江淮,江苏,BV1Co4y1H7cL,anthology:jiangsu2/1172_小小花船,jiangsu2,小小花船,ditty,fuzzy,yes,False,0.22,57.7,uncertain,"near-identical title, same province; melodic pct 57.7"
+JIA-0587,打菜苔,江淮,安徽,BV17i4y1s7VJ,anthology:jiangsu2/909_打菜薹（一）,jiangsu2,打菜薹（一）,,exact,no,False,0.3214,95.9,uncertain,"title exact, other province; melodic pct 95.9 (≥95, below corrected 99.0)"
+JIA-0587,打菜苔,江淮,安徽,BV17i4y1s7VJ,anthology:jiangsu2/910_打菜薹（二）,jiangsu2,打菜薹（二）,,exact,no,False,0.4146,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.0"
+JIA-0591,拔根芦柴花,江淮,江苏,olFFh11z3Fk; 7O_hCMuiNrI; JyjpYFTdbvw; BV1Ux411a7g9,anthology:jiangsu1/1_a_拔根芦柴花,jiangsu1,a_拔根芦柴花,,exact,yes,False,0.6583,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0591,拔根芦柴花,江淮,江苏,olFFh11z3Fk; 7O_hCMuiNrI; JyjpYFTdbvw; BV1Ux411a7g9,anthology:jiangsu1/1_拔根芦柴花,jiangsu1,拔根芦柴花,,exact,yes,False,0.525,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0591,拔根芦柴花,江淮,江苏,olFFh11z3Fk; 7O_hCMuiNrI; JyjpYFTdbvw; BV1Ux411a7g9,anthology:jiangsu1/2_拔根芦柴花,jiangsu1,拔根芦柴花,,exact,yes,False,0.4583,82.6,match,title exact + same province (melodic pct 82.6)
+JIA-0594,摘石榴,江淮,安徽,U2oQUmFE6v4; VMhwxMRZJGQ; BV1ws4y1c7E8,anthology:jiangsu2/917_摘石榴,jiangsu2,摘石榴,,exact,no,False,0.4083,97.8,uncertain,"title exact, other province; melodic pct 97.8 (≥95, below corrected 99.0)"
+JIA-0600,杨柳青,江淮,江苏,xoG_iBVqNyA; fN5SKkNiWsc; RML1QqR28gA; BV1d7411v7M8,anthology:jiangsu2/847_杨柳青青（一）,jiangsu2,杨柳青青（一）,ditty,fuzzy,yes,False,0.375,67.3,uncertain,"near-identical title, same province; melodic pct 67.3"
+JIA-0600,杨柳青,江淮,江苏,xoG_iBVqNyA; fN5SKkNiWsc; RML1QqR28gA; BV1d7411v7M8,anthology:jiangsu2/848_杨柳青青（二）,jiangsu2,杨柳青青（二）,ditty,fuzzy,yes,False,0.3667,60.2,uncertain,"near-identical title, same province; melodic pct 60.2"
+JIA-0608,知心客,江淮,江苏,U0Qngjzl8Cs,anthology:shanghai/411_知心客调,shanghai,知心客调,ditty,variant,no,False,0.325,98.1,uncertain,"title variant, other province; melodic pct 98.1 (≥95, below corrected 99.0)"
+JIA-0609,红娘子·拔黄秧（南通山歌）,江淮,江苏,NZbwiGfzEp0,anthology:jiangsu2/1012_红娘子,jiangsu2,红娘子,,variant,yes,False,0.2417,26.2,uncertain,manual: only the first half of 红娘子·拔黄秧 matches; same province (Jiangsu) but 红娘子 is a common ditty title; melodic pct 26.2
+JIA-0612,茉莉花（扬州清曲）,江淮,江苏,QT39HoiStcw,anthology:hebei1/168_茉莉花（二）,hebei1,茉莉花（二）,,exact,no,False,0.3167,96.0,uncertain,"title exact, other province; melodic pct 96.0 (≥95, below corrected 99.7)"
+JIA-0612,茉莉花（扬州清曲）,江淮,江苏,QT39HoiStcw,anthology:henan/412_一朵茉莉花,henan,一朵茉莉花,ditty,contained,no,False,0.3793,100.0,match,manual: 一朵茉莉花 = 好一朵茉莉花 (the 茉莉花/鲜花调 tune family); melodic pct 100
+JIA-0612,茉莉花（扬州清曲）,江淮,江苏,QT39HoiStcw,anthology:jiangsu2/805_茉莉花（一）,jiangsu2,茉莉花（一）,ditty,exact,yes,False,0.425,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0612,茉莉花（扬州清曲）,江淮,江苏,QT39HoiStcw,anthology:jiangsu2/806_茉莉花（二）,jiangsu2,茉莉花（二）,ditty,exact,yes,False,0.2833,87.1,match,title exact + same province (melodic pct 87.1)
+JIA-0612,茉莉花（扬州清曲）,江淮,江苏,QT39HoiStcw,anthology:jilin/46_茉莉花（五）,jilin,茉莉花（五）,ditty,exact,no,False,0.3917,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.7"
+JIA-0612,茉莉花（扬州清曲）,江淮,江苏,QT39HoiStcw,anthology:shanghai/488_茉莉花调,shanghai,茉莉花调,ditty,variant,no,False,0.3083,95.0,uncertain,"title variant, other province; melodic pct 95.0 (≥95, below corrected 99.7)"
+JIA-0616,闺中思,江淮,江苏,BV1794y1E7QG,anthology:jiangsu2/870_闺中思,jiangsu2,闺中思,ditty,exact,yes,False,0.65,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0618,高邮西北乡,江淮,江苏,JKa2pEP14Qw,anthology:jiangsu2/832_高邮西北乡（一）,jiangsu2,高邮西北乡（一）,ditty,exact,yes,False,0.5625,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0618,高邮西北乡,江淮,江苏,JKa2pEP14Qw,anthology:jiangsu2/833_高邮西北乡（二）,jiangsu2,高邮西北乡（二）,ditty,exact,yes,False,0.5,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0619,鲜花调,江淮,江苏,BV1gj421R7Q9; BV1Ap4y1S7nA,anthology:jiangsu2/800_a_鲜花调,jiangsu2,a_鲜花调,ditty,exact,yes,False,0.45,88.8,match,title exact + same province (melodic pct 88.8)
+JIA-0619,鲜花调,江淮,江苏,BV1gj421R7Q9; BV1Ap4y1S7nA,anthology:jiangsu2/800_鲜花调（一）,jiangsu2,鲜花调（一）,ditty,exact,yes,False,0.7167,100.0,match,title exact + same province (melodic pct 100.0)
+JIA-0619,鲜花调,江淮,江苏,BV1gj421R7Q9; BV1Ap4y1S7nA,anthology:jiangsu2/801_鲜花调（二）,jiangsu2,鲜花调（二）,ditty,exact,yes,False,0.425,76.6,match,title exact + same province (melodic pct 76.6)
+JIA-0619,鲜花调,江淮,江苏,BV1gj421R7Q9; BV1Ap4y1S7nA,anthology:jiangsu2/802_鲜花调（三）,jiangsu2,鲜花调（三）,ditty,exact,yes,False,0.4417,86.0,match,title exact + same province (melodic pct 86.0)
+JIA-0619,鲜花调,江淮,江苏,BV1gj421R7Q9; BV1Ap4y1S7nA,anthology:jiangsu2/803_鲜花调（四）,jiangsu2,鲜花调（四）,ditty,exact,yes,False,0.4833,99.1,match,title exact + same province (melodic pct 99.1)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:hebei1/290_茉莉花（一）,hebei1,茉莉花（一）,ditty,variant,no,False,0.3,99.1,uncertain,"title variant, other province; melodic pct 99.1 (≥95, below corrected 99.7)"
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/800_a_鲜花调,jiangsu2,a_鲜花调,ditty,variant,yes,False,0.2333,51.4,match,title variant + same province (melodic pct 51.4)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/800_鲜花调（一）,jiangsu2,鲜花调（一）,ditty,variant,yes,False,0.2917,97.2,match,title variant + same province (melodic pct 97.2)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/801_鲜花调（二）,jiangsu2,鲜花调（二）,ditty,variant,yes,False,0.2583,82.6,match,title variant + same province (melodic pct 82.6)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/802_鲜花调（三）,jiangsu2,鲜花调（三）,ditty,variant,yes,False,0.275,92.7,match,title variant + same province (melodic pct 92.7)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/803_鲜花调（四）,jiangsu2,鲜花调（四）,ditty,variant,yes,False,0.2583,82.6,match,title variant + same province (melodic pct 82.6)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/805_茉莉花（一）,jiangsu2,茉莉花（一）,ditty,variant,yes,False,0.2583,82.6,match,title variant + same province (melodic pct 82.6)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:jiangsu2/806_茉莉花（二）,jiangsu2,茉莉花（二）,ditty,variant,yes,False,0.2583,82.6,match,title variant + same province (melodic pct 82.6)
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:shanghai/488_茉莉花调,shanghai,茉莉花调,ditty,variant,no,False,0.3333,100.0,match,"title variant, other province; melodic pct 100.0 ≥ corrected threshold 99.7"
+JIA-0620,鲜花调·茉莉花（扬州）,江淮,江苏,iBw2JmuHH60,anthology:tianjin/144_茉莉花（二）,tianjin,茉莉花（二）,ditty,variant,no,False,0.2917,97.2,uncertain,"title variant, other province; melodic pct 97.2 (≥95, below corrected 99.7)"
+YUE-0730,卖鸡调·懒婆娘,粤,广东,zB1ff5DqAHc,anthology:guangdong/219_懒婆娘,guangdong,懒婆娘,,variant,yes,True,0.4083,99.2,match,title variant + same province (melodic pct 99.2)
+YUE-0732,叫侬唱歌侬就唱,粤,海南,4qcmnqaO9z4,anthology:hainan/701_叫侬唱歌侬就唱,hainan,叫侬唱歌侬就唱,,exact,yes,True,0.8125,100.0,match,title exact + same province (melodic pct 100.0)
+YUE-0750,对花（中山咸水歌）,粤,广东,BV1mC4y1k7pk,anthology:guangdong/20_对花,guangdong,对花,,exact,yes,True,0.7583,100.0,match,title exact + same province (melodic pct 100.0)
+YUE-0750,对花（中山咸水歌）,粤,广东,BV1mC4y1k7pk,anthology:guangdong/978_对花,guangdong,对花,,exact,yes,True,0.2879,0.0,uncertain,"homonym-prone title, same province, but melodic pct 0.0 < 50 (may be a different song of the same title)"
+YUE-0756,斗歌（汕尾渔歌）,粤,广东,BV1Sb4y1W7wp,anthology:guangdong/782_斗歌（一）,guangdong,斗歌（一）,ditty,exact,yes,True,0.6279,100.0,match,title exact + same province (melodic pct 100.0)
+YUE-0756,斗歌（汕尾渔歌）,粤,广东,BV1Sb4y1W7wp,anthology:guangdong/783_斗歌（二）,guangdong,斗歌（二）,ditty,exact,yes,True,0.7167,100.0,match,title exact + same province (melodic pct 100.0)
+YUE-0758,月光光,粤,广东,xh8esX3Neyw; l0ucGq9v1SE,anthology:guangdong/235_月光光照地堂,guangdong,月光光照地堂,children,contained,yes,True,0.4583,93.9,uncertain,manual: 月光光照地堂 is the full first line of the best-known Cantonese 月光光; same province; melodic pct 93.9
+YUE-0758,月光光,粤,广东,xh8esX3Neyw; l0ucGq9v1SE,anthology:guangdong/237_月光光,guangdong,月光光,children,exact,yes,True,0.4651,83.9,match,title exact + same province (melodic pct 83.9)
+YUE-0772,海底珍珠容易揾,粤,广东,BV1bw411U7fK,anthology:guangdong/21_海底珍珠容易揾,guangdong,海底珍珠容易揾,,exact,yes,True,0.4792,100.0,match,title exact + same province (melodic pct 100.0)
+YUE-0773,海底珍珠容易搵,粤,广东,LvSaSFANT7Q,anthology:guangdong/21_海底珍珠容易揾,guangdong,海底珍珠容易揾,,exact,yes,True,0.4792,99.3,match,title exact + same province (melodic pct 99.3)
+YUE-0780,落雨大,粤,广东,HV-pCL6YReQ; -Z0Vvm-yy7w,anthology:guangdong/243_落雨大,guangdong,落雨大,,exact,yes,True,0.3455,76.9,match,title exact + same province (melodic pct 76.9)
+YUE-0780,落雨大,粤,广东,HV-pCL6YReQ; -Z0Vvm-yy7w,anthology:guangdong/244_落雨大,guangdong,落雨大,,exact,yes,True,0.4565,50.5,match,title exact + same province (melodic pct 50.5)
+YUE-0789,鸡公仔,粤,广东,ii8U3EOVo2M,anthology:guangdong/241_鸡公仔　尾弯弯,guangdong,鸡公仔　尾弯弯,,contained,yes,True,0.2583,10.9,uncertain,manual: 鸡公仔，尾弯弯 is the standard first line of the Cantonese nursery rhyme 鸡公仔; same province; melody not supportive (pct 10.9)
+YUE-0789,鸡公仔,粤,广东,ii8U3EOVo2M,anthology:guangdong/242_鸡公仔　尾婆娑,guangdong,鸡公仔　尾婆娑,,contained,yes,True,0.4038,42.5,uncertain,manual: 鸡公仔，尾婆娑 is a variant first line of the Cantonese nursery rhyme 鸡公仔; same province; melodic pct 42.5
+NOR-0924,五哥放羊,西北部高原,山西,Rg2i1AHRdIs,anthology:hebei2/553_五哥放羊（二）,hebei2,五哥放羊（二）,,exact,no,False,0.4079,50.5,uncertain,"distinctive title, other province; melodic pct 50.5 neither supports nor contradicts"
+NOR-0924,五哥放羊,西北部高原,山西,Rg2i1AHRdIs,anthology:hebei2/554_五哥放羊（三）,hebei2,五哥放羊（三）,,exact,no,False,0.5,80.5,uncertain,"distinctive title, other province; melodic pct 80.5 neither supports nor contradicts"
+NOR-0958,太阳出来一把火,西北部高原,陕西,tVjU40aKMZ0,anthology:sichuan1/218_太阳出来一把火,sichuan1,太阳出来一把火,,exact,no,False,0.1417,76.5,uncertain,"distinctive title, other province; melodic pct 76.5 neither supports nor contradicts"
+NOR-1065,茉莉花,西北部高原,青海,_hWMx3wcqNs,anthology:hebei1/291_茉莉花（二）,hebei1,茉莉花（二）,ditty,exact,no,False,0.425,100.0,match,"title exact, other province; melodic pct 100.0 ≥ corrected threshold 99.7"
+NOR-1074,走西口,西北部高原,山西,mAxpsCADntE; r0Ji09N8wA4,anthology:hebei1/368_走西口（一）,hebei1,走西口（一）,,exact,no,False,0.4605,99.5,match,"title exact, other province; melodic pct 99.5 ≥ corrected threshold 99.0"
+SOU-1129,唱起来，跳起来,西南多民族古老原始文化民歌区,四川,zjeyATznAS0,anthology:sichuan1/175_唱起来合起来,sichuan1,唱起来合起来,,fuzzy,yes,False,0.2417,73.3,uncertain,"near-identical title, same province; melodic pct 73.3"
+SOU-1276,太阳出来喜洋洋,西南高原,四川; 重庆,AT1lowVR8UY; jlT0dTIoTrY; 6vgd3X-WZrc,anthology:sichuan1/1_太阳出来喜洋洋,sichuan1,太阳出来喜洋洋,,exact,yes,True,0.9815,100.0,match,title exact + same province (melodic pct 100.0)
+SOU-1329,这山没得那山高,西南高原,贵州,BV1U441177v2,anthology:sichuan1/303_这山没得那山高,sichuan1,这山没得那山高,,exact,no,True,0.475,85.8,uncertain,"distinctive title, other province; melodic pct 85.8 neither supports nor contradicts"
+SOU-1332,采花,西南高原,四川,yMQjYfuxtzo; x7qEZhdTtQw; trX6KTdoTlY,anthology:sichuan1/319_采花,sichuan1,采花,work_song,exact,yes,True,0.4,25.5,uncertain,"homonym-prone title, same province, but melodic pct 25.5 < 50 (may be a different song of the same title)"
+SOU-1332,采花,西南高原,四川,yMQjYfuxtzo; x7qEZhdTtQw; trX6KTdoTlY,anthology:sichuan1/536_采花,sichuan1,采花,,exact,yes,True,0.9143,100.0,match,title exact + same province (melodic pct 100.0)
+GAN-1363,打鞋底,赣,江西,aueyg3cHMDk,anthology:guangdong/597_打鞋底,guangdong,打鞋底,ditty,exact,no,False,0.475,99.1,uncertain,"title exact, other province; melodic pct 99.1 (≥95, below corrected 99.8)"

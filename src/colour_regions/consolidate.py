@@ -27,7 +27,9 @@ OUT = D / "colour_regions" / "corpus"
 ROUND = {1: dict(audio=D / "regions_audio", trans=D / "regions_transcription",
                  f0=D / "transcription" / "critic", index=D / "regions_transcription" / "dataset_index.csv"),
          2: dict(audio=D / "regions_v2" / "audio", trans=D / "regions_v2" / "transcription",
-                 f0=D / "regions_v2" / "transcription", index=D / "regions_v2" / "transcription" / "dataset_index.csv")}
+                 f0=D / "regions_v2" / "transcription", index=D / "regions_v2" / "transcription" / "dataset_index.csv"),
+         3: dict(audio=D / "regions_v3" / "audio", trans=D / "regions_v3" / "transcription",
+                 f0=D / "regions_v3" / "transcription", index=D / "regions_v3" / "transcription" / "dataset_index.csv")}
 VARIANTS = ["game", "game_pp", "game_ens3_pp", "rosvot", "yourmt3"]
 AUDIO_EXTS = {".webm", ".m4a", ".opus", ".mp3", ".ogg", ".mp4", ".wav", ".flac", ".aac"}
 

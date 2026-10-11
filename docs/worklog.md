@@ -178,6 +178,52 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
 3. **Open question for the author:** `select_excerpts.py` excludes the "dominant Round 1 commercial channel" (Rhymoi) from the notation study. Keep that, or allow Rhymoi items now that the channel is valued?
 4. Write the Chinese translation of the guideline body; the page UI is already bilingual.
 
+### Session 2026-10-08: Round 3, song labels, study includes Musical Map of China
+
+**Author decisions:**
+- Transcribe the new Musical Map of China items, and include them in the notation study.
+- Commit and push (done: 718fc47).
+- Label every song with composer, period of composition, song type and region (research agents, cross-validated with the Anthology).
+
+**Round 3:**
+- The fetch finished: 756 descriptions, 78 videos unavailable.
+- The parser now reads the second description template:
+  - generic form;
+  - composer lines → `composed`;
+  - opera, 曲艺, 戏曲 and poetry → not song;
+  - Manchu → Northeast Plain, She → Min–Tai, Korean unmapped.
+- Border regions follow the round-1 curators (PRECEDENT in `rhymoi.py`): 99.4% agreement on round 1.
+- 361 eligible new songs. `rhymoi_download.py` (45–90 s, no cookies) → `data/regions_v3/`. Log: `download.out`.
+- `src/transcription/run_v3.sh` is running (arm64). It waits for the download, retries the failures once, then runs speech screen → separation → GAME/ROSVOT → ensemble → F0 → primary → index → release.
+- `build_release.py` reads round 3 (`round2(R3, 3)`), and `consolidate.py` has round 3.
+
+**Notation study:** `select_excerpts.py` no longer excludes the series. After Round 3 is in `recordings.csv`, regenerate `free_rhythm_candidates.csv` (`--candidates`); it has not been coded yet.
+
+**Song labels:**
+- Protocol: `docs/song_labelling_protocol.md`. Results are at its end.
+- `song_table.py` → inputs, plus `anthology_sections.csv` (genre section inferred from volume order).
+- Agents → `labels_<Region>.csv`.
+- `song_labels_check.py` → `data/colour_regions/song_labels.csv`, `review.csv`, and `adjudication.csv` applied.
+- `build_release.py` joins `song_class`, `song_genre`, `composer`, `lyricist`, `arranger`, `composition_period` and `composition_year` to recordings. `export_metadata.py` writes `metadata/song_labels.csv`.
+- The web-search quota (200/session) ran out mid-run. A higher limit (`CLAUDE_CODE_MAX_WEB_SEARCHES_PER_SESSION`) is the author's call.
+
+**Open decisions:** 兴国山歌 → Hakka? Exclude the medium/high `folk_style_composed` items from core?
+
+### Session 2026-10-10: verification, Anthology overlap, Round 3 complete
+
+- **Round 3 is complete.** 358 of 361 items downloaded and transcribed (3 return a persistent 403).
+  - The index build had failed because the manifest lacked a `rank` column; fixed in `rhymoi_download.py`.
+  - The release has 1,655 recordings (core 1,544), all transcribed and all with song labels.
+- **Free/metred list regenerated.** `free_rhythm_candidates.csv` now includes the series (old list: `free_rhythm_candidates_2026-10-02.csv`); not coded yet.
+- **Label verification:** an independent agent wrote `song_labels/verification.csv`. No hard factual errors; 1 mechanical error and 10 likely errors, all corrected through `adjudication.csv` (29 field overrides; see the protocol doc).
+- **Region descriptions:** `regions.py` now documents southern Anhui, Chaoshan and the Hakka enclaves.
+- **Anthology overlap:** `src/colour_regions/anthology_overlap.py` → `data/colour_regions/anthology_overlap.csv` (+ `_rejected`, `_candidates`, `_baseline`, `_manual`).
+  - 62 songs (about 98 recordings) are matched; 83 pairs are uncertain.
+  - Melodic check: Smith–Waterman on pitch classes, with a percentile against random same-region pairs.
+  - Exported to `metadata/anthology_overlap.csv`.
+  - The agent installed `zhconv` and `rapidfuzz` into py312.
+  - Manual change: 回娘家 is set to uncertain (the recording is the 1982 Taiwanese song).
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.

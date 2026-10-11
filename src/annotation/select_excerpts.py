@@ -4,7 +4,8 @@ the plan, the guideline and this script are frozen (dated commit + sha256); the 
 
 Design (author decisions 2026-10-02):
   - eligibility uses METADATA ONLY (no F0, transcription or other machine output): core subset; vocal performance
-    (not instrumental/other); the dominant Round-1 commercial channel is excluded from every set
+    (not instrumental/other). The Musical Map of China series (the dominant Round-1 channel) was excluded until
+    2026-10-08; the author then included it (named local singers, studio-clean audio; Round 3 adds its catalogue)
   - base: 1 per colour region (15), preferring Round 2 and tier A1/A2/B
   - 苦音 targets: 8 Northwest Plateau excerpts from 8 different singers/channels (the NW base counts as one)
     Han comparators: 15 from other Han regions (the 10 non-NW Han base excerpts + 5 more), matched on field/studio
@@ -39,9 +40,7 @@ def main() -> None:
     import sys
     rng = np.random.default_rng(SEED)
     rec = pd.read_csv(ROOT / "data" / "colour_regions" / "recordings.csv")
-    r1 = rec[rec["round"] == 1]
-    dominant = r1.channel_key.value_counts().index[0]  # the Round-1 commercial series
-    pool = rec[rec.core & rec.performance_type.isin(["原生态", "field", "民族唱法"]) & (rec.channel_key != dominant)].copy()
+    pool = rec[rec.core & rec.performance_type.isin(["原生态", "field", "民族唱法"])].copy()
     pool["text"] = pool.genre.fillna("") + " " + pool.song_name.fillna("") + " " + pool.title.fillna("")
     pool["free"] = pool.text.str.contains(FREE)
     pool["long"] = pool.text.str.contains(LONG)
@@ -137,11 +136,10 @@ def main() -> None:
 
 def candidates() -> None:
     """Candidate list for the by-ear free/metred coding: up to 8 per region outside Northern Steppe, chosen by
-    metadata only (core, vocal, not the dominant channel), in random order."""
+    metadata only (core, vocal), in random order."""
     rng = np.random.default_rng(SEED + 1)
     rec = pd.read_csv(ROOT / "data" / "colour_regions" / "recordings.csv")
-    dominant = rec[rec["round"] == 1].channel_key.value_counts().index[0]
-    p = rec[rec.core & rec.performance_type.isin(["原生态", "field", "民族唱法"]) & (rec.channel_key != dominant)
+    p = rec[rec.core & rec.performance_type.isin(["原生态", "field", "民族唱法"])
             & (rec.region != "北方草原文化民歌区")]
     c = p.groupby("region", group_keys=False).apply(lambda g: g.sample(min(8, len(g)), random_state=SEED))
     c = c.sample(frac=1, random_state=SEED)[["item_id", "url"]].assign(free_rhythm="")
