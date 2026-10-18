@@ -1,11 +1,12 @@
 """
-Notebook 4: the Colour Regions corpus (merged rounds 1 + 2, scores) — composition, provenance, sources.
+Notebook 4: the Colour Regions corpus (merged collection rounds, scores) — composition, provenance, sources.
 
 Reads the release tables (src/colour_regions/build_release.py) and writes figures to notebooks/figures/cr_*.png
-and, as vector PDFs, to ../colour_regions_paper/figures/.
+and, as vector PDFs, to ../color-regions-paper/figures/.
 Run (py312): python notebooks/04_colour_regions_corpus.py
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -31,7 +32,7 @@ TIER = {"A1": "#0d366b", "A2": "#1c5cab", "B": "#3987e5", "C": "#86b6ef", "unkno
 MUTED = "#8a8984"
 
 FIG = ROOT / "notebooks" / "figures"
-PAPER = ROOT.parent / "colour_regions_paper" / "figures"
+PAPER = Path(os.environ.get("AQ_PAPER", ROOT.parent / "color-regions-paper")) / "figures"  # paper repo (Overleaf sync)
 FIG.mkdir(exist_ok=True)
 PAPER.mkdir(exist_ok=True)
 
@@ -63,14 +64,19 @@ def hbar_stack(ax, table: pd.DataFrame, colors: dict, gap: float = 0.4) -> None:
         left += v
 
 
+# one colour per collection round (rounds are discovered in the data: 1, 2, 3, …)
+ROUNDS = sorted(int(r) for r in rec["round"].unique())
+RC = dict(zip(ROUNDS, [BLUE, ORANGE, MAGENTA, YELLOW, AQUA]))
+
 # ── 1. Overview: recordings by round and tier, scores by source ───────────────────────────
 rec["tier"] = rec.provenance_tier.fillna("unknown")
 fig, axes = plt.subplots(1, 3, figsize=(7.2, 3.6), sharey=True, gridspec_kw={"width_ratios": [1, 1, 0.9]})
 t = rec.pivot_table(index="region", columns="round", values="item_id", aggfunc="size")
-t.columns = ["Round 1", "Round 2"]
-hbar_stack(axes[0], t, {"Round 1": BLUE, "Round 2": ORANGE})
+t.columns = [f"Round {c}" for c in t.columns]
+hbar_stack(axes[0], t, {f"Round {r}": RC[r] for r in ROUNDS})
 axes[0].set_title("Recordings by round", loc="left", fontsize=8.5)
-axes[0].legend(loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=4, fontsize=7)
+axes[0].legend(loc="upper center", bbox_to_anchor=(0.5, -0.14), ncol=3, fontsize=6.5, columnspacing=0.8,
+               handlelength=1.2)
 t = rec.pivot_table(index="region", columns="tier", values="item_id", aggfunc="size")
 hbar_stack(axes[1], t, {k: v for k, v in TIER.items() if k in t.columns})
 axes[1].set_title("Recordings by provenance tier", loc="left", fontsize=8.5)
@@ -90,19 +96,28 @@ def top_share(df):
     return df.groupby("region").channel_key.agg(lambda s: s.value_counts(normalize=True).iloc[0])
 
 
-conc = pd.DataFrame({"Round 1": top_share(rec[rec["round"] == 1]), "Round 2": top_share(rec[rec["round"] == 2]),
+conc = pd.DataFrame({**{f"Round {r}": top_share(rec[rec["round"] == r]) for r in ROUNDS},
                      "Merged": top_share(rec)}).reindex(ORDER)
+# a round collected from a single series (round 3 = Musical Map of China) is 100% one channel by design: not plotted
+multi = [r for r in ROUNDS if rec[rec["round"] == r].channel_key.nunique() > 1]
+rcols = [f"Round {r}" for r in multi]
 fig, ax = plt.subplots(figsize=(3.6, 3.6))
 for i, r in enumerate(ORDER):
-    ax.plot(conc.loc[r, ["Round 2", "Round 1"]], [Y[i]] * 2, color="#d6d5d0", lw=1.5, zorder=1)
-ax.scatter(conc["Round 1"], Y, s=22, color=BLUE, label="Round 1", zorder=3, edgecolor="white", linewidth=0.8)
-ax.scatter(conc["Round 2"], Y, s=22, color=ORANGE, label="Round 2", zorder=3, edgecolor="white", linewidth=0.8)
+    v = conc.loc[r, rcols].dropna()
+    ax.plot([v.min(), v.max()], [Y[i]] * 2, color="#d6d5d0", lw=1.5, zorder=1)
+for rnd in multi:
+    ax.scatter(conc[f"Round {rnd}"], Y, s=22, color=RC[rnd], label=f"Round {rnd}", zorder=3, edgecolor="white",
+               linewidth=0.8)
 ax.scatter(conc["Merged"], Y, s=14, marker="|", color="#0b0b0b", label="Merged", zorder=4)
 region_axis(ax)
 ax.set_xlim(0, 0.9)
 ax.xaxis.set_major_formatter(matplotlib.ticker.PercentFormatter(1.0))
 ax.set_title("Largest channel's share of a region", loc="left", fontsize=8.5)
-ax.legend(loc="upper center", bbox_to_anchor=(0.45, -0.16), ncol=3, fontsize=7)
+single = [r for r in ROUNDS if r not in multi]
+if single:
+    ax.text(0, -0.30, "Round " + ", ".join(map(str, single)) + ": one series by design (not shown)",
+            transform=ax.transAxes, fontsize=6.5, color="#5b564d")
+ax.legend(loc="upper center", bbox_to_anchor=(0.45, -0.16), ncol=4, fontsize=7)
 save(fig, "cr_02_channel_concentration")
 
 # ── 3. Performance type and platform mix ────────────────────────────────────────────────────
@@ -130,7 +145,7 @@ save(fig, "cr_03_performance_platform")
 rec["year"] = pd.to_numeric(rec.upload_date.astype(str).str[:4], errors="coerce")
 fig, axes = plt.subplots(1, 2, figsize=(7.2, 2.2))
 bins = np.arange(0, 12.5, 0.5)
-for rnd, c in ((1, BLUE), (2, ORANGE)):
+for rnd, c in RC.items():
     axes[0].hist(rec[rec["round"] == rnd].duration_s / 60, bins=bins, color=c, alpha=0.75, label=f"Round {rnd}",
                  edgecolor="white", linewidth=0.4)
     axes[1].hist(rec[rec["round"] == rnd].year.dropna(), bins=np.arange(2005.5, 2027.5), color=c, alpha=0.75,
@@ -145,7 +160,7 @@ save(fig, "cr_04_duration_year")
 # ── 5. Speech screen (when available) ──────────────────────────────────────────────────────
 if rec.speech_share.notna().any():
     fig, ax = plt.subplots(figsize=(3.6, 2.2))
-    for rnd, c in ((1, BLUE), (2, ORANGE)):
+    for rnd, c in RC.items():
         v = rec[(rec["round"] == rnd)].speech_share.dropna()
         ax.hist(v, bins=np.linspace(0, 1, 21), color=c, alpha=0.75, label=f"Round {rnd} (n={len(v)})",
                 edgecolor="white", linewidth=0.4)
@@ -160,7 +175,8 @@ summ = rec.groupby("region").agg(n=("item_id", "size"), hours=("duration_s", lam
                                  channels=("channel_key", "nunique"),
                                  tierAB=("provenance_tier", lambda s: s.isin(["A1", "A2", "A", "B"]).mean()),
                                  songs=("song_key", "nunique")).reindex(ORDER)
-summ["top_channel_r1"], summ["top_channel_r2"] = conc["Round 1"], conc["Round 2"]
+for rnd in ROUNDS:
+    summ[f"top_channel_r{rnd}"] = conc[f"Round {rnd}"]
 summ.index = LABELS
 print(summ.round(2).to_string())
 print("\nHan vs minority:", rec.groupby(rec.region.map(TYPE)).size().to_dict())

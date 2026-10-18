@@ -199,7 +199,8 @@ def build_merged() -> list[dict]:
     rel = pd.read_csv(ROOT / "data" / "colour_regions" / "recordings.csv")
     rel = rel[rel.core]  # the paper's experiments use the core subset
     paths = {}
-    for t in (T, ROOT / "data" / "regions_v2" / "transcription"):
+    from colour_regions.rounds import rounds  # every collection round (colour_regions/rounds.py)
+    for t in (r.trans for r in rounds().values()):
         idx = t / "dataset_index.csv"
         if idx.exists():
             for r in pd.read_csv(idx).itertuples():

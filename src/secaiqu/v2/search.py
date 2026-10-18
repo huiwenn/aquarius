@@ -14,6 +14,7 @@ Output TSV: platform, id, duration_s, channel, plays, flags, title
 
 import argparse
 import json
+import os
 import re
 import time
 import urllib.parse
@@ -25,7 +26,7 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[3]
-LOGS = ROOT / "data" / "regions_v2" / "logs"
+LOGS = ROOT / os.environ.get("AQ_COLLECTION", "data/regions_v2") / "logs"  # contrast set: AQ_COLLECTION=data/contrast
 UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
       "Chrome/126.0 Safari/537.36")
 

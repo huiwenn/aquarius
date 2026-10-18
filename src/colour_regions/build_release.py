@@ -36,17 +36,15 @@ from regionclf.corpus import norm_title  # noqa: E402
 
 OUT = ROOT / "data" / "colour_regions"
 R1 = ROOT / "data" / "regions_transcription"
-R2 = ROOT / "data" / "regions_v2"
-R3 = ROOT / "data" / "regions_v3"
 
 FIELDS = ["item_id", "round", "platform", "url", "title", "channel", "channel_key", "upload_date", "duration_s",
-          "region", "region_en", "region_code", "region_type", "province", "county_or_area", "ethnic_group", "ethnic_subgroup",
+          "region", "region_en", "region_code", "region_type", "region_curator", "province", "county_or_area", "ethnic_group", "ethnic_subgroup",
           "song_name", "song_key", "genre", "performance_type", "singer", "singer_id", "singer_inheritor", "provenance_tier", "provenance_tier_curator",
           "provenance_evidence", "feature_flags", "dating_flag", "song_type", "song_class", "song_genre",
           "song_genre_native", "composer", "lyricist", "arranger", "composition_period", "composition_year",
-          "composition_year_kind", "song_label_confidence", "label_concern", "content_concern",
+          "composition_year_kind", "song_label_confidence", "song_label_check", "label_concern", "content_concern",
           "label_status", "speech_share", "speech_doc_meta", "sung_share", "music_share", "transcription_model", "n_notes",
-          "notes_per_s", "vocal_db", "game_rosvot_agreement", "core", "core_exclusion", "group_id", "fold"]
+          "notes_per_s", "vocal_db", "game_rosvot_agreement", "core", "core_exclusion", "subset", "group_id", "fold"]
 # Speech rule (docs/collection_v2.md, "Speech screen"): the AudioSet classifier also scores unaccompanied, speech-like
 # folk singing (elderly singers, 咸水歌, 褒歌, 童谣, 号子) as speech, so speech share alone is not evidence of talk.
 # An item leaves the core subset only if BOTH signals agree: speech share ≥ SPEECH_MIN and title or curator note
@@ -133,8 +131,8 @@ def round1() -> pd.DataFrame:
         else d.drop(columns=["province_or_area"])
 
 
-def round2(base: Path = R2, rnd: int = 2) -> pd.DataFrame:
-    """Rounds 2 and 3 share the manifest format (round 3: data/regions_v3, src/colour_regions/rhymoi_download.py)."""
+def round2(base: Path, rnd: int) -> pd.DataFrame:
+    """Rounds ≥ 2 share the manifest format (data/regions_v<N>/, discovered by colour_regions/rounds.py)."""
     if not (base / "manifest.csv").exists():
         return pd.DataFrame()
     m = pd.read_csv(base / "manifest.csv")
@@ -172,6 +170,11 @@ def add_core(d: pd.DataFrame) -> None:
     if len(con):
         why[d.item_id.isin(con.video_id)] += "arrangement;"
     why[d.dating_flag == "composed"] += "composed;"
+    # songs composed in a folk idiom (创作民歌; song labels, docs/song_labelling_protocol.md) leave core and form their
+    # own subset (author decision 2026-10-11)
+    fsc = d.get("song_class", pd.Series(index=d.index, dtype=object)) == "folk_style_composed"
+    why[fsc & ~why.str.contains("composed")] += "folk_style_composed;"
+    d["subset"] = np.where(fsc, "folk_style_composed", np.where(why == "", "core", "excluded"))
     doc = (d.title.fillna("") + " " + d.content_concern.fillna("")).str.contains(DOC_PATTERN, case=False, regex=True)
     d["speech_doc_meta"] = doc
     why[(d.speech_share >= SPEECH_MIN) & doc] += "speech;"
@@ -179,9 +182,13 @@ def add_core(d: pd.DataFrame) -> None:
     d["core"] = d.core_exclusion.isna()
 
 
-def channel_singer_groups(d: pd.DataFrame) -> pd.Series:
+SERIES_CHANNEL = "youtube:UCN19zbpNCX9lrbKreffuSAQ"  # Musical Map of China (中国音乐地图 / Rhymoi Music)
+
+
+def channel_singer_groups(d: pd.DataFrame, skip_channels: frozenset = frozenset()) -> pd.Series:
     """Connected components of 'same channel' ∪ 'same singer' (union-find): no channel and no named singer
-    can then occur on both sides of a split."""
+    can then occur on both sides of a split. Channels in skip_channels do not link their recordings (singer links
+    still do)."""
     parent = list(range(len(d)))
 
     def find(i):
@@ -192,7 +199,7 @@ def channel_singer_groups(d: pd.DataFrame) -> pd.Series:
     for col in ("channel_key", "singer_id"):
         first = {}
         for i, v in enumerate(d[col]):
-            if pd.isna(v):
+            if pd.isna(v) or (col == "channel_key" and v in skip_channels):
                 continue
             if v in first:
                 parent[find(i)] = find(first[v])
@@ -202,11 +209,19 @@ def channel_singer_groups(d: pd.DataFrame) -> pd.Series:
 
 
 def add_folds(d: pd.DataFrame, n_splits: int = 5, seed: int = 0) -> pd.Series:
-    """Recommended evaluation folds: stratified by region, grouped by channel ∪ singer components (group_id).
-    Training on folds != k must also drop items whose song_key occurs in fold k (src/regionclf/common.folds)."""
+    """Evaluation folds, sampled by region (author decision 2026-10-14). Stratified by region; grouping key =
+    (fold component, region), where the fold components are channel ∪ singer components computed WITHOUT the
+    Musical Map of China channel link: that series spans all 15 regions with named local singers, so its channel is
+    not a shortcut to the region label, and linking it made one fold hold 39% of the corpus. Singer links still hold,
+    within and across channels. Within a region, a component stays in one fold.
+    Training on folds != k must also drop items whose song_key occurs in fold k (src/regionclf/common.folds).
+    Internal for now: the first public release ships group_id only (the strict component, series channel linked).
+    """
     fold = np.full(len(d), -1)
     skf = StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=seed)
-    for k, (_, te) in enumerate(skf.split(np.zeros(len(d)), d.region, d.group_id)):
+    comp = channel_singer_groups(d, frozenset({SERIES_CHANNEL}))
+    key = comp.astype(str) + "|" + d.region.astype(str)
+    for k, (_, te) in enumerate(skf.split(np.zeros(len(d)), d.region, key)):
         fold[te] = k
     return pd.Series(fold, index=d.index)
 
@@ -229,7 +244,9 @@ def scores_table() -> pd.DataFrame:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    d = pd.concat([x for x in (round1(), round2(), round2(R3, 3)) if len(x)], ignore_index=True)
+    from colour_regions.rounds import rounds
+    later = [round2(r.base, n) for n, r in rounds().items() if n >= 2]
+    d = pd.concat([x for x in [round1(), *later] if len(x)], ignore_index=True)
     d["region_en"], d["region_code"], d["region_type"] = d.region.map(EN), d.region.map(CODE), d.region.map(TYPE)
     d["song_key"] = [song_key(n, i) for n, i in zip(d.song_name, d.item_id)]
     d["singer_id"] = singer_ids(d)
@@ -281,18 +298,9 @@ def main() -> None:
     public = set()
     for n in d.loc[keep, "singer"].dropna():
         public |= {x.strip() for x in re.split(r"[、,，/&和与 ]+", str(n))}
-    private = sorted({x for n in d.loc[~keep, "singer"].dropna()
-                      for x in (re.sub(r"[（(].*?[)）]", "", y).strip() for y in re.split(r"[、,，/&和与 ]+", str(n)))
-                      if len(x) >= 2 and not any(x in p for p in public)
-                      and re.fullmatch(r"[\u4e00-\u9fff·]+", x)},
-                     key=len, reverse=True)  # Chinese-character names only: short Latin strings match inside words
-    def redact_all(ev):
-        if pd.isna(ev):
-            return ev
-        for n in private:
-            ev = str(ev).replace(n, "[singer]")
-        return ev
-    d["provenance_evidence"] = d.provenance_evidence.map(redact_all)
+    from colour_regions.privacy import private_names, redact  # names from every round's curation (privacy.py)
+    private = private_names(public)
+    d["provenance_evidence"] = d.provenance_evidence.map(lambda t: redact(t, private))
     d["singer"] = d.singer.where(keep)
     # song-level labels (docs/song_labelling_protocol.md; src/colour_regions/song_labels_check.py): class, genre,
     # composer / lyricist / arranger, period of composition, with the label confidence
@@ -303,8 +311,17 @@ def main() -> None:
         for src, dst in (("song_class", "song_class"), ("genre", "song_genre"), ("genre_native", "song_genre_native"),
                          ("composer", "composer"), ("lyricist", "lyricist"), ("arranger", "arranger"),
                          ("composition_period", "composition_period"), ("year_best", "composition_year"),
-                         ("year_kind", "composition_year_kind"), ("confidence", "song_label_confidence")):
+                         ("year_kind", "composition_year_kind"), ("confidence", "song_label_confidence"),
+                         ("song_label_check", "song_label_check")):
             d[dst] = [sl.at[k, src] if k in sl.index else np.nan for k in keys]
+    # region corrections after curation (data/regions_curated/region_overrides.csv: item_id, region, reason);
+    # the curator's region is kept in region_curator. Song labels were joined above with the curator region.
+    d["region_curator"] = d.region
+    ro = read(ROOT / "data" / "regions_curated" / "region_overrides.csv")
+    if len(ro):
+        on = d.item_id.isin(ro.item_id)
+        d.loc[on, "region"] = d.loc[on, "item_id"].map(dict(zip(ro.item_id, ro.region)))
+        d["region_en"], d["region_code"], d["region_type"] = d.region.map(EN), d.region.map(CODE), d.region.map(TYPE)
     add_core(d)
     d["group_id"] = channel_singer_groups(d)
     d["fold"] = add_folds(d)
@@ -316,8 +333,7 @@ def main() -> None:
         from colour_regions import geocode
         geocode.main()
     # merged transcription index of both rounds (repo-relative paths) for the audits in src/transcription/audit/
-    ix = [read(R1 / "dataset_index.csv").assign(round=1), read(R2 / "transcription" / "dataset_index.csv").assign(round=2),
-          read(R3 / "transcription" / "dataset_index.csv").assign(round=3)]
+    ix = [read(r.index).assign(round=n) for n, r in rounds().items()]
     ix = pd.concat([i for i in ix if len(i)], ignore_index=True)
     ix = ix[ix.video_id.isin(d.loc[d.core, "item_id"])]
     ix.to_csv(OUT / "transcription_index.csv", index=False)

@@ -88,3 +88,26 @@ Started 2026-10-08 (author request). This document records how each song in the 
 - **Region placements documented in `regions.py`:** southern Anhui → Jiangsu–Zhejiang Plain; Chaoshan → Min–Tai; Hakka enclaves (Liuyang, Taiwan) → Hakka.
 - **Known issue:** 沂蒙山小调, 康定情歌, 五指山歌 and 请茶歌 have per-recording `#` keys (the generic-title rule reads "place + 小调/山歌/歌" as a genre). Their labels are identical across rows. Merging the keys needs a key-alias map, so that the song ids stay stable.
 - **Not verifiable without search:** Baike-only claims (鸿雁, 玛依拉, 蓝色的阔克河, 槐花几时开, 回娘家), 对鸟, and the years of 幸福歌 and 苏州好风光.
+
+## Rules added 2026-10-14
+
+- **秧歌 vs 插秧歌:** 秧歌 (the northern yangge song-and-dance form, incl. 秧歌调) is `song_and_dance`. Songs sung while transplanting or weeding rice (插秧歌, 栽秧歌, 薅秧歌, 秧田歌, 秧号子) are `field_song` (秧号子 may be `work_song` when it is a call-and-response labour chant).
+- **二人转:** 小帽 (short songs) are `ditty`; 正戏 (staged plays) are `opera`.
+- **Genre `religious` implies song class `religious`.**
+- **`song_label_check` values:**
+  - `verified`: checked against a source by an independent reviewer;
+  - `reviewed`: a second reviewer found the label consistent with all the evidence, but read no source;
+  - `corrected`: changed after review;
+  - `disputed`: a reviewer raised an issue that needs the author's decision (listed in `song_labels/disputed.csv`);
+  - `unchecked`.
+
+## Second review of all unchecked labels (2026-10-14)
+
+- **Scope:** four agents reviewed all 1,298 unchecked songs, writing `song_labels/review2_*.csv`.
+  - Web search mostly returned nothing (about 40 searches, a few fetches), so 1,203 songs were confirmed for consistency only and 1 against a source.
+  - 100 issues were raised.
+- **Adjudication** (`adjudication.csv`, reasons start "Review2 2026-10-14"):
+  - 51 field overrides on 44 songs: protocol rules, wrong place in `genre_native`, 南音/榆林小曲/胡琴书 → `narrative_quyi`, credits from an example title (望郎归), unsourced years removed, Gannan Hakka-titled songs → `region_check disagree:Hakka`;
+  - 20 low-confidence proposals kept unchanged;
+  - 34 questions for the author in `disputed.csv`: stage-series titles that sound modern, 番薯情, 一根竹竿容易弯, 阿克班玛, Mongolian-state songs, the 咸水歌 genre rule, Haixi Mongol 花儿 vs 长调, red-era texts.
+- **Result (songs):** reviewed 1,221, verified 154, corrected 60, disputed 34, unchecked 0.

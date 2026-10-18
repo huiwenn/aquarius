@@ -1,6 +1,6 @@
 # Thesis evidence plan: what must be done before we can draw conclusions
 
-Started 2026-10-02. Thesis given by the author (see memory `project_paper_scope.md` and `../colour_regions_paper/THESIS.md`).
+Started 2026-10-02. Thesis given by the author (see memory `project_paper_scope.md` and `../color-regions-paper/THESIS.md`).
 
 **Rule (author, 2026-10-02):** draw no conclusion on the friction, notation or interaction claims from the current automatic data. Collect accurate annotations first. This file records what has to be done, in what order, and what result would support or weaken each claim. Decide the analyses and criteria **before** the annotations arrive, and log every result here, including nulls.
 

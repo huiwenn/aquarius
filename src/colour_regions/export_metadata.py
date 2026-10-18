@@ -17,10 +17,10 @@ ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "data" / "colour_regions"
 OUT = ROOT / "metadata"
 COLS = ["item_id", "round", "platform", "url", "title", "channel", "channel_key", "upload_date", "duration_s",
-        "region", "region_en", "region_code", "region_type", "province", "county_or_area", "geo_level", "lon", "lat",
+        "region", "region_en", "region_code", "region_type", "region_curator", "province", "county_or_area", "geo_level", "lon", "lat",
         "ethnic_group", "ethnic_subgroup", "song_name", "song_key", "genre", "performance_type", "singer",
-        "singer_id", "singer_inheritor", "provenance_tier", "provenance_evidence", "feature_flags", "song_class", "song_genre", "song_genre_native", "composer", "lyricist", "arranger", "composition_period", "composition_year", "composition_year_kind", "song_label_confidence", "dating_flag", "label_status",
-        "speech_share", "core", "core_exclusion", "group_id", "fold"]
+        "singer_id", "singer_inheritor", "provenance_tier", "provenance_evidence", "feature_flags", "song_class", "song_genre", "song_genre_native", "composer", "lyricist", "arranger", "composition_period", "composition_year", "composition_year_kind", "song_label_confidence", "song_label_check", "dating_flag", "label_status",
+        "speech_share", "core", "core_exclusion", "subset", "group_id", "fold"]
 
 
 def main() -> None:

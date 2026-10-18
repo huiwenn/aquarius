@@ -114,7 +114,7 @@ Snapshot 2026-10-01. Companion to `docs/region_classification.md` (results, §12
 
 ---
 
-## 4. Status of each critique (2026-10-02, paper draft in `../colour_regions_paper/`)
+## 4. Status of each critique (2026-10-02, paper draft in `../color-regions-paper/`)
 
 | Critique (§2 above) | What was done | Status |
 |---|---|---|
