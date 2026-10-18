@@ -1,6 +1,6 @@
 # Annotation guideline: expert notation of Chinese folk-song excerpts
 
-**Version 1.1-draft, 2026-10-02.** Revised after review 02 (`../colour_regions_paper/reviews/review_02.md` §3). After the pilot, it becomes v1.1 and is frozen, and its sha256 is logged in `docs/thesis_evidence_plan.md`.
+**Version 1.1-draft, 2026-10-02.** Revised after review 02 (`../color-regions-paper/reviews/review_02.md` §3). After the pilot, it becomes v1.1 and is frozen, and its sha256 is logged in `docs/thesis_evidence_plan.md`.
 
 Background: `docs/thesis_evidence_plan.md`, sections A0–A2.
 

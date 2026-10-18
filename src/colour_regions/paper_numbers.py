@@ -2,12 +2,13 @@
 Write every corpus number and data table used in the paper, so the text never holds a hand-copied number.
 
 Inputs : data/colour_regions/recordings.csv, scores.csv (build_release.py), data/transcription/benchmark_results.csv
-Outputs: ../colour_regions_paper/generated/numbers.tex          \\newcommand macros (\\NRecTotal, ...)
-         ../colour_regions_paper/generated/table_regions.tex    Table: regions, counts, channels, tiers
-         ../colour_regions_paper/generated/table_benchmark.tex  Table: transcription benchmark
+Outputs: ../color-regions-paper/generated/numbers.tex          \\newcommand macros (\\NRecTotal, ...)
+         ../color-regions-paper/generated/table_regions.tex    Table: regions, counts, channels, tiers
+         ../color-regions-paper/generated/table_benchmark.tex  Table: transcription benchmark
 Run (py312): python src/colour_regions/paper_numbers.py
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -18,7 +19,9 @@ sys.path.insert(0, str(ROOT / "src"))
 from colour_regions.regions import REGIONS  # noqa: E402
 
 D = ROOT / "data" / "colour_regions"
-GEN = ROOT.parent / "colour_regions_paper" / "generated"
+# the paper repo (Overleaf GitHub sync, huiwenn/color-regions-paper-), cloned next to this repo; AQ_PAPER overrides
+PAPER = Path(os.environ.get("AQ_PAPER", ROOT.parent / "color-regions-paper"))
+GEN = PAPER / "generated"
 
 
 def fmt(x) -> str:
@@ -199,7 +202,7 @@ def main() -> None:
 
 
 def supplementary_tables() -> None:
-    """Tables for ../colour_regions_paper/supplementary.tex: score-to-region mapping and label-review decisions."""
+    """Tables for ../color-regions-paper/supplementary.tex: score-to-region mapping and label-review decisions."""
     sc = pd.read_csv(D / "scores.csv")
     m = sc.groupby(["source", "volume", "province", "region_en"]).size().reset_index(name="n")
     m = m[(m.source == "anthology") | (m.n >= 10)]

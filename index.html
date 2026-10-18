@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore recordings in the Colour Regions Chinese folk song collection by recorded province and cultural region.">
+  <title>Sound Atlas · China’s Colour Regions</title>
+  <link href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top"><a class="wordmark" href="#">SOUND ATLAS <span>/ COLOUR REGIONS</span></a><div class="topnote">A field guide to recorded folk song</div></header>
+  <main>
+    <section class="intro"><div class="eyebrow">CHINA · 15 CULTURAL REGIONS · COLLECTION EXPLORER</div><h1>Many voices.<br><em>Many places.</em></h1><p>Explore where the collection’s recordings were documented. Hover or select a province to hear how its songs connect across the project’s cultural regions.</p></section>
+    <section class="explorer" aria-label="Interactive map and recording details">
+      <div class="map-wrap"><div id="map" role="application" aria-label="Map of China’s provincial-level administrative regions"></div><div class="map-label">RECORDED PROVINCE · NUMBER OF RECORDINGS</div><div class="legend"><span>Fewer</span><i></i><span>More</span></div></div>
+      <aside class="panel" aria-live="polite"><div class="panel-head"><div class="eyebrow">SELECT A PROVINCE</div><select id="provinceSelect" aria-label="Choose a province"><option value="">Choose a province…</option></select></div><div id="details"><div class="empty"><span class="compass">✳</span><h2>Start anywhere</h2><p>Move over the map or choose a province to explore its recordings and cultural-region mix.</p><div class="hint">Scroll to zoom · Drag to explore</div></div></div></aside>
+    </section>
+    <section class="method"><div class="method-mark">FIELD<br>NOTES</div><div><h2>How to read this map</h2><p>Boundaries show provincial-level administrative units. Colour shows the number of records whose metadata names that province. “Cultural region” is the project’s separate classification; songs retain that label in each province’s profile. Ambiguous and missing province labels are left unassigned.</p><p class="source">Boundary geometry: Tianditu national-standard vector data, distributed as GeoJSON by <a href="https://geojson.cn/data/atlas/tiandi" target="_blank" rel="noreferrer">GeoJSON.cn</a> (CGCS2000 / EPSG:4490). Geometry is simplified for web display. Record metadata: <code>metadata/recordings.csv</code>. No audio is hosted here.</p></div></section>
+  </main>
+  <footer><span>SOUND ATLAS · COLOUR REGIONS</span><span id="datasetNote">Loading collection…</span></footer>
+  <script type="module" src="app.js"></script>
+</body></html>

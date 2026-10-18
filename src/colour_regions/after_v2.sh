@@ -13,6 +13,6 @@ LOG=data/regions_v2/logs/after_v2.log
   AQ_INDEX=data/colour_regions/transcription_index.csv AQ_TAG=_merged $PY src/transcription/audit/score_reference.py
   AQ_INDEX=data/colour_regions/transcription_index.csv AQ_TAG=_merged $PY src/transcription/audit/cross_performance.py
   echo "== figures";                          $PY notebooks/04_colour_regions_corpus.py
-  echo "== paper";                            bash ../colour_regions_paper/build.sh
+  echo "== paper";                            bash ../color-regions-paper/build.sh
   echo "== $(date '+%F %T') AFTER_V2 DONE"
 } >> "$LOG" 2>&1

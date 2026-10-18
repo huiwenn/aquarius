@@ -502,3 +502,29 @@ majority vote over runs needs no reference to justify it:
   COnPOff 0.366 → **0.380**, with small gains on M4Singer/GTSinger too.
 - **Decision:** the dataset's vocal transcriptions become 3-run ensembles (`midi/game_ens3_pp`). Cost is 2 extra GAME
   passes, ~5–6 h on the M1 Pro.
+
+## Transcriptions vs Anthology scores of the same song (2026-10-11, exploratory)
+
+`src/transcription/audit/anthology_distance.py` → `data/transcription/audit/anthology_distance.csv`, `anthology_distance_summary.md`.
+
+- **Pairs:** the 249 song–score pairs of `data/colour_regions/anthology_overlap.csv` (166 match, 83 uncertain), expanded to 395 recording–score pairs (131 recordings, 208 scores).
+- **Metrics:**
+  - pitch accuracy (semi-global alignment, the one-verse score located inside the performance, best transposition);
+  - interval and contour accuracy;
+  - pitch-class histogram cosine;
+  - ambitus difference;
+  - transcription notes per score note.
+- **Baseline:** 30 random scores from the same volume per pair.
+- **Results** (primary transcription, best score per recording, verdict = match, 98 recordings):
+  - Pitch accuracy is 0.585 (median), against 0.394 for random scores of the same volume. The pair beats the baseline on 89% of recordings and passes its 95th percentile on 60%.
+  - Song level: 63% of the 62 matched songs are confirmed by ≥ 1 recording.
+  - Contour accuracy 0.857 vs 0.816 (only 28% above the 95th percentile): contour alone barely separates songs in a pentatonic idiom.
+  - Pitch-class cosine 0.92 (42% above the 95th percentile).
+  - Median ambitus difference 0. The transcription has 1.26 notes per score note in the aligned span (ornaments and split notes).
+  - Uncertain pairs: pitch accuracy 0.424 vs base 0.376, and 20% pass the 95th percentile, so most uncertain pairs are probably not the same tune.
+  - By variant: GAME (single run and ensemble) 0.585–0.599 > ROSVOT 0.534, as in the earlier score-reference audit.
+  - Adapted songs (fixed printed versions) are closer (0.727) than anonymous traditional songs (0.553). This is expected: oral variants differ more.
+- **Limits:**
+  - Not independent of the overlap verdicts: the 12 songs matched across provinces were accepted partly because of melodic similarity to the same transcriptions (another measure, Smith–Waterman on pitch classes). The 70 same-province recordings were accepted on title and province, so they give the independent check (confirmation 61%).
+  - Distance mixes three sources: (1) the score is a variant of the song collected decades earlier; (2) notation conventions (skeleton melody, grace notes); (3) transcription error. Exploratory only (evidence rule); the notation study is needed to separate them.
+- **Low-agreement songs worth a listen:** 张生游寺, 瞧情郎, 孟姜女 (NE), 五姑娘, 茉莉花 (Qinghai), 卖鸡调·懒婆娘, 探清水河.

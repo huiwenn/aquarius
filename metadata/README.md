@@ -30,9 +30,12 @@ The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) i
 | `song_genre`, `song_genre_native` | Folk-song genre in the classification of 《中国民间歌曲集成》 (`work_song` 号子, `mountain_song` 山歌, `field_song`, `ditty` 小调, `song_and_dance`, `ritual_custom`, `narrative`, `children`, `long_song` 长调, `short_song` 短调, `multipart`, `religious`, `other`), and the Chinese term as attested |
 | `composer`, `lyricist`, `arranger` | Named authors, only when a source gives them; empty for anonymous tradition |
 | `composition_period`, `composition_year`, `composition_year_kind` | `traditional_undated`, `ming`, `qing`, `republic`, `prc_1949_1965`, `prc_1966_1976`, `prc_1977_1999`, `after_2000`; a year and what it dates (composition, adaptation, first publication or recording, collection, earliest attestation) |
+| `song_label_check` | `verified` (checked against a source by an independent reviewer), `reviewed` (consistent with all the evidence, no source read), `corrected` (changed after review), `disputed` (open question) |
 | `song_label_confidence` | `high`, `medium`, `low` (protocol: `docs/song_labelling_protocol.md`; sources per song in `song_labels.csv`) |
 | `dating_flag`, `label_status` | traditional / check / composed; result of the label review |
 | `speech_share` | Share of 10 s windows classified as speech |
+| `subset` | `core` (default analysis subset), `folk_style_composed` (songs composed in a folk idiom, e.g. 浏阳河, 十送红军: kept as their own subset), `excluded` (label errors, arrangements, composed songs, speech) |
+| `region_curator` | The curator's region where a later decision moved the recording (e.g. 兴国山歌 → Hakka) |
 | `core`, `core_exclusion` | Default analysis subset, and the reasons for exclusion |
 | `group_id`, `fold` | Channel ∪ singer group, and the recommended evaluation fold (0–4) |
 
