@@ -24,9 +24,10 @@ The repo began as a unified table of 23 Chinese music datasets (`AquariusDataset
 | `docs/annotation_guideline.md` | Guideline for the human notation study (draft) |
 | `docs/research_report_secaiqu_measurable.md` | Literature report on 色彩区 musicology |
 
-- **Paper:** in `../colour_regions_paper/` (LaTeX, outside this repo). `build.sh` compiles it and reports the word count. The limit is 8,000 words including references.
+- **Paper:** Overleaf (https://www.overleaf.com/project/6ac1a10eeafb4aa693a8d7b6), synced through GitHub to `huiwenn/color-regions-paper-`, cloned at `../color-regions-paper/` (override with `AQ_PAPER`). Sync is manual: push Overleaf → GitHub and `git pull` before local work; after a push, pull GitHub → Overleaf. `paper_numbers.py` writes `generated/`, and `build.sh` compiles and reports the word count (limit 8,000 including references). `../colour_regions_paper/` is a stale pre-sync copy: don't use it.
   - `THESIS.md` holds the thesis; keep it as the user wrote it.
   - `reviews/` holds the reviewer passes.
+- **Where everything is** (code, data, paper, and how to collaborate on each): `README.md`.
 
 ## Layout
 

@@ -2,10 +2,11 @@
 Notebook 4: the Colour Regions corpus (merged rounds 1 + 2, scores) — composition, provenance, sources.
 
 Reads the release tables (src/colour_regions/build_release.py) and writes figures to notebooks/figures/cr_*.png
-and, as vector PDFs, to ../colour_regions_paper/figures/.
+and, as vector PDFs, to ../color-regions-paper/figures/.
 Run (py312): python notebooks/04_colour_regions_corpus.py
 """
 
+import os
 import sys
 from pathlib import Path
 
@@ -31,7 +32,7 @@ TIER = {"A1": "#0d366b", "A2": "#1c5cab", "B": "#3987e5", "C": "#86b6ef", "unkno
 MUTED = "#8a8984"
 
 FIG = ROOT / "notebooks" / "figures"
-PAPER = ROOT.parent / "colour_regions_paper" / "figures"
+PAPER = Path(os.environ.get("AQ_PAPER", ROOT.parent / "color-regions-paper")) / "figures"  # paper repo (Overleaf sync)
 FIG.mkdir(exist_ok=True)
 PAPER.mkdir(exist_ok=True)
 
