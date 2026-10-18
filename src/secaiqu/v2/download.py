@@ -14,6 +14,7 @@ Run (py312): python src/secaiqu/v2/download.py [--regions 湘,粤] [--platforms 
 
 import argparse
 import json
+import os
 import random
 import time
 import urllib.request
@@ -23,7 +24,7 @@ import pandas as pd
 import yt_dlp
 
 ROOT = Path(__file__).resolve().parents[3]
-V2 = ROOT / "data" / "regions_v2"
+V2 = ROOT / os.environ.get("AQ_COLLECTION", "data/regions_v2")  # contrast set: AQ_COLLECTION=data/contrast
 OUT, MANIFEST = V2 / "audio", V2 / "manifest.csv"
 CAND = V2 / "candidates_clean"  # audited list (audit.py --fix)
 NODE = Path.home() / "miniforge3" / "envs" / "node" / "bin" / "node"

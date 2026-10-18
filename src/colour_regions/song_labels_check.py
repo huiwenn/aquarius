@@ -14,6 +14,7 @@ import re
 import sys
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -129,10 +130,39 @@ def main() -> None:
     print("confidence:", m.confidence.value_counts().to_dict(), "| searched:",
           int(m.searched.astype(str).str.lower().eq("true").sum()))
     print("region_check:", m.region_check.fillna("").str.split(":").str[0].value_counts().to_dict())
+    # song_label_check (docs/song_labelling_protocol.md, "Rules added 2026-10-14"):
+    #   corrected  changed by an adjudication after an independent review (verification 2026-10-10, review 2 2026-10-14)
+    #   disputed   a reviewer raised an issue left for the author (song_labels/disputed.csv)
+    #   verified   high/medium-confidence rows (all checked against sources by the 2026-10-10 verifier) or a row a
+    #              second reviewer confirmed against a source it read
+    #   reviewed   a second reviewer found it consistent with all the evidence, without reading a source
+    #   unchecked  the rest
+    corrected = set(adj.loc[(adj.decision == "override") & adj.reason.str.contains("Verification|Review2", na=False),
+                            "song_id"])
+    disputed = set(pd.read_csv(D / "disputed.csv").song_id) if (D / "disputed.csv").exists() else set()
+    r2 = [pd.read_csv(f) for f in sorted(D.glob("review2_*.csv"))]
+    r2 = pd.concat(r2, ignore_index=True) if r2 else pd.DataFrame(columns=["song_id", "outcome"])
+    src_ok = set(r2.loc[r2.outcome == "confirmed_source", "song_id"])
+    kept = set(adj.loc[(adj.decision == "accept") & adj.reason.str.contains("Review2", na=False), "song_id"])
+    consistent = (set(r2.loc[r2.outcome == "confirmed_consistency", "song_id"])
+                  - set(r2.loc[r2.outcome == "issue", "song_id"])) | kept  # issue raised, label kept after review
+    m["song_label_check"] = [
+        "disputed" if i in disputed else "corrected" if i in corrected
+        else "verified" if (c in ("high", "medium") or i in src_ok) else "reviewed" if i in consistent else "unchecked"
+        for i, c in zip(m.song_id, m.confidence)]
+    print("song_label_check:", m.song_label_check.value_counts().to_dict())
     cols = ["song_id", "region", "region_en", "song_key", "song_name", "item_ids", "n_recordings", "song_class",
             "genre", "genre_native", "composer", "lyricist", "arranger", "composition_period", "year_best",
-            "year_kind", "region_check", "evidence", "sources", "confidence", "searched", "anthology_matches",
+            "year_kind", "region_check", "evidence", "sources", "confidence", "song_label_check", "searched", "anthology_matches",
             "anth_same_prov", "blind"]
+    # evidence text: redact recording singers (privacy.py); credited authors of the song keep their names
+    from colour_regions.privacy import private_names, redact
+    rec = pd.read_csv(ROOT / "data" / "colour_regions" / "recordings.csv")
+    public = {x for v in rec.loc[rec.provenance_tier == "A1", "singer"].dropna() for x in re.split(r"[、,，/ ]+", v)}
+    names = private_names(public)
+    m["evidence"] = [redact(e, names, keep={x for v in (c, l, a) if isinstance(v, str)
+                                           for x in re.split(r"[、,，/;；() ]+", v) if x})
+                     for e, c, l, a in zip(m.evidence, m.composer, m.lyricist, m.arranger)]
     m[[c for c in cols if c in m]].to_csv(ROOT / "data" / "colour_regions" / "song_labels.csv", index=False)
     r = pd.DataFrame(rev)
     if len(r):

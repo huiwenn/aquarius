@@ -19,17 +19,19 @@ import argparse
 import os
 from pathlib import Path
 
+import sys
+
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
 D = ROOT / "data"
 OUT = D / "colour_regions" / "corpus"
-ROUND = {1: dict(audio=D / "regions_audio", trans=D / "regions_transcription",
-                 f0=D / "transcription" / "critic", index=D / "regions_transcription" / "dataset_index.csv"),
-         2: dict(audio=D / "regions_v2" / "audio", trans=D / "regions_v2" / "transcription",
-                 f0=D / "regions_v2" / "transcription", index=D / "regions_v2" / "transcription" / "dataset_index.csv"),
-         3: dict(audio=D / "regions_v3" / "audio", trans=D / "regions_v3" / "transcription",
-                 f0=D / "regions_v3" / "transcription", index=D / "regions_v3" / "transcription" / "dataset_index.csv")}
+def _rounds():
+    from colour_regions.rounds import rounds
+    return {n: dict(audio=r.audio, trans=r.trans, f0=r.f0, index=r.index) for n, r in rounds().items()}
+
+
 VARIANTS = ["game", "game_pp", "game_ens3_pp", "rosvot", "yourmt3"]
 AUDIO_EXTS = {".webm", ".m4a", ".opus", ".mp3", ".ogg", ".mp4", ".wav", ".flac", ".aac"}
 
@@ -52,6 +54,7 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--layers", default="audio,midi,musicxml,f0,vocals,accomp")
     layers = set(ap.parse_args().layers.split(","))
+    ROUND = _rounds()
     rec = pd.read_csv(D / "colour_regions" / "recordings.csv")
     prim = {}
     for r, p in ROUND.items():
@@ -66,7 +69,9 @@ def main() -> None:
                              path=str(dst.relative_to(OUT))))
 
     for r in rec.itertuples():
-        p, reg, iid = ROUND[int(r.round)], r.region, r.item_id
+        # source folders use the curator's region (files never move); the view uses the released region
+        src_reg = r.region_curator if isinstance(getattr(r, "region_curator", None), str) else r.region
+        p, reg, iid = ROUND[int(r.round)], src_reg, r.item_id
         R = slug(r.region_en)
         if "audio" in layers:
             src = next((f for f in (p["audio"] / reg).glob(f"{iid}.*") if f.suffix in AUDIO_EXTS), None)

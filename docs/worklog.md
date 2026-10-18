@@ -224,6 +224,36 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
   - The agent installed `zhconv` and `rapidfuzz` into py312.
   - Manual change: 回娘家 is set to uncertain (the recording is the 1982 Taiwanese song).
 
+### Session 2026-10-11: region move, folk-style subset, transcription vs Anthology
+
+- **Author decisions:**
+  - Move the nine 兴国山歌 songs (13 recordings) to Hakka: `data/regions_curated/region_overrides.csv`. `build_release.py` applies the overrides and keeps `region_curator`.
+  - Songs labelled `folk_style_composed` leave core and form their own subset: new column `subset` (`core` / `folk_style_composed` / `excluded`), 31 recordings. The author called it a "古风" subset; it is named `folk_style_composed` pending clarification (古风 usually means modern ancient-style pop).
+- **Path fixes for moved recordings:** files stay in the curator's region folder. `consolidate.py` and `annotation/build_package.py` use `region_curator` for source paths.
+- `regionclf/corpus.py build_merged` now reads Round 3.
+- **Transcription vs Anthology:** `src/transcription/audit/anthology_distance.py`; results in `docs/transcription.md` (last section).
+- The author asked to scrape 古风 songs; scope and definition are pending.
+
+### Session 2026-10-14: contrast set curation, folds by region, Hugging Face pre-release
+
+- **Contrast set** (author: 创作民歌 + 古风 as two subsets, an out-of-core contrast set, to be added in v1.1).
+  - Curation agents wrote `data/contrast/candidates_clean/{创作民歌,古风}.json` (79 and 90 candidates; builders in `src/contrast/`). Every ID is from logged Bilibili searches (`data/contrast/logs/`).
+  - Credits are mostly secondary (uploader descriptions, herongyang): verify them before release.
+  - `src/secaiqu/v2/{search,download}.py` take `AQ_COLLECTION=data/contrast`. Not downloaded yet.
+- **Folds (internal):** sampled by region. Key = (channel ∪ singer component without the Musical Map of China channel link, region). Balanced: 329–333 per fold, ≤ 25% of a region in one fold.
+  - The strict `group_id` (series linked) is unchanged. Its largest group is 648 recordings.
+- **Release columns:**
+  - `song_label_check` (verified / corrected / unchecked);
+  - `subset`;
+  - `region_curator`.
+- **Privacy:** `src/colour_regions/privacy.py` redacts singer names (all rounds + series descriptions) in `provenance_evidence` and in song-label evidence. Credited authors keep their names; ensembles, roles, provinces and title words are excluded.
+- **Fingerprints:** now cover all 1,655 recordings. The link check (all 1,655) was running in the background (`data/colour_regions/link_check_2026-10-14.log`).
+- **Hugging Face:** `src/colour_regions/build_hf.py` → `data/hf_release/` (780 MB).
+  - Contents: parquet tables (`feature_flags` as a list), MIDI primary/game/rosvot, MusicXML primary, F0 rmvpe/pesto, and the card from `docs/hf_dataset_card.md`.
+  - Ships `group_id` only, no `fold` (author decision).
+  - Uploaded to the private dataset `sophiaphia/colour-regions`.
+- Spectrograms: dropped (author decision; F0 covers intonation; spectrograms can be inverted to audio).
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.

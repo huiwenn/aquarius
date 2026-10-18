@@ -18,6 +18,7 @@ Genre vocabulary (folk-song genres as classified in 《中国民间歌曲集成�
   narrative 叙事歌 · children 儿歌/摇篮曲 · long_song 长调 · short_song 短调 · multipart 多声部 (侗族大歌 …) ·
   religious 宗教歌曲 · other
 
+Song ids are stable: data/colour_regions/song_labels/song_ids.csv is the registry (never edit ids by hand).
 Run (py312): python src/colour_regions/song_table.py
 """
 
@@ -95,7 +96,11 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     rec = pd.read_csv(ROOT / "data" / "colour_regions" / "recordings.csv")
     rh = pd.read_csv(ROOT / "data" / "rhymoi" / "rhymoi_items.csv").set_index("item_id")
-    allrec = pd.concat([rec, round3()], ignore_index=True)
+    r3 = round3()  # only items not yet in the release (recordings.csv already holds built rounds)
+    allrec = pd.concat([rec, r3[~r3.item_id.isin(rec.item_id)]], ignore_index=True)
+    # songs are keyed by the CURATOR's region: a later region move (region_overrides.csv) must not change song ids
+    if "region_curator" in allrec:
+        allrec["region"] = allrec.region_curator.fillna(allrec.region)
     allrec["rh_composer"] = allrec.item_id.map(rh.composer)
     allrec["rh_form"] = allrec.item_id.map(rh.form)
     sec = anthology_sections()
@@ -124,15 +129,32 @@ def main() -> None:
     t["title_genre"] = t.song_name.map(genre_from_title)
     t["anthology_matches"] = t.song_key.map(anth)
     # round-1 dating as prior evidence, withheld for a blind 25% of the round-1 songs
-    rng = np.random.default_rng(SEED)
     has = [(r, k) in dates.index for r, k in zip(t.region, t.song_key)]
-    t["blind"] = [h and rng.random() < 0.25 for h in has]
+    # stable song ids and the frozen blind set: registry song_ids.csv (song_id, region, song_key, blind).
+    # Existing songs keep their id; a new song gets the next free number (never reused).
+    reg_p = OUT / "song_ids.csv"
+    reg = pd.read_csv(reg_p) if reg_p.exists() else pd.DataFrame(columns=["song_id", "region", "song_key", "blind"])
+    known = {(r, k): (i, b) for i, r, k, b in zip(reg.song_id, reg.region, reg.song_key, reg.blind)}
+    nxt = 1 + max([int(i.split("-")[1]) for i in reg.song_id] or [-1])
+    ids, blind, new = [], [], []
+    for r, k in zip(t.region, t.song_key):
+        if (r, k) in known:
+            i, b = known[(r, k)]
+        else:
+            i, b = f"{EN[r][:3].upper()}-{nxt:04d}", False  # new songs are never blind
+            nxt += 1
+            new.append(dict(song_id=i, region=r, song_key=k, blind=b))
+        ids.append(i)
+        blind.append(bool(b))
+    t["song_id"], t["blind"] = ids, blind
+    if new:
+        pd.concat([reg, pd.DataFrame(new)], ignore_index=True).to_csv(reg_p, index=False)
+    print(len(new), "new songs added to", reg_p.name)
     cols = ["song_type", "origin_period", "composer_or_adapter", "composition_or_adaptation_year", "date_best",
             "confidence", "evidence_urls"]
     for c in cols:
         t["prior_" + c] = [dates.loc[(r, k), c] if h and not b else None
                            for r, k, h, b in zip(t.region, t.song_key, has, t.blind)]
-    t["song_id"] = [f"{EN[r][:3].upper()}-{i:04d}" for i, r in enumerate(t.region)]
     t.to_csv(OUT / "input_all.csv", index=False)
     for r, gg in t.groupby("region"):
         gg.to_csv(OUT / f"input_{EN[r].replace('–', '-').replace(' ', '_')}.csv", index=False)

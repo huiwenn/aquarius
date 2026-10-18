@@ -12,16 +12,19 @@ import json
 import subprocess
 from pathlib import Path
 
+import sys
+
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT / "src"))
 OUT = ROOT / "data" / "colour_regions" / "fingerprints.csv"
 
 
 def main() -> None:
     paths = {}
-    for man, idc in ((ROOT / "data" / "regions_audio" / "manifest.csv", "video_id"),
-                     (ROOT / "data" / "regions_v2" / "manifest.csv", "id")):
+    from colour_regions.rounds import rounds
+    for man, idc in ((r.manifest, r.id_col) for r in rounds().values()):
         m = pd.read_csv(man)
         m = m[m.status == "ok"]
         paths.update(dict(zip(m[idc], m.audio_path)))

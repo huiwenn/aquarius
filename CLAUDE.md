@@ -2,7 +2,7 @@
 
 This repo builds **Colour Regions** (色彩区), an open corpus of Chinese folk song for geographic and ethnomusicological analysis. Its dataset paper targets the TISMIR special collection "Open Music Data for Music Processing Research" (deadline 2026-12-01).
 
-- **Corpus:** 1,297 linked recordings over 15 colour regions, from two collection rounds.
+- **Corpus:** 1,655 linked recordings over 15 colour regions, from three collection rounds (Round 3 = the Musical Map of China series). A contrast set (创作民歌 + 古风) is being curated in `data/contrast/`.
 - **Scores:** the Anthology of Chinese Folk Songs (8,654 OMR scores) and Essen scores, mapped to the same regions.
 - **Derived data:** curation metadata, provenance tiers, F0 tracks and MIDI/MusicXML transcriptions.
 - **Example study:** region classification.
@@ -49,6 +49,7 @@ python src/colour_regions/build_release.py      # data/colour_regions/*.csv
 python src/colour_regions/export_metadata.py    # metadata/ (git release)
 python src/colour_regions/consolidate.py        # data/colour_regions/corpus/ symlink view
 python src/colour_regions/paper_numbers.py      # LaTeX number macros and tables for the paper
+python src/colour_regions/build_hf.py           # data/hf_release/ → hf upload sophiaphia/colour-regions (private)
 ```
 
 ## Environments (this Mac)
@@ -60,9 +61,9 @@ python src/colour_regions/paper_numbers.py      # LaTeX number macros and tables
 ## Rules
 
 - **Audio is third-party.** Never commit or redistribute it, or put it in a shared location outside the team. The release is links plus derived data.
-- **Licence:** CC BY-NC-SA 4.0 for everything. Hosting: Hugging Face for data, GitHub for code.
+- **Licence:** CC BY-NC-SA 4.0 for everything. Hosting: Hugging Face for data (`sophiaphia/colour-regions`, private until release), GitHub for code.
 - **Privacy:**
-  - Singer names appear only for national heritage bearers; everyone else gets a pseudonymous `singer_id`.
+  - Singer names appear only for national heritage bearers; everyone else gets a pseudonymous `singer_id`. Free-text evidence is redacted with `src/colour_regions/privacy.py` (credited composers/lyricists/arrangers keep their names).
   - `data/session_logs/` holds private Claude transcripts. Never share or commit them.
 - **Downloads:**
   - Run one downloader at a time (`pgrep -fl download` first).
@@ -78,7 +79,8 @@ python src/colour_regions/paper_numbers.py      # LaTeX number macros and tables
 
 ## Skills
 
-Two project skills are in `.claude/skills/`, and Claude Code loads them automatically in this repo:
+Three project skills are in `.claude/skills/`, and Claude Code loads them automatically in this repo:
 
 - `regional-folk-audio-dataset`: the end-to-end playbook. It covers research-driven curation by search, downloading, transcription with model selection, and auditing without ground truth. Use it to extend the corpus to new regions or genres.
+- `colour-regions-curation`: **start here if you are new.** How to add recordings (a new round), research and label songs (composer, period, class, genre), fix labels or regions, what every column means, and how to rebuild, check and publish. Run its `scripts/check_release.py` before committing.
 - `link-audio-transcription`: the general pipeline for downloading from links and transcribing at scale. It covers platform pitfalls, crash-safe GPU runs, fingerprints, link checks and the link-based release. Read its `references/failure_modes.md` before any long run.

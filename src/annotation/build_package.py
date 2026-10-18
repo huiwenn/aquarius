@@ -32,6 +32,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "src"))
 from colour_regions.regions import REGIONS  # noqa: E402
+from colour_regions.rounds import rounds  # noqa: E402
 
 PAD = 2.0
 SR = 44100
@@ -56,8 +57,8 @@ def clicks(dst: Path, dur: float, at: list[float]) -> None:
 
 def audio_paths() -> dict:
     out = {}
-    for man, idc in ((ROOT / "data" / "regions_audio" / "manifest.csv", "video_id"),
-                     (ROOT / "data" / "regions_v2" / "manifest.csv", "id")):
+    from colour_regions.rounds import rounds
+    for man, idc in ((r.manifest, r.id_col) for r in rounds().values()):
         m = pd.read_csv(man)
         out.update(dict(zip(m[idc], m.audio_path)))
     return out
@@ -87,13 +88,15 @@ def main() -> None:
     shared = out / "_audio"
     shared.mkdir(parents=True, exist_ok=True)
     audio = audio_paths()
+    rec = pd.read_csv(ROOT / "data" / "colour_regions" / "recordings.csv")
+    src_region = dict(zip(rec.item_id, rec.get("region_curator", rec.region).fillna(rec.region)))
     meta = {}
     for r in ex.itertuples():
-        t = ROOT / "data" / ("regions_transcription" if r.round == 1 else "regions_v2/transcription")
+        t = rounds()[int(r.round)].trans
         s0 = max(0.0, r.start_s - PAD)
         dur = (r.end_s + PAD) - s0
         cut(ROOT / audio[r.item_id], shared / f"{r.excerpt}_mix.wav", s0, dur)
-        voice = t / "vocals" / r.region / f"{r.item_id}.wav"
+        voice = t / "vocals" / src_region.get(r.item_id, r.region) / f"{r.item_id}.wav"  # files stay in the curator's region
         if voice.exists():
             cut(voice, shared / f"{r.excerpt}_voice.wav", s0, dur)
         a, b = round(r.start_s - s0, 2), round(r.end_s - s0, 2)
