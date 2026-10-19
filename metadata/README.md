@@ -1,6 +1,6 @@
 # Colour Regions: recording metadata
 
-This folder contains links and metadata for the 1,297 Chinese folk-song recordings of the Colour Regions corpus (15 colour regions, 色彩区). **It contains no audio.** Each recording is available from its source link (YouTube, Bilibili, or the CREM archive) under that platform's terms.
+This folder contains links and metadata for the Chinese folk-song recordings of the Colour Regions corpus (15 colour regions, 色彩区), from three collection rounds (the counts are in `recordings.csv`). **It contains no audio.** Each recording is available from its source link (YouTube, Bilibili, or the CREM archive) under that platform's terms.
 
 ## Files
 
@@ -17,7 +17,7 @@ The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) i
 | Column | Meaning |
 |---|---|
 | `item_id`, `platform`, `url` | Video identifier, platform, link |
-| `round` | Collection round (1 or 2) |
+| `round` | Collection round (1, 2, 3; round 3 = the Musical Map of China series) |
 | `channel`, `channel_key` | Uploader, and `platform:channel-id` |
 | `region`, `region_en`, `region_type` | Colour region (Chinese, English) and Han or minority |
 | `province`, `county_or_area`, `lon`, `lat`, `geo_level` | Stated place, and its location from a county gazetteer |
@@ -37,7 +37,7 @@ The derived data (F0 tracks, MIDI/MusicXML transcriptions, audio fingerprints) i
 | `subset` | `core` (default analysis subset), `folk_style_composed` (songs composed in a folk idiom, e.g. 浏阳河, 十送红军: kept as their own subset), `excluded` (label errors, arrangements, composed songs, speech) |
 | `region_curator` | The curator's region where a later decision moved the recording (e.g. 兴国山歌 → Hakka) |
 | `core`, `core_exclusion` | Default analysis subset, and the reasons for exclusion |
-| `group_id`, `fold` | Channel ∪ singer group, and the recommended evaluation fold (0–4) |
+| `group_id` | Channel ∪ singer group: keep a group on one side of any train/test split |
 
 ## How it was made
 

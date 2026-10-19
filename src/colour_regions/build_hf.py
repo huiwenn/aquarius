@@ -49,7 +49,11 @@ def main() -> None:
     files = pd.read_csv(CORPUS / "files.csv")
     paths = {}
     copied = 0
+    # CREM / Europeana items are "In Copyright, research use only": links and metadata only, no derived data
+    links_only = set(meta.loc[meta.platform == "europeana", "item_id"])
     for r in files.itertuples():
+        if r.item_id in links_only:
+            continue
         if r.layer == "midi" and r.variant in MIDI:
             rel = Path("midi") / MIDI[r.variant] / Path(r.path).relative_to(Path("midi") / r.variant)
             col = f"midi_{MIDI[r.variant]}"

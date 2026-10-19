@@ -174,10 +174,11 @@ def add_core(d: pd.DataFrame) -> None:
     # own subset (author decision 2026-10-11)
     fsc = d.get("song_class", pd.Series(index=d.index, dtype=object)) == "folk_style_composed"
     why[fsc & ~why.str.contains("composed")] += "folk_style_composed;"
-    d["subset"] = np.where(fsc, "folk_style_composed", np.where(why == "", "core", "excluded"))
     doc = (d.title.fillna("") + " " + d.content_concern.fillna("")).str.contains(DOC_PATTERN, case=False, regex=True)
     d["speech_doc_meta"] = doc
     why[(d.speech_share >= SPEECH_MIN) & doc] += "speech;"
+    # subset after every exclusion rule (it was set before the speech rule: 24 speech items showed subset=core)
+    d["subset"] = np.where(fsc, "folk_style_composed", np.where(why == "", "core", "excluded"))
     d["core_exclusion"] = why.str.rstrip(";").replace("", np.nan)
     d["core"] = d.core_exclusion.isna()
 
@@ -295,13 +296,19 @@ def main() -> None:
     # names are released only for singers on the national heritage-bearer list (tier A1, a public role);
     # every other singer keeps only the pseudonymous singer_id
     keep = d.provenance_tier == "A1"
+    # public = names that exactly match the national heritage-bearer list (ihchina_check.csv n_exact > 0);
+    # co-singers on an A1 recording who are not on the list stay private
+    ihc = read(ROOT / "data" / "regions_curated" / "ihchina_check.csv")
+    listed = set(ihc.loc[ihc.n_exact > 0, "name"]) if len(ihc) else set()
     public = set()
     for n in d.loc[keep, "singer"].dropna():
-        public |= {x.strip() for x in re.split(r"[、,，/&和与 ]+", str(n))}
+        public |= {x.strip() for x in re.split(r"[、,，/&和与 ]+", str(n))} & listed
     from colour_regions.privacy import private_names, redact  # names from every round's curation (privacy.py)
     private = private_names(public)
     d["provenance_evidence"] = d.provenance_evidence.map(lambda t: redact(t, private))
-    d["singer"] = d.singer.where(keep)
+    d["singer_inheritor"] = d.singer_inheritor.map(lambda t: redact(t, private))
+    d["singer"] = d.singer.where(keep).map(
+        lambda v: "、".join(x for x in re.split(r"[、,，/&和与 ]+", v) if x in public) or np.nan if isinstance(v, str) else v)
     # song-level labels (docs/song_labelling_protocol.md; src/colour_regions/song_labels_check.py): class, genre,
     # composer / lyricist / arranger, period of composition, with the label confidence
     sl = read(OUT / "song_labels.csv")

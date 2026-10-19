@@ -38,7 +38,7 @@ configs:
 
 Colour Regions is an open corpus of Chinese folk song for geographic and ethnomusicological research. It groups {N_REC} recordings ({HOURS} h) into the 15 colour regions (色彩区) of Chinese folk-song scholarship: 11 Han regions and 4 minority song areas.
 
-**This dataset contains no audio.** Each recording is a link to its source ({N_YT} YouTube, {N_BILI} Bilibili and {N_EU} Europeana/CREM items). The dataset gives the curation metadata and the data derived from the audio: note transcriptions (MIDI and MusicXML) and pitch tracks (F0).
+**This dataset contains no audio.** Each recording is a link to its source ({N_YT} YouTube, {N_BILI} Bilibili and {N_EU} Europeana/CREM items). The dataset gives the curation metadata and the data derived from the audio: note transcriptions (MIDI and MusicXML) and pitch tracks (F0). The {N_EU} CREM archive items are "In Copyright, research use only": for them the dataset gives links and metadata only, without derived data.
 
 > Status: pre-release, private. Authors, citation and the accompanying paper (TISMIR, special collection "Open Music Data for Music Processing Research") will be added.
 
