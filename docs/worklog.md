@@ -224,6 +224,23 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
   - The agent installed `zhconv` and `rapidfuzz` into py312.
   - Manual change: 回娘家 is set to uncertain (the recording is the 1982 Taiwanese song).
 
+### Session 2026-10-17: Musical elements by region and over time (Olivia)
+
+**Done:**
+- New exploratory analysis: `src/analysis/musical_elements.py`, written up in `docs/musical_elements_analysis.md`.
+  - Essen China (2,189 songs mapped to 13 regions) gives melody, rhythm, tonality and form features. Region tests use Kruskal–Wallis or chi-square with BH-FDR and effect sizes, and a check inside the `han` subset because the `shanxi` subset is one collection.
+  - `metadata/recordings.csv` (core, 1,544) gives performance practice by region and over time.
+- Outputs: `notebooks/elements_results/*.csv` and `notebooks/figures/elements_*.png`.
+- Essen kern files are now in `data/raw/essen/asia/china/` (from `github.com/ccarh/essen-folksong-collection`).
+
+**Main results (exploratory):**
+- Robust: wider melodic range and lower finals in the north; mode of the final differs by region (zhi in Han central and northern regions, yu in the southwest and the steppe); triple meter in the south and minority regions; free meter in the Northern Steppe.
+- Not robust: phrase count (mostly the `shanxi` edition), rhythmic variety, phrase repetition.
+- Over time: 1949–1965 songs are mostly adapted songs in the conservatory style (34 dated songs). No trend with upload year.
+
+**Next:**
+1. Run the same features on the corpus transcriptions (GAME primary MIDI) on the author's Mac.
+2. Add timbre, dynamics and texture from the separated audio stems.
 ### Session 2026-10-11: region move, folk-style subset, transcription vs Anthology
 
 - **Author decisions:**
