@@ -269,7 +269,7 @@ def main() -> None:
         if c not in d:
             d[c] = np.nan
     # Musical Map of China series (src/colour_regions/rhymoi.py): fields parsed from the structured descriptions.
-    # Tier by stated area (author decision 2026-10-04): named singer + one stated county → A; else the curator tier.
+    # Tier by stated area (author decisions 2026-10-04, 10-23): named singer + one stated county or prefecture → A; else the curator tier.
     d["provenance_tier_curator"] = d.provenance_tier
     rh = read(ROOT / "data" / "rhymoi" / "rhymoi_items.csv")
     d["feature_flags"] = ""
@@ -283,7 +283,8 @@ def main() -> None:
         up = on & d.index.isin(p.index[p.tier == "A2"]) & d.provenance_tier.isin(["B", "C"])
         d.loc[up, "provenance_tier"] = "A"
         d.loc[up, "provenance_evidence"] = ("Musical Map of China description: named singer, 地区 "
-                                            + p.loc[d.index[up], "area"].astype(str) + " (county stated)")
+                                            + p.loc[d.index[up], "area"].astype(str) + " ("
+                                            + p.loc[d.index[up], "area_level"].astype(str) + " stated)")
     d["feature_flags"] = d["feature_flags"].replace("", np.nan)
     d["singer_id"] = singer_ids(d)  # again: the series descriptions name singers the curators left blank
     # tier A split (src/colour_regions/check_inheritors.py): A1 = named singer found on the national heritage-bearer
@@ -293,6 +294,10 @@ def main() -> None:
         on = d.item_id.isin(ih.loc[ih.on_national_list, "item_id"])
         d.loc[on, "provenance_tier"] = "A1"
         d.loc[~on & (d.provenance_tier == "A"), "provenance_tier"] = "A2"
+    # item-level tier decisions by the author (data/regions_curated/tier_overrides.csv: item_id, provenance_tier, reason)
+    to = read(ROOT / "data" / "regions_curated" / "tier_overrides.csv")
+    if len(to):
+        d.loc[d.item_id.isin(to.item_id), "provenance_tier"] = d.item_id.map(dict(zip(to.item_id, to.provenance_tier)))
     # names are released only for singers on the national heritage-bearer list (tier A1, a public role);
     # every other singer keeps only the pseudonymous singer_id
     keep = d.provenance_tier == "A1"

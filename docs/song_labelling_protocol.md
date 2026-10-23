@@ -111,3 +111,20 @@ Started 2026-10-08 (author request). This document records how each song in the 
   - 20 low-confidence proposals kept unchanged;
   - 34 questions for the author in `disputed.csv`: stage-series titles that sound modern, 番薯情, 一根竹竿容易弯, 阿克班玛, Mongolian-state songs, the 咸水歌 genre rule, Haixi Mongol 花儿 vs 长调, red-era texts.
 - **Result (songs):** reviewed 1,221, verified 154, corrected 60, disputed 34, unchecked 0.
+
+## Author review (2026-10-23)
+
+- **Disputed songs:** the author listened to all 34 on the review page (https://claude.ai/artifact/LQgfcNr9y8sdnYY4huHzgL).
+  - 31 labels kept, now `verified`;
+  - 乌布西奔妈妈 → `folk_traditional`;
+  - 阿克班玛: authors unknown, composer and lyricist cleared;
+  - 哭嫁 (GAN-1356) moved to Hakka (`region_overrides.csv`).
+  - Recorded in `adjudication.csv` with reasons starting "Author 2026-10-23".
+- **Curation spot check** (60 random recordings, 4 per region):
+  - region 60/60 (95% CI 94–100%);
+  - tier 59/60 (91–100%);
+  - traditional 60/60;
+  - song labels 60/60.
+  - The one tier correction is a CCTV broadcast, tier C → B (`data/regions_curated/tier_overrides.csv`).
+  - Answers: `data/annotation/spotcheck_results_2026-10-23.csv`.
+- **`song_label_check = verified`** now also covers labels the author kept after listening.

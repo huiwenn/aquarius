@@ -12,6 +12,7 @@ Run (py312): python src/colour_regions/check_inheritors.py
 
 import json
 import re
+import sys
 import subprocess
 import time
 from pathlib import Path
@@ -24,19 +25,27 @@ URL = "https://www.ihchina.cn/art/representative.html?keywords={}"
 
 
 def names() -> pd.DataFrame:
-    """Singers of tier-A items or with heritage status, from the curation files (names are not in the release)."""
-    v1 = pd.read_csv(ROOT / "data" / "regions_curated" / "v1_provenance.csv").rename(columns={"video_id": "item_id"})
-    v2 = pd.read_csv(ROOT / "data" / "regions_v2" / "manifest.csv").rename(columns={"id": "item_id"})
-    d = pd.concat([v1[["item_id", "singer", "singer_inheritor", "provenance_tier", "province"]],
-                   v2[["item_id", "singer", "singer_inheritor", "provenance_tier", "province"]]])
-    d = d[(d.provenance_tier == "A") | d.singer_inheritor.notna()]
+    """Every named singer in every round (names are not in the release): round-1 re-curation, the manifests of
+    rounds >= 2 (colour_regions/rounds.py) and the Musical Map of China description singers. Any tier: a singer on the
+    national list makes the item A1 whatever its curator tier (build_release.py)."""
+    sys.path.insert(0, str(ROOT / "src"))
+    from colour_regions.rounds import rounds
+    parts = [pd.read_csv(ROOT / "data" / "regions_curated" / "v1_provenance.csv").rename(columns={"video_id": "item_id"})
+             [["item_id", "singer", "province"]]]
+    for n, r in rounds().items():
+        if n >= 2:
+            parts.append(pd.read_csv(r.manifest).rename(columns={"id": "item_id"})[["item_id", "singer", "province"]])
+    rh = ROOT / "data" / "rhymoi" / "rhymoi_items.csv"
+    if rh.exists():
+        parts.append(pd.read_csv(rh).rename(columns={"singers": "singer"})[["item_id", "singer", "province"]])
+    d = pd.concat(parts).dropna(subset=["singer"])
     rows = []
     for r in d.itertuples():
         for n in re.split(r"[、,，/&和与 ]+", str(r.singer)):
             n = re.sub(r"[（(].*?[)）]|演唱|领唱", "", n).strip()
-            if 2 <= len(n) <= 5 and re.fullmatch(r"[一-鿿·]+", n):
+            if 2 <= len(n) <= 6 and re.fullmatch(r"[一-鿿·]+", n):
                 rows.append(dict(item_id=r.item_id, name=n, province=r.province))
-    return pd.DataFrame(rows)
+    return pd.DataFrame(rows).drop_duplicates()
 
 
 def query(name: str) -> list[dict]:

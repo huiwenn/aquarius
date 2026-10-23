@@ -11,6 +11,7 @@ Everything under `data/` is gitignored. Get it from the team drive, never from a
 | Round-1 label and content reviews | `data/regions_curated/v1_label_review.csv` (`label_status` exclude/minor), `v1_content_review.csv` (exclude) | |
 | Heritage-bearer check (tier A1) | `data/regions_curated/ihchina_items.csv` (`src/colour_regions/check_inheritors.py`) | |
 | Region moves | `data/regions_curated/region_overrides.csv` | `item_id,region,reason` |
+| Tier corrections for single recordings | `data/regions_curated/tier_overrides.csv` | `item_id,provenance_tier,reason` |
 | Musical Map of China fields and region rules | `src/colour_regions/rhymoi.py` (`ETHNIC_REGION`, `PRECEDENT`) | code |
 | Song labels | `data/colour_regions/song_labels/labels_<Region>.csv` | protocol columns |
 | Song-label corrections | `data/colour_regions/song_labels/adjudication.csv` | `song_id,field,value,decision,reason`; `decision` = `override` (set field = value) or `accept` (review row resolved, no change) |

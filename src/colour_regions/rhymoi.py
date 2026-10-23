@@ -208,7 +208,9 @@ def items() -> pd.DataFrame:
                          upload_date=j.get("upload_date"), in_round1="regions_audio" in f, **p,
                          province=prov, county_or_area=county, area_level=lvl, region=reg, region_rule=rule,
                          needs_review=review, sung=sung,
-                         tier=("A2" if p["singers"] and lvl == "county" else "C"),
+                         # tier A2: named singer + a county or prefecture (author decision 2026-10-23: a prefecture pins a song
+                         # tradition within a colour region); a province alone or several places stay C
+                         tier=("A2" if p["singers"] and lvl in ("county", "prefecture") else "C"),
                          feature_flags=semantic_flags(p, True)))
     d = pd.DataFrame(rows).drop_duplicates("item_id")
     d["not_song_form"] = d.form.fillna("").str.contains(NOT_SONG) | d.title.fillna("").str.contains(NOT_SONG_TITLE)

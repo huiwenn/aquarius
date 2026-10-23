@@ -271,6 +271,24 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
   - Uploaded to the private dataset `sophiaphia/colour-regions`.
 - Spectrograms: dropped (author decision; F0 covers intonation; spectrograms can be inverted to audio).
 
+### Sessions 2026-10-18 to 10-21: README, gap analysis, review page, paper rewrite
+
+- **Paper type (author, 2026-10-21):** a TISMIR Dataset Article. The thesis is framed as an open question; the target is under 6,000 words including references.
+- **README.md:** where code (GitHub), data (Hugging Face) and paper (Overleaf, synced to GitHub `huiwenn/color-regions-paper-`, cloned at `../color-regions-paper`) live, and how to collaborate.
+- **Gap analysis:** `docs/gap_analysis_2026-10.md`. Its release bugs are fixed and pushed:
+  - subset after all exclusions;
+  - `fold` not released;
+  - A1 names limited to exact national-list matches, and `singer_inheritor` redacted;
+  - CREM items links-only on Hugging Face;
+  - song-label regions after region moves.
+- **Review page:** https://claude.ai/artifact/LQgfcNr9y8sdnYY4huHzgL. Tabs: 34 disputed songs (db collection `disputed`) and the 60-item spot check (`spotcheck`). Source: `data/annotation/label_review/`. Read answers with ArtifactData, then apply through `adjudication.csv`.
+- **Representative subset** for human annotation: `src/annotation/select_representative.py` → `data/annotation/representative_subset.csv` (4 per region). Not committed; another session works on it.
+- **Reference papers:** 23 open-access TISMIR PDFs in `../reference_papers/` (`INDEX.md`).
+- **Paper rewrite:** paper branch `rewrite-2026-10` (3 commits) and aquarius branch `paper-macros-2026-10` (`paper_numbers.py` with about 90 new macros, `table_rounds.tex`). Neither is merged or pushed.
+  - **build.sh needs the macros branch;** on `master`, `paper_numbers.py` lacks the new macros.
+  - 5,757 words (4,836 body + 921 bibliography); bibliography 63 → 32 entries. It compiles cleanly.
+  - Three `\pending{}` slots: spot-check agreement, gold-set accuracy, and the example-study rerun on the three-round core with and without the series.
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.

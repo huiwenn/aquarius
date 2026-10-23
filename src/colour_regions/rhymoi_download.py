@@ -46,7 +46,7 @@ def manifest(items: pd.DataFrame, status: dict) -> pd.DataFrame:
             genre=r.genre_native, performance_type="原生态", singer=r.singers, singer_inheritor=None,
             provenance_tier="A" if r.tier == "A2" else "C",
             provenance_evidence=f"Musical Map of China description: 地区 {r.area}" + (
-                " (county stated), named singer" if r.tier == "A2" else ""),
+                f" ({r.area_level} stated), named singer" if r.tier == "A2" else ""),
             dating_flag="check", note=f"rhymoi form={r.form}; region rule {r.region_rule}", curator="rhymoi.py",
             video_id=r.item_id, audio_path=str(f.relative_to(ROOT)) if f else None,
             status="ok" if f else status.get(r.item_id, "pending"), uploader=CHANNEL,

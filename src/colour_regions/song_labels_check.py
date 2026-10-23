@@ -139,7 +139,12 @@ def main() -> None:
     #   unchecked  the rest
     corrected = set(adj.loc[(adj.decision == "override") & adj.reason.str.contains("Verification|Review2", na=False),
                             "song_id"])
+    # author decisions on disputed songs (reasons start "Author"): a keep counts as verified, a change as corrected
+    author = adj[adj.reason.str.startswith("Author", na=False)]
+    author_keep = set(author.loc[author.decision == "accept", "song_id"])
+    corrected |= set(author.loc[author.decision == "override", "song_id"])
     disputed = set(pd.read_csv(D / "disputed.csv").song_id) if (D / "disputed.csv").exists() else set()
+    disputed -= set(author.song_id)
     r2 = [pd.read_csv(f) for f in sorted(D.glob("review2_*.csv"))]
     r2 = pd.concat(r2, ignore_index=True) if r2 else pd.DataFrame(columns=["song_id", "outcome"])
     src_ok = set(r2.loc[r2.outcome == "confirmed_source", "song_id"])
@@ -148,7 +153,7 @@ def main() -> None:
                   - set(r2.loc[r2.outcome == "issue", "song_id"])) | kept  # issue raised, label kept after review
     m["song_label_check"] = [
         "disputed" if i in disputed else "corrected" if i in corrected
-        else "verified" if (c in ("high", "medium") or i in src_ok) else "reviewed" if i in consistent else "unchecked"
+        else "verified" if (c in ("high", "medium") or i in src_ok or i in author_keep) else "reviewed" if i in consistent else "unchecked"
         for i, c in zip(m.song_id, m.confidence)]
     print("song_label_check:", m.song_label_check.value_counts().to_dict())
     cols = ["song_id", "region", "region_en", "song_key", "song_name", "item_ids", "n_recordings", "song_class",
