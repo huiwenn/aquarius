@@ -19,6 +19,7 @@ The repo began as a unified table of 23 Chinese music datasets (`AquariusDataset
 | `docs/collection_v2.md` | Round 2 collection rules, schema and logs |
 | `docs/transcription.md` | Round 1 collection, model benchmark, transcription pipeline, audit |
 | `docs/region_classification.md` | Example study; official numbers are in §22 (strict protocol) |
+| `docs/recordings_analysis.md` | Exploratory analysis of the transcribed recordings by region: scales, intonation, rhythm, melody, geography, classifier, genre, style |
 | `docs/critiques.md` | Reviewer-style critiques; the status table is in §4 |
 | `docs/thesis_evidence_plan.md` | What must be done before any claims on friction, notation or interaction |
 | `docs/annotation_guideline.md` | Guideline for the human notation study (draft) |
@@ -38,6 +39,7 @@ The repo began as a unified table of 23 Chinese music datasets (`AquariusDataset
 | `src/colour_regions/` | Release build, provenance tiers, geocoding, fingerprints, link check, metadata export, consolidated view, paper numbers |
 | `src/regionclf/` | Region-classification experiments (merged corpus: `corpus.py`, `rev_merged.py`) |
 | `src/annotation/` | Excerpt selection and packages for the notation study |
+| `src/analysis/` | Exploratory analyses: `musical_elements.py` (Essen scores and metadata); `recordings/` (transcribed recordings: scales, intonation, rhythm, melody, geography, region classifier, genre, style; see its `README.md`) |
 | `notebooks/04_colour_regions_corpus.py` | EDA figures `figures/cr_*` |
 | `metadata/` | Git-tracked release: links + metadata per region, **no audio** |
 | `data/` | Everything large (gitignored). Round 1 in `regions_audio/` and `regions_transcription/`; Round 2 in `regions_v2/`; release tables in `colour_regions/`; symlink view in `colour_regions/corpus/` |
