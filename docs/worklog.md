@@ -289,6 +289,22 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
   - 5,757 words (4,836 body + 921 bibliography); bibliography 63 → 32 entries. It compiles cleanly.
   - Three `\pending{}` slots: spot-check agreement, gold-set accuracy, and the example-study rerun on the three-round core with and without the series.
 
+### Session 2026-10-23: Rounds 4 and 5 (two playlists, 37 recordings) into the release (Elaine)
+
+**Done:**
+- Two user playlists were downloaded and transcribed with the round pipeline: a Northeast Plain playlist (23 videos, round 4) and a Beijing playlist (15 videos, round 5). The scripts for this are on branch `northeast-playlist-round4` of the fork `ElaineWafer/aquarius` (`src/secaiqu/v4/`, `v5/`, `src/transcription/run_v4.sh`, `run_v5.sh`, `src/colour_regions/append_round4.py`, `append_round5.py`). The work ran on a Mac without the team `data/` folder, so the round folders `regions_v4` and `regions_v5` exist only there and are not on the team drive yet.
+- **Dedupe:** by video ID and by Chromaprint fingerprint (BER <= 0.25) against all 1,655 items. One duplicate removed: `YRA4TggquC4` is a re-upload of `By334DK4svU` (CCTV, round 1; BER 0.036). 37 recordings remain (22 + 15). 19 of them are from channels already in the corpus; 16 of the 22 round-4 items are from the Musical Map of China channel (check that round 3 did not leave them out on purpose).
+- **Metadata:** `metadata/recordings.csv` 1,655 -> 1,692 rows (`by_region/Northeast_Plain.csv` +37), `metadata/song_labels.csv` +28 songs (`NOR-1469` to `NOR-1496`) and 8 songs gain recordings, `metadata/link_status.csv` +37 (checked 2026-10-23, all alive). Existing rows are unchanged. The tables were extended by hand with the repo's own rules (`group_id` from `channel_singer_groups`, `core`/`subset` from `add_core`), because the team `data/` folder was not available; **a rebuild from the team folder must add rounds 4 and 5 or it will drop these rows**.
+- **Hugging Face:** the same rows, files (MIDI, MusicXML, F0) and card numbers were uploaded as draft pull request #1 on `ProjectAquarius/colour-regions` (https://huggingface.co/datasets/ProjectAquarius/colour-regions/discussions/1). `main` is untouched.
+- Card template `docs/hf_dataset_card.md`: rounds 4 and 5 added to the round list.
+
+**Open decisions (author):**
+1. The 28 new song labels are written from my own knowledge or uploader descriptions: `song_label_check = unchecked`, `confidence = low`. Five composer or arranger credits come from uploader descriptions only. The song-id registry (`data/colour_regions/song_labels/song_ids.csv`) must get the ids `NOR-1469` to `NOR-1496`.
+2. 17 of the 37 are `song_class = opera` (9 full 二人转 pieces, 5 Peking opera clips, 3 percussion ensembles). By the current rules they are `core`, like the 3 existing opera rows. Is that intended? 3 pieces are `composed` (excluded) and 1 is `folk_style_composed`.
+3. `anthology_overlap` and `score_matches` were not rechecked for the new songs.
+
+**Noticed (not changed):** the Hugging Face dataset on `main` is older than `metadata/`: 1 recording is in Gan there but in Hakka here, and 164 provenance tiers, 35 label-check values and 24 subset values differ. A rebuild with `build_hf.py` refreshes them.
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.

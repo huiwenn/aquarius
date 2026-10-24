@@ -65,6 +65,8 @@ All paths in `recordings.parquet` are relative to the dataset root, for example 
    - Round 1: 600 YouTube recordings, 40 per region.
    - Round 2: 697 recordings from new channels, mainly Bilibili, with a channel cap and provenance rules.
    - Round 3: 358 recordings from the *Musical Map of China* series (中国音乐地图), whose descriptions name the singers and places.
+   - Round 4: 22 recordings from a Northeast Plain playlist (mostly *Musical Map of China* items: 二人转 pieces, 秧歌, suona).
+   - Round 5: 15 recordings from a Beijing playlist (Peking opera excerpts, percussion ensembles, orchestral and instrumental pieces; most are not folk song).
    Every link comes from a logged search; none was written from memory.
 2. **Region labels and provenance.** Each recording has a provenance tier:
    - `A1`: national heritage bearer;

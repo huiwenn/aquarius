@@ -2,7 +2,7 @@
 
 This repo builds **Colour Regions** (色彩区), an open corpus of Chinese folk song for geographic and ethnomusicological analysis. Its dataset paper targets the TISMIR special collection "Open Music Data for Music Processing Research" (deadline 2026-12-01).
 
-- **Corpus:** 1,655 linked recordings over 15 colour regions, from three collection rounds (Round 3 = the Musical Map of China series). A contrast set (创作民歌 + 古风) is being curated in `data/contrast/`.
+- **Corpus:** 1,692 linked recordings over 15 colour regions, from five collection rounds (Round 3 = the Musical Map of China series; Rounds 4 and 5 = two playlists, 37 recordings). A contrast set (创作民歌 + 古风) is being curated in `data/contrast/`.
 - **Scores:** the Anthology of Chinese Folk Songs (8,654 OMR scores) and Essen scores, mapped to the same regions.
 - **Derived data:** curation metadata, provenance tiers, F0 tracks and MIDI/MusicXML transcriptions.
 - **Example study:** region classification.
