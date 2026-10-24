@@ -1,6 +1,6 @@
 # Colour Regions: recording metadata
 
-This folder contains links and metadata for the Chinese folk-song recordings of the Colour Regions corpus (15 colour regions, 色彩区), from three collection rounds (the counts are in `recordings.csv`). **It contains no audio.** Each recording is available from its source link (YouTube, Bilibili, or the CREM archive) under that platform's terms.
+This folder contains links and metadata for the Chinese folk-song recordings of the Colour Regions corpus (15 colour regions, 色彩区), from five collection rounds (the counts are in `recordings.csv`). **It contains no audio.** Each recording is available from its source link (YouTube, Bilibili, or the CREM archive) under that platform's terms.
 
 ## Files
 

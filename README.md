@@ -25,7 +25,7 @@ Open `http://localhost:8000`. The page loads MapLibre GL JS and its fonts from p
 The source geometry is derived from public Tianditu/GeoJSON.cn vectors and simplified for web display. For research requiring legally authoritative boundaries or survey-grade precision, cite and obtain the relevant official dataset directly from the National Geomatics Center of China. See [China's public map-data portal](https://www.webmap.cn/main.do?method=index1).
 # Colour Regions (色彩区): an open corpus of Chinese folk song
 
-Colour Regions groups 1,655 linked recordings of Chinese folk song into the 15 colour regions (色彩区) of Chinese folk-song scholarship. Each recording comes with curation metadata, song labels (class, genre, composer, period), note transcriptions (MIDI, MusicXML) and pitch tracks (F0). The audio is not redistributed: the release is links plus derived data.
+Colour Regions groups 1,692 linked recordings of Chinese folk song into the 15 colour regions (色彩区) of Chinese folk-song scholarship. Each recording comes with curation metadata, song labels (class, genre, composer, period), note transcriptions (MIDI, MusicXML) and pitch tracks (F0). The audio is not redistributed: the release is links plus derived data.
 
 The dataset paper targets the TISMIR special collection *Open Music Data for Music Processing Research* (deadline 2026-12-01).
 
