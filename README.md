@@ -47,6 +47,7 @@ The dataset paper targets the TISMIR special collection *Open Music Data for Mus
 | `src/colour_regions/` | Release build, provenance, privacy, song labels, Anthology overlap, metadata export, Hugging Face build, paper numbers |
 | `src/regionclf/` | The example study: region classification |
 | `src/annotation/` | Excerpt selection and the offline notator page for the human notation study |
+| `src/analysis/` | Exploratory analyses: Essen scores and metadata (`musical_elements.py`), transcribed recordings (`recordings/`, with its own `README.md`) |
 | `metadata/` | The release tables, git-tracked (links and metadata, **no audio**); `metadata/README.md` explains every column |
 | `docs/` | Running logs per topic. **`docs/worklog.md` is the handoff log: read its newest section first** |
 | `.claude/skills/` | Project skills for Claude Code |

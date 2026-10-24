@@ -289,6 +289,28 @@ Last updated 2026-10-01 18:10 PT. Written for picking the work up in a new sessi
   - 5,757 words (4,836 body + 921 bibliography); bibliography 63 → 32 entries. It compiles cleanly.
   - Three `\pending{}` slots: spot-check agreement, gold-set accuracy, and the example-study rerun on the three-round core with and without the series.
 
+### Session 2026-10-23: analysis of the transcribed recordings (Elaine)
+
+**Done:**
+- Ten exploratory scripts in `src/analysis/recordings/` (run order in its `README.md`), written up in `docs/recordings_analysis.md`. Results go to `data/analysis/recordings/` (not tracked).
+  - Scales, intonation, rhythm and melody per region; one profile per region with resampling stability; geography (distance decay, Mantel tests, gradients); a region classifier under the strict protocol; genre; folk against trained singing; a confusion matrix with the region groups outlined.
+- This follows item 1 of "Next" in the entry of 2026-10-17 (run features on the corpus transcriptions). It complements `musical_elements.py`, which analyses the Essen scores.
+- **Folds:** the classifier computes them with `add_folds` from `build_release.py`, because the public `metadata/recordings.csv` has no `fold` column. A training set also drops recordings whose `song_key` is in the test fold.
+- **Data in this run:** Rounds 1 and 2 only. The 358 Round 3 recordings had no transcription in the shared package (`../colour_regions_share`, or `AQUARIUS_SHARE`), so they are not included.
+
+**Main results (exploratory):**
+- Two musical groups plus Xinjiang: five highland, steppe and southwest regions, and nine eastern and southern Han regions. The groups are stable in 1,000 resamples of channels and singers.
+- Nearer regions sound more alike (r = 0.73), but single recordings only weakly. Melody, especially typical interval size, follows geography most.
+- The music predicts the region with macro-F1 0.238 (chance 0.067); longitude and latitude alone give 0.84. Errors mostly stay inside the two groups.
+- Trained (民族唱法) singing is closer to the piano grid than folk (原生态) singing, but varies more in speed, not less.
+
+**Dropped as unreliable:** beats per minute and metre (a pulse detector missed metered synthetic songs), the glide share from F0, and mode shares as a main result.
+
+**Next:**
+1. Add Round 3 when its transcriptions are in the shared package, and rerun the ten scripts (about two minutes).
+2. Compare these measures with the Essen features: do regional differences in range, intervals and tonality agree between scores and performances?
+3. Add timbre, dynamics and texture from the separated stems.
+
 ## Environment notes (this Mac)
 - **Python envs:**
   - Analysis python: `/usr/local/Caskroom/miniforge/base/envs/py312/bin/python` — x86 under Rosetta, no MPS.
